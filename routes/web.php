@@ -16,13 +16,16 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/ban-hang','UserController@index');
 Route::get('/','UserController@trangchu');
 Route::get('/trang-chinh','UserController@trangchinh');
 Route::get('/chi-tiet','UserController@trangctsanpham');
 
 
-Route::get('/login','CustomerController@getLogin');
+Route::get('/login','CustomerController@getLoginForm');
 Route::post('/postLogin','CustomerController@postLogin');
-Route::get('/signup','CustomerController@getSignup');
-Route::post('/postSignup','CustomerController@postSignup');
+Route::get('/register','CustomerController@getRegisterForm');
+Route::post('/postRegister','CustomerController@postRegister');
+Route::get('/logout','CustomerController@logout');
+
+
+Route::get('/banhang','CustomerController@sellerChannel');

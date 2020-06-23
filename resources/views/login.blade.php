@@ -43,15 +43,20 @@
                     <div class="login-content">
                         <div class="login-logo">
                             <a href="#">
-                                <img src="{{asset('public/backend/images/icon/logo.png')}}" alt="CoolAdmin">
+                                <img src="{{asset('public/frontend/img/logo.png')}}" alt="CoolAdmin">
                             </a>
                         </div>
+                         @if(Session::has('success'))
+                            <div class="alert alert-success" role="alert">
+                                {{Session::get('success')}}
+                            </div>
+                        @endif
                         <div class="login-form">
                             <form action="{{URL::to('/postLogin')}}" method="post">
-                                {{ csrf_field() }}
+                            <input type="hidden" name="_token" value="{{csrf_token()}}">
                                 <div class="form-group">
                                     <label>Email Address</label>
-                                    <input class="au-input au-input--full" type="text" name="username" placeholder="Email">
+                                    <input class="au-input au-input--full" type="email" name="email" placeholder="Email">
                                 </div>
                                 <div class="form-group">
                                     <label>Password</label>
@@ -66,17 +71,17 @@
                                     </label>
                                 </div>
                                 <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">sign in</button>
-                                <div class="social-login-content">
+                                <!-- <div class="social-login-content">
                                     <div class="social-button">
                                         <button class="au-btn au-btn--block au-btn--blue m-b-20">sign in with facebook</button>
                                         <button class="au-btn au-btn--block au-btn--blue2">sign in with twitter</button>
                                     </div>
-                                </div>
+                                </div> -->
                             </form>
                             <div class="register-link">
                                 <p>
                                     Don't you have account?
-                                    <a href="#">Sign Up Here</a>
+                                    <a href="{{URL::to('/register')}}">Sign Up Here</a>
                                 </p>
                             </div>
                         </div>
