@@ -1,0 +1,6 @@
+Day 1:
+Database:
+- Table Customers
+	+ Add field updated_at before created_at 
+	+ Change lenght pass 100
+	+ Email add unique
