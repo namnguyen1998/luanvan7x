@@ -1,125 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<!-- Mirrored from uxliner.com/bizadmin/demo/main/pages-login-2.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 25 Jun 2020 17:58:24 GMT -->
 <head>
-    <!-- Required meta tags-->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="au theme template">
-    <meta name="author" content="Hau Nguyen">
-    <meta name="keywords" content="au theme template">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Biz Admin - Multipurpose bootstrap 4 admin templates</title>
+<!-- Tell the browser to be responsive to screen width -->
 
-    <!-- Title Page-->
-    <title>Register</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Biz Admin is a Multipurpose bootstrap 4 Based Dashboard & Admin Site Responsive Template by uxliner." />
+<meta name="keywords" content="admin, admin dashboard, admin template, cms, crm, Biz Admin, Biz Adminadmin, premium admin templates, responsive admin, sass, panel, software, ui, visualization, web app, application" />
+<meta name="author" content="uxliner"/>
+<!-- v4.1.3 -->
+<link rel="stylesheet" href="{{asset('public/backend/dist/bootstrap/css/bootstrap.min.css')}}">
 
-    <!-- Fontfaces CSS-->
-    <link href="{{asset('public/backend/css/font-face.css')}}" rel="stylesheet" media="all">
-    <link href="{{asset('public/backend/vendor/font-awesome-4.7/css/font-awesome.min.css')}}" rel="stylesheet" media="all">
-    <link href="{{asset('public/backend/vendor/font-awesome-5/css/fontawesome-all.min.css')}}" rel="stylesheet" media="all">
-    <link href="{{asset('public/backend/vendor/mdi-font/css/material-design-iconic-font.min.css')}}" rel="stylesheet" media="all">
+<!-- Favicon -->
+<link rel="icon" type="image/png" sizes="16x16" href="{{asset('public/backend/dist/img/favicon-16x16.png')}}">
 
-    <!-- Bootstrap CSS-->
-    <link href="{{asset('public/backend/vendor/bootstrap-4.1/bootstrap.min.css')}}" rel="stylesheet" media="all">
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
 
-    <!-- Vendor CSS-->
-    <link href="{{asset('public/backend/vendor/animsition/animsition.min.css')}}" rel="stylesheet" media="all">
-    <link href="{{asset('public/backend/vendor/bootstrap-progressbar/bootstrap-progressbar-3')}}.3.4.min.css" rel="stylesheet" media="all">
-    <link href="{{asset('public/backend/vendor/wow/animate.css')}}" rel="stylesheet" media="all">
-    <link href="{{asset('public/backend/vendor/css-hamburgers/hamburgers.min.css')}}" rel="stylesheet" media="all">
-    <link href="{{asset('public/backend/vendor/slick/slick.css')}}" rel="stylesheet" media="all">
-    <link href="{{asset('public/backend/vendor/select2/select2.min.css')}}" rel="stylesheet" media="all">
-    <link href="{{asset('public/backend/vendor/perfect-scrollbar/perfect-scrollbar.css')}}" rel="stylesheet" media="all">
+<!-- Theme style -->
+<link rel="stylesheet" href="{{asset('public/backend/dist/css/style.css')}}">
+<link rel="stylesheet" href="{{asset('public/backend/dist/css/font-awesome/css/font-awesome.min.css')}}">
+<link rel="stylesheet" href="{{asset('public/backend/dist/css/et-line-font/et-line-font.css')}}">
+<link rel="stylesheet" href="{{asset('public/backend/dist/css/themify-icons/themify-icons.css')}}">
+<link rel="stylesheet" href="{{asset('public/backend/dist/css/simple-lineicon/simple-line-icons.css')}}">
+<link rel="stylesheet" href="{{asset('public/backend/dist/css/skins/_all-skins.min.css')}}">
 
-    <!-- Main CSS-->
-    <link href="{{asset('public/backend/css/theme.css')}}" rel="stylesheet" media="all">
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif]-->
 
 </head>
-
-<body class="animsition">
-    <div class="page-wrapper">
-        <div class="page-content--bge5">
-            <div class="container">
-                <div class="login-wrap">
-                    <div class="login-content">
-                        <div class="login-logo">
-                            <a href="#">
-                                <img src="{{asset('public/frontend/img/logo.png')}}" alt="CoolAdmin">
-                            </a>
-                        </div>
-                        <div class="login-form">
-                            @if(count($errors)>0)
-                            <div class="alert alert-danger" role="alert">
-                                @foreach($errors->all() as $error)
-                                    {{$error}}</br>
-                                @endforeach
-                            </div>
-                            @endif
-                            @if(Session::has('success'))
-                                    <div class="alert alert-success" role="alert">
-                                        {{Session::get('success')}}
-                                    </div>
-                            @endif
-                            <form action="{{URL::to('postRegister')}}" method="post">
-                            <input type="hidden" name="_token" value="{{csrf_token()}}">
-                                <div class="form-group">
-                                    <label>Email</label>
-                                    <input class="au-input au-input--full" type="email" name="email" placeholder="Email">
-                                </div>
-                                <div class="form-group">
-                                    <label>Password</label>
-                                    <input class="au-input au-input--full" type="password" name="password" placeholder="Password">
-                                </div>
-                                <div class="form-group">
-                                    <label>Re-Password</label>
-                                    <input class="au-input au-input--full" type="password" name="re_password" placeholder="Re-Password">
-                                </div>
-                                <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">Register</button>
-                                <!-- <div class="social-login-content">
-                                    <div class="social-button">
-                                        <button class="au-btn au-btn--block au-btn--blue m-b-20">register with facebook</button>
-                                        <button class="au-btn au-btn--block au-btn--blue2">register with twitter</button>
-                                    </div>
-                                </div> -->
-                            </form>
-                            <div class="register-link">
-                                <p>
-                                    Already have account?
-                                    <a href="{{URL::to('/login')}}">Sign In</a>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<body class="login-page sty1">
+<div class="login-box sty1">
+  <div class="login-box-body sty1">
+  <div class="login-logo">
+    <a href="{{URL::to('/')}}"><img src="{{asset('public/frontend/img/logo.png')}}" alt=""></a>
+  </div>
+    <p class="login-box-msg">Sign in to start your session</p>
+    <form action="{{URL::to('/postRegister')}}" method="post" enctype="multipart/form-data">
+         @csrf
+      <!-- <div class="form-group has-feedback">
+        <input type="email" class="form-control sty1" name=""placeholder="Name">
+      </div> -->
+      <div class="form-group has-feedback">
+        <input type="email" class="form-control sty1" name="email" placeholder="Email">
+      </div>
+      <div class="form-group has-feedback">
+        <input type="password" class="form-control sty1" name ="password" placeholder="Password">
+      </div>
+      <div class="form-group has-feedback">
+        <input type="password" class="form-control sty1" name ="re_password" placeholder="Conform Password">
+      </div>
+      <div>
+        <div class="col-xs-8">
+          <div class="checkbox icheck">
+            <label>
+              <input type="checkbox">
+              I agree to all Terms</label>
             </div>
         </div>
+        <!-- /.col -->
+        <div class="col-xs-4 m-t-1">
+          <button type="submit" class="btn btn-primary btn-block btn-flat">Sign Up</button>
+        </div>
+        <!-- /.col --> 
+      </div>
+    </form>    
+    <div class="m-t-2">Already have an account? <a href="{{URL::to('/login')}}" class="text-center">Sign Up</a></div>
+  </div>
+  <!-- /.login-box-body --> 
+</div>
+<!-- ./wrapper --> 
 
-    </div>
+<!-- jQuery 3 --> 
+<script src="{{asset('public/backend/dist/js/jquery.min.js')}}"></script>  
+<script src="{{asset('public/backend/dist/bootstrap/js/bootstrap.min.js')}}"></script> 
 
-    <!-- Jquery JS-->
-    <script src="{{asset('public/backend/vendor/jquery-3.2.1.min.js')}}"></script>
-    <!-- Bootstrap JS-->
-    <script src="{{asset('public/backend/vendor/bootstrap-4.1/popper.min.js')}}"></script>
-    <script src="{{asset('public/backend/vendor/bootstrap-4.1/bootstrap.min.js')}}"></script>
-    <!-- Vendor JS       -->
-    <script src="{{asset('public/backend/vendor/slick/slick.min.js')}}">
-    </script>
-    <script src="{{asset('public/backend/vendor/wow/wow.min.js')}}"></script>
-    <script src="{{asset('public/backend/vendor/animsition/animsition.min.js')}}"></script>
-    <script src="{{asset('public/backend/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js')}}">
-    </script>
-    <script src="{{asset('public/backend/vendor/counter-up/jquery.waypoints.min.js')}}"></script>
-    <script src="{{asset('public/backend/vendor/counter-up/jquery.counterup.min.js')}}">
-    </script>
-    <script src="{{asset('public/backend/vendor/circle-progress/circle-progress.min.js')}}"></script>
-    <script src="{{asset('public/backend/vendor/perfect-scrollbar/perfect-scrollbar.js')}}"></script>
-    <script src="{{asset('public/backend/vendor/chartjs/Chart.bundle.min.js')}}"></script>
-    <script src="{{asset('public/backend/vendor/select2/select2.min.js')}}">
-    </script>
+<!-- template --> 
+<script src="{{asset('public/backend/dist/js/bizadmin.js')}}"></script> 
 
-    <!-- Main JS-->
-    <script src="{{asset('public/backend/js/main.js')}}"></script>
-
+<!-- for demo purposes --> 
+<script src="{{asset('public/backend/dist/js/demo.js')}}"></script>
+<!--Start of Tawk.to Script-->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/5b7257d2afc2c34e96e78bfc/default';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
 </body>
 
+<!-- Mirrored from uxliner.com/bizadmin/demo/main/pages-login-2.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 25 Jun 2020 17:58:25 GMT -->
 </html>
-<!-- end document-->
