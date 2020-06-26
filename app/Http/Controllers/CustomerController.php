@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests;
+use Illuminate\Support\Facades\Auth;
 use Session;
+use Socialite;
 use Illuminate\Support\Facades\Redirect;
 use DB;
 use App\Customers;
@@ -39,9 +41,14 @@ class CustomerController extends Controller
     	$result = Customers::where('email_customer', $email)->where('password_customer',$password)->first();
         
     	if($result){
-            Session::put('name_customer',$result->name_customer);
+            if(!empty($result->name_customer))
+                Session::put('name_customer',$result->name_customer);
+            else
+                Session::put('name_customer',$result->email_customer);
+
             Session::put('id_customer',$result->id_customer);
-    		return redirect::to('/');
+            return redirect::to('/');
+            
     	}else{
     		return redirect::to('/login');
     	}
@@ -78,5 +85,70 @@ class CustomerController extends Controller
     }
     public function sellerChannel(){
         return view('pages.trangsanpham');
+    }
+
+    // Login Google Api
+    public function redirect($provider)
+    {
+        return Socialite::driver($provider)->redirect();
+    }
+
+    public function handleProviderCallback()
+    {
+        try {
+            $Customers = Socialite::driver('google')->user();
+        } catch (\Exception $e) {
+            return redirect('/login');
+        }
+
+        // only allow people with @gmail.com to login
+        if(explode("@", $Customers->email)[1] !== 'gmail.com'){
+            Session::put('name_customer',$Customers->name);
+            return redirect()->to('/');
+        }
+
+        // check if they're an existing Customers
+        $existingCustomers = Customers::where('email_customer', $Customers->email)->first();
+        if($existingCustomers){
+            // log them in
+            Session::put('name_customer',$Customers->name);
+
+        } else {
+            // create a new Customers
+            $newCustomers                            = new Customers;
+            $newCustomers->name_customer             = $Customers->name;
+            $newCustomers->email_customer            = $Customers->email;
+            $newCustomers->address_customer          = $Customers->id;
+            $newCustomers->img_customer              = $Customers->avatar;
+            $newCustomers->password_customer         = '';
+            $newCustomers->save();
+        }
+
+        Session::put('name_customer',$Customers->name);
+        return redirect()->to('/');
+    }
+
+
+    // Login Facebook Api
+    // public function callback($provider)
+    // {
+    //     $getInfo = Socialite::driver($provider)->user(); 
+    //     $Customers = $this->createUser($getInfo); 
+    //     Session::put('name_customer',$Customers->name);
+    //     return redirect()->to('/');
+    // }
+
+    // function createUser($getInfo){
+    //     $customer = Customers::where('email_customer', $getInfo->getEmail())->first();
+    //     if (!$customer) {
+    //         $customer = Customers::create([
+    //             'name_customer' => $getInfo->getName(),
+    //             'email_customer' => $getInfo->getEmail(),
+    //             'img_customer' => $getInfo->getAvatar(),
+    //             'address_customer' => $getInfo->getId(),
+
+    //         ]);
+    //     }
+    //     return $customer;
     }
 }

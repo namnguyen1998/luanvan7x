@@ -29,3 +29,7 @@ Route::get('/logout','CustomerController@logout');
 
 
 Route::get('/banhang','CustomerController@sellerChannel');
+
+// Api login Google
+Route::get('/redirect/{provider}', 'CustomerController@redirect')->name('redirect');
+Route::get('/callback', 'CustomerController@handleProviderCallback');

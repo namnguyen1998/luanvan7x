@@ -42,7 +42,7 @@
                 <div class="login-wrap">
                     <div class="login-content">
                         <div class="login-logo">
-                            <a href="#">
+                            <a href="{{URL::to('/')}}">
                                 <img src="{{asset('public/frontend/img/logo.png')}}" alt="CoolAdmin">
                             </a>
                         </div>
@@ -71,12 +71,17 @@
                                     </label>
                                 </div>
                                 <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">sign in</button>
-                                <!-- <div class="social-login-content">
+                                <div class="social-login-content">
                                     <div class="social-button">
-                                        <button class="au-btn au-btn--block au-btn--blue m-b-20">sign in with facebook</button>
-                                        <button class="au-btn au-btn--block au-btn--blue2">sign in with twitter</button>
+                                        <button class="au-btn au-btn--block au-btn--blue m-b-20">
+                                            <a href="#" style="color:#FFFFFF;">sign in with facebook</a> 
+                                        </button>
+                                        
+                                        <button class="au-btn au-btn--block au-btn--blue2">
+                                            <a href="{{ Route('redirect', ['google']) }}" style="color:#FFFFFF;"> sign in with google</a>
+                                        </button>
                                     </div>
-                                </div> -->
+                                </div>
                             </form>
                             <div class="register-link">
                                 <p>
