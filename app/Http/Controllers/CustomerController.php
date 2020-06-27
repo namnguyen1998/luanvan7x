@@ -33,14 +33,16 @@ class CustomerController extends Controller
     	
 
         $email = $request->email;
-    	// $password =md5(md5($request->password.'_%1A'));
-        $password =md5($request->password);
+    	$password =md5($request->password);
+
     	// $result = DB::table('Customers')
     	// ->where('email_customer', $email)
     	// ->where('password_customer', $password)->first();
     	$result = Customers::where('email_customer', $email)->where('password_customer',$password)->first();
         
     	if($result){
+            Session::put('name_customer',$result->name_customer);
+            Session::put('email_customer',$result->email_customer);
 
             if(!empty($result->name_customer))
                 Session::put('name_customer',$result->name_customer);
@@ -82,7 +84,7 @@ class CustomerController extends Controller
     		]);
     	$customer = new Customers();
     	$customer->email_customer = $request->email;
-    	$customer->password_customer = md5(md5($request->password.'_%1A'));	
+    	$customer->password_customer = md5($request->password);	
     	$customer->save();
 
     	return redirect('/')->with('success','Tạo tài khoản thành công');
@@ -169,4 +171,5 @@ class CustomerController extends Controller
     //     }
     //     return $customer;
     // }
+
 }

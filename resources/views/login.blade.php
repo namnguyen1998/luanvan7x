@@ -44,6 +44,11 @@
   <div class="login-logo">
     <a href="{{URL::to('/')}}"><img src="{{asset('public/frontend/img/logo.png')}}" alt=""></a>
   </div>
+  @if(Session::has('success'))
+      <div class="alert alert-success" role="alert">
+          {{Session::get('success')}}
+      </div>
+  @endif
     <form action="{{URL::to('/postLogin')}}" method="post" enctype="multipart/form-data">
          @csrf
       <div class="form-group has-feedback">
