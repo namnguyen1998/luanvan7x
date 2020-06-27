@@ -43,6 +43,11 @@
   <div class="login-logo">
     <a href="{{URL::to('/')}}"><img src="{{asset('public/frontend/img/logo.png')}}" alt=""></a>
   </div>
+  @if(Session::has('success'))
+      <div class="alert alert-success" role="alert">
+          {{Session::get('success')}}
+      </div>
+  @endif
     <form action="{{URL::to('/postLogin')}}" method="post" enctype="multipart/form-data">
          @csrf
       <div class="form-group has-feedback">
@@ -69,7 +74,7 @@
     <div class="social-auth-links text-center">
       <p>- OR -</p>
       <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign in using
-      Facebook</a> <a href="#" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Sign in using
+      Facebook</a> <a href="{{ Route('redirect', ['google']) }}" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Sign in using
       Google+</a> </div>
     <!-- /.social-auth-links -->
     

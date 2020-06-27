@@ -10,7 +10,7 @@
       </div>
       <!-- sidebar menu -->
       <ul class="sidebar-menu" data-widget="tree">
-        <li class="header">PERSONAL</li>
+        <li class="header">Doanh Thu</li>
         <li class="treeview"> 
           <a href="#"> <i class="icon-home"></i> 
             <span>Thống kê</span> 
