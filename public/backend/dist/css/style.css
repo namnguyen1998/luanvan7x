@@ -1824,6 +1824,7 @@ input[type="file"] {
 .form-group.has-success .form-control, .form-group.has-success .input-group-addon {
 	border-color: #00a65a;
 	box-shadow: none
+	
 }
 .form-group.has-success .help-block {
 	color: #00a65a

@@ -31,3 +31,4 @@ Route::get('/logout','CustomerController@logout');
 Route::get('/banhang','CustomerController@sellerChannel');
 Route::get('/profile','CustomerController@profile');
 Route::post('/capnhap','CustomerController@capnhap');
+Route::get('/them-san-pham','CustomerController@getAddProduct');

@@ -40,6 +40,7 @@ class CustomerController extends Controller
         
     	if($result){
             Session::put('name_customer',$result->name_customer);
+            Session::put('email_customer',$result->email_customer);
             Session::put('id_customer',$result->id_customer);
     		return redirect::to('/');
     	}else{
@@ -91,5 +92,9 @@ class CustomerController extends Controller
 
     public function profile(){
         return view('users.profile');
+    }
+
+    public function getAddProduct(){
+        return view('users.banhang_quanlysanpham');
     }
 }

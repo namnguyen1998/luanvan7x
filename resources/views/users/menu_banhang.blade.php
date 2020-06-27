@@ -5,13 +5,13 @@
       <div class="user-panel">
         <div class="image text-center"><img src="{{asset('public/backend/dist/img/img1.jpg')}}" class="img-circle" alt="User Image"> </div>
         <div class="info">
-          <p>Alexander Pierce</p>
+          <p>{{Session::get('name_customer')}}</p>
           <a href="#"><i class="fa fa-envelope"></i></a> <a href="#"><i class="fa fa-gear"></i></a> <a href="#"><i class="fa fa-power-off"></i></a> </div>
       </div>
       <!-- sidebar menu -->
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">PERSONAL</li>
-        <li class="active treeview"> 
+        <li class="treeview"> 
           <a href="#"> <i class="icon-home"></i> 
             <span>Thống kê</span> 
             <span class="pull-right-container"> 
@@ -32,7 +32,7 @@
           </a>
           <ul class="treeview-menu">
             <li><a href="apps-calendar.html"><i class="fa fa-angle-right"></i>Tất cả sản phẩm</a></li>
-            <li><a href="apps-support-ticket.html"><i class="fa fa-angle-right"></i>Thêm sản phẩm</a></li>
+            <li><a href="{{URL::to('/them-san-pham')}}"><i class="fa fa-angle-right"></i>Thêm sản phẩm</a></li>
             <li><a href="apps-contacts.html"><i class="fa fa-angle-right"></i>Sản phẩm chờ duyệt</a></li>
           </ul>
         </li>

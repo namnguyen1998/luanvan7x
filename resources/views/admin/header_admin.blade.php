@@ -5,7 +5,7 @@
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>Biz Admin - Multipurpose bootstrap 4 admin templates</title>
+<title>OGANI | Kênh bán hàng</title>
 <!-- Tell the browser to be responsive to screen width -->
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -137,7 +137,7 @@
             <ul class="dropdown-menu">
               <li class="user-header">
                 <div class="pull-left user-img"><img src="{{asset('public/backend/dist/img/img1.jpg')}}" class="img-responsive img-circle" alt="User"></div>
-                <p class="text-left">Alexander Pierce <small>alexander@gmail.com</small> </p>
+                <p class="text-left">{{Session::get('name_customer')}}<small>{{Session::get('email_customer')}}</small> </p>
               </li>
               <li><a href="#"><i class="icon-profile-male"></i> My Profile</a></li>
               <li><a href="#"><i class="icon-wallet"></i> My Balance</a></li>
@@ -145,7 +145,7 @@
               <li role="separator" class="divider"></li>
               <li><a href="#"><i class="icon-gears"></i> Account Setting</a></li>
               <li role="separator" class="divider"></li>
-              <li><a href="#"><i class="fa fa-power-off"></i> Logout</a></li>
+              <li><a href="{{URL::to('/logout')}}"><i class="fa fa-power-off"></i> Logout</a></li>
             </ul>
           </li>
           <!-- Control Sidebar Toggle Button -->
