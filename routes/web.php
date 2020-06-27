@@ -33,3 +33,9 @@ Route::get('/banhang','CustomerController@sellerChannel');
 // Api login Google
 Route::get('/redirect/{provider}', 'CustomerController@redirect')->name('redirect');
 Route::get('/callback', 'CustomerController@handleProviderCallback');
+
+
+Route::get('/profile','CustomerController@profile');
+Route::post('/capnhap','CustomerController@capnhap');
+Route::get('/them-san-pham','CustomerController@getAddProduct');
+

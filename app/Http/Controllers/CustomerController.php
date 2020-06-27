@@ -33,14 +33,15 @@ class CustomerController extends Controller
     	
 
         $email = $request->email;
-    	$password =md5($request->password);
-
+    	// $password =md5(md5($request->password.'_%1A'));
+        $password =md5($request->password);
     	// $result = DB::table('Customers')
     	// ->where('email_customer', $email)
     	// ->where('password_customer', $password)->first();
     	$result = Customers::where('email_customer', $email)->where('password_customer',$password)->first();
         
     	if($result){
+
             if(!empty($result->name_customer))
                 Session::put('name_customer',$result->name_customer);
             else
@@ -52,6 +53,15 @@ class CustomerController extends Controller
     	}else{
     		return redirect::to('/login');
     	}
+    }
+
+    public function capnhap(){
+        $customer = Customers::find(Session::get('id_customer'));//print_r($customer);
+        $customer->name_customer = $_POST['name_customer'];
+        $customer->save();
+            Session::put('name_customer',$customer->name_customer);
+        return Redirect::to('/');
+
     }
     public function getRegisterForm(){
     	return 	view('register');
@@ -72,7 +82,7 @@ class CustomerController extends Controller
     		]);
     	$customer = new Customers();
     	$customer->email_customer = $request->email;
-    	$customer->password_customer = md5($request->password);	
+    	$customer->password_customer = md5(md5($request->password.'_%1A'));	
     	$customer->save();
 
     	return redirect('/')->with('success','Tạo tài khoản thành công');
@@ -84,7 +94,15 @@ class CustomerController extends Controller
         return Redirect::to('/');
     }
     public function sellerChannel(){
-        return view('pages.trangsanpham');
+        return view('users.banhang');
+    }
+
+    public function profile(){
+        return view('users.profile');
+    }
+
+    public function getAddProduct(){
+        return view('users.banhang_quanlysanpham');
     }
 
     // Login Google Api
@@ -150,5 +168,5 @@ class CustomerController extends Controller
     //         ]);
     //     }
     //     return $customer;
-    }
+    // }
 }

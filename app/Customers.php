@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Customers extends Model
 {
     protected $table = "Customers";
+     protected $primaryKey = 'id_customer';
 
 
     public function Oders(){
