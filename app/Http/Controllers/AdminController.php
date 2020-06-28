@@ -41,7 +41,8 @@ class AdminController extends Controller
 
     public function setAddProduct(){
         $listCategory = Category::all();
-    	return view('admin.admin_addproduct')->with('admin.admin_addproduct',$listCategory);
+        //var_dump($listCategory);
+    	return view('admin.admin_addproduct')->with('listCategory',$listCategory);
 
     }
 

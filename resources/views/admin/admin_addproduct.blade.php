@@ -15,7 +15,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <select class="form-control">
-                        @foreach ($listCategory as $category)
+                        @foreach($listCategory as $category)
                         <option value="">{{$category->name_category}}</option>
                         @endforeach
                     </select>
