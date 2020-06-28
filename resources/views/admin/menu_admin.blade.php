@@ -3,9 +3,9 @@
     <div class="sidebar"> 
       <!-- Sidebar user panel -->
       <div class="user-panel">
-        <div class="image text-center"><img src="dist/img/img1.jpg" class="img-circle" alt="User Image"> </div>
+        <div class="image text-center"><img src="{{asset('public/backend/dist/img/img1.jpg')}}" class="img-circle" alt="User Image"> </div>
         <div class="info">
-          <p>Alexander Pierce</p>
+          <p>{{Session::get('username_user')}}</p>
           <a href="#"><i class="fa fa-envelope"></i></a> <a href="#"><i class="fa fa-gear"></i></a> <a href="#"><i class="fa fa-power-off"></i></a> </div>
       </div>
       
@@ -21,13 +21,11 @@
             <li><a href="index-ecommerce.html"><i class="fa fa-angle-right"></i> Ecommerce</a></li>
           </ul>
         </li>
-        <li class="treeview"> <a href="#"> <i class="icon-grid"></i> <span>Apps</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span> </a>
+        <li class="treeview"> <a href="#"> <i class="icon-grid"></i> <span>Quản lý sản phẩm</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span> </a>
           <ul class="treeview-menu">
-            <li><a href="apps-calendar.html"><i class="fa fa-angle-right"></i> Calendar</a></li>
-            <li><a href="apps-support-ticket.html"><i class="fa fa-angle-right"></i> Support Ticket</a></li>
-            <li><a href="apps-contacts.html"><i class="fa fa-angle-right"></i> Contact / Employee</a></li>
-            <li><a href="apps-contact-grid.html"><i class="fa fa-angle-right"></i> Contact  Grid</a></li>
-            <li><a href="apps-contact-details.html"><i class="fa fa-angle-right"></i> Contact Detail</a></li>
+          <li><a href="apps-calendar.html"><i class="fa fa-angle-right"></i>Tất cả sản phẩm</a></li>
+            <li><a href="{{URL::to('/admin-them-san-pham')}}"><i class="fa fa-angle-right"></i>Thêm sản phẩm</a></li>
+            <li><a href="apps-contacts.html"><i class="fa fa-angle-right"></i>Sản phẩm chờ duyệt</a></li>
           </ul>
         </li>
         <li class="treeview"> <a href="#"> <i class="ti-email"></i> <span>Inbox</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span> </a>

@@ -1,13 +1,13 @@
 @include('admin.header_admin')
 <!-- Left side column. contains the logo and sidebar -->
- @include('admin.menu_banhang')
+ @include('admin.menu_admin')
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper"> 
     <!-- Content Header (Page header) -->
     <div class="content-header sty-one">
       <h1>Thống kê</h1>
       <ol class="breadcrumb">
-        <li><a href="#">Home</a></li>
+        <li><a href="#">Admin</a></li>
         <li><i class="fa fa-angle-right"></i>Thống kê</li>
       </ol>
     </div>

@@ -38,3 +38,8 @@ Route::get('/profile','CustomerController@profile');
 Route::post('/capnhap','CustomerController@capnhap');
 Route::get('/them-san-pham','CustomerController@getAddProduct');
 
+// Admin
+Route::get('/admin', 'AdminController@getLoginAdmin');
+// Route::post('/postLogin','AdminController@postLoginAdmin');
+Route::post('/admin-dashboard','AdminController@postLoginAdmin');
+Route::get('/admin-them-san-pham','AdminController@setAddProduct');
