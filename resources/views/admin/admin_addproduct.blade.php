@@ -8,15 +8,17 @@
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper"> 
         <!-- Content Header (Page header) -->
-        <form action="#" class="form-horizontal form-bordered">
+        <form action="{{URL::to('/admin-them')}}" class="form-horizontal form-bordered" >
+        <input type="hidden" name="_token" value="{{csrf_token()}}" >
         <!-- Main content -->
         <div class="content">
             <h4 class="text-black">Chọn Danh Mục</h4>
             <div class="row">
                 <div class="col-lg-12">
-                    <select class="form-control">
+                    <select name="_id_category" id="_id_category" class="form-control">
+                        <option value="-1">Chọn</option>
                         @foreach($listCategory as $category)
-                        <option value="">{{$category->name_category}}</option>
+                            <option value="{{$category->id_category}}">{{$category->name_category}}</option>
                         @endforeach
                     </select>
                 </div>
@@ -26,12 +28,8 @@
             <h4 class="text-black">Chọn Loại Danh Mục</h4>
             <div class="row">
                 <div class="col-lg-12">
-                    <select class="form-control">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
+                    <select name="_id_sub_category" id="_id_sub_category" class="form-control">
+
                     </select>
                 </div>
             </div>
@@ -40,12 +38,11 @@
             <h4 class="text-black">Chọn Thương hiệu</h4>
             <div class="row">
                 <div class="col-lg-12">
-                    <select class="form-control">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
+                    <select name="_id_brand" id="_id_brand" class="form-control">
+                    <option value="-1">Chọn</option>
+                        @foreach($listBrand as $brand)
+                            <option value="{{$brand->id_brand}}">{{$brand->name_brand}}</option>
+                        @endforeach
                     </select>
                 </div>
             </div>
@@ -62,20 +59,27 @@
                             <div class="form-group row">
                                 <label class="control-label text-right col-md-3">Tên sản phẩm *</label>
                                 <div class="col-md-9">
-                                <input placeholder="Tên sản phẩm" class="form-control" type="text">
+                                <input name="nameProduct" placeholder="Tên sản phẩm" class="form-control" type="text">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="control-label text-right col-md-3">Nơi sản xuất *</label>
                                 <div class="col-md-9">
-                                <input placeholder="Nơi sản xuất" class="form-control" type="text">
+                                <input name="madebay" placeholder="Nơi sản xuất" class="form-control" type="text">
                                 </div>
                             </div>
                             
                             <div class="form-group row">
+                                <label class="control-label text-right col-md-3">Giá *</label>
+                                <div class="col-md-9">
+                                <input name="price" placeholder="Giá sản phẩm" class="form-control" type="text">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
                                 <label class="control-label text-right col-md-3">Ghi chú</label>
                                 <div class="col-md-9">
-                                <input class="form-control" type="text">
+                                <input name="note" class="form-control" type="text">
                                 </div>
                             </div>
 
@@ -83,7 +87,7 @@
                             <div class="col-lg-12">
                                 <fieldset class="form-group">
                                 <label>Mô tả *</label>
-                                <textarea class="form-control" id="descTextarea" placeholder="Textarea with description" ></textarea>
+                                <textarea name="description" class="form-control" id="descTextarea" placeholder="Textarea with description" ></textarea>
                                 </fieldset>
                             </div>
                         </div>
@@ -101,7 +105,7 @@
                     <div class="card-body">
                     <h4 class="card-title">Hình 1</h4>
                     <label for="input-file-now-custom-1">Chọn hình</label>
-                    <input type="file" id="input-file-now-custom-1" class="dropify" data-default-file="{{asset('public/backend/dist/img/img13.jpg')}}" />
+                    <input  type="file" id="input-file-now-custom-1" class="dropify" data-default-file="{{asset('public/backend/dist/img/img13.jpg')}}" name="img_product" />
                     </div>
                 </div>
             </div>
@@ -141,7 +145,7 @@
             <div class="card m-t-3">
             <div style="text-align: center;" class="card-body">
               <div class="click2edit m-b-3"></div>
-              <button id="save" class="btn btn-success" onclick="save()" type="button">Thêm</button>
+              <button id="save" class="btn btn-success" onclick="save()" type="submit">Thêm</button>
               <button id="cancel" class="btn btn-info"  type="button">Huỷ</button>
             </div>
           </div>
@@ -215,5 +219,27 @@
         });
     </script>
 
+    <!-- Get Data Sub Category -->
+    <script>
+        $(document).ready(function(){
+            $('#_id_category').change(function(){
+                val = document.getElementById('_id_category').value
+                // console.log(val)
+                $.ajax({
+                    url: '{{URL::to('/admin-danh-sach-sub')}}',
+                    method: 'get',
+                    data: 'val_id_category=' + val,
+                }).done(function(data_sub_category){
+                    data_sub_category = JSON.parse(data_sub_category)
+                    // console.log(data_sub_category)
+                    $('#_id_sub_category').empty();
+                    $.each(data_sub_category, function(key, value){
+                        $('#_id_sub_category').append("<option value='" + value.id_sub + "'>" + value.name_sub + "</option>")
+                    })
+                })
+            })
+        })
+
+    </script>
     </body>
 </html>
