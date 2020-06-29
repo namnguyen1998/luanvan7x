@@ -32,7 +32,10 @@ Route::get('/banhang','CustomerController@sellerChannel');
 
 Route::get('/profile','CustomerController@profile');
 Route::post('/capnhap','CustomerController@capnhap');
-Route::get('/them-san-pham','CustomerController@getAddProduct');
+Route::get('/them-san-pham','ProductController@getAddProduct');
+Route::get('/admin-danh-sach-sub','ProductController@getSubCategory');
+Route::post('/admin-them','ProductController@saveProduct');
+
 
 // Api login Google
 Route::get('/redirect/{provider}', 'CustomerController@redirect')->name('redirect');

@@ -10,11 +10,21 @@ use Socialite;
 use Illuminate\Support\Facades\Redirect;
 use DB;
 use App\Customers;
+use App\Category;
+use App\Brands;
 use Hash;
 session_start();
 
 class CustomerController extends Controller
 {
+    public function AuthLogin(){
+        $customer_id = Session::get('id_customer');
+        if($customer_id){
+            return Redirect::to('banhang');
+        }else{
+            return Redirect::to('/')->send();
+        }
+    }
     public function getLoginForm(){
     	return view('login');
     }
@@ -96,18 +106,6 @@ class CustomerController extends Controller
 
         return Redirect::to('/');
     }
-    public function sellerChannel(){
-        return view('users.banhang');
-    }
-
-    public function profile(){
-        return view('users.profile');
-    }
-
-    public function getAddProduct(){
-        return view('users.banhang_quanlysanpham');
-    }
-
     // Login Google Api
     public function redirect($provider)
     {
@@ -171,5 +169,17 @@ class CustomerController extends Controller
     //         ]);
     //     }
     //     return $customer;
+    //    }
+
+    //Bán hàng
+    public function sellerChannel(){
+        $this->AuthLogin();
+        return view('users.banhang_thongke');
+    }
+
+    public function profile(){
+        $this->AuthLogin();
+        return view('users.profile');
+    }   
     
 }
