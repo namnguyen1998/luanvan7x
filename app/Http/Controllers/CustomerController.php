@@ -123,6 +123,7 @@ class CustomerController extends Controller
         // only allow people with @gmail.com to login
         if(explode("@", $Customers->email)[1] !== 'gmail.com'){
             Session::put('name_customer',$Customers->name);
+            // dd(Session::get('name_customer'))
             return redirect()->to('/');
         }
 
@@ -144,6 +145,8 @@ class CustomerController extends Controller
         }
 
         Session::put('name_customer',$Customers->name);
+        Session::put('id_customer',$Customers->id);
+         //dd(Session::get('id_customer'));
         return redirect()->to('/');
     }
 
