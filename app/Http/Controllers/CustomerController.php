@@ -10,11 +10,21 @@ use Socialite;
 use Illuminate\Support\Facades\Redirect;
 use DB;
 use App\Customers;
+use App\Category;
+use App\Brands;
 use Hash;
 session_start();
 
 class CustomerController extends Controller
 {
+    public function AuthLogin(){
+        $customer_id = Session::get('id_customer');
+        if($customer_id){
+            return Redirect::to('banhang');
+        }else{
+            return Redirect::to('/')->send();
+        }
+    }
     public function getLoginForm(){
     	return view('login');
     }
@@ -95,18 +105,6 @@ class CustomerController extends Controller
 
         return Redirect::to('/');
     }
-    public function sellerChannel(){
-        return view('users.banhang');
-    }
-
-    public function profile(){
-        return view('users.profile');
-    }
-
-    public function getAddProduct(){
-        return view('users.banhang_quanlysanpham');
-    }
-
     // Login Google Api
     public function redirect($provider)
     {
@@ -124,6 +122,7 @@ class CustomerController extends Controller
         // only allow people with @gmail.com to login
         if(explode("@", $Customers->email)[1] !== 'gmail.com'){
             Session::put('name_customer',$Customers->name);
+            // dd(Session::get('name_customer'))
             return redirect()->to('/');
         }
 
@@ -145,31 +144,21 @@ class CustomerController extends Controller
         }
 
         Session::put('name_customer',$Customers->name);
+        Session::put('id_customer',$Customers->id);
+         //dd(Session::get('id_customer'));
         return redirect()->to('/');
     }
 
 
-    // Login Facebook Api
-    // public function callback($provider)
-    // {
-    //     $getInfo = Socialite::driver($provider)->user(); 
-    //     $Customers = $this->createUser($getInfo); 
-    //     Session::put('name_customer',$Customers->name);
-    //     return redirect()->to('/');
-    // }
+    //Bán hàng
+    public function sellerChannel(){
+        $this->AuthLogin();
+        return view('users.banhang_thongke');
+    }
 
-    // function createUser($getInfo){
-    //     $customer = Customers::where('email_customer', $getInfo->getEmail())->first();
-    //     if (!$customer) {
-    //         $customer = Customers::create([
-    //             'name_customer' => $getInfo->getName(),
-    //             'email_customer' => $getInfo->getEmail(),
-    //             'img_customer' => $getInfo->getAvatar(),
-    //             'address_customer' => $getInfo->getId(),
-
-    //         ]);
-    //     }
-    //     return $customer;
-    // }
+    public function profile(){
+        $this->AuthLogin();
+        return view('users.profile');
+    }   
 
 }

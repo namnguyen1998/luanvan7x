@@ -2,53 +2,37 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Users;
+use App\Http\Requests;
+use Illuminate\Support\Facades\Auth;
+use Session;
+use Socialite;
+use Illuminate\Support\Facades\Redirect;
+use DB;
+use App\Customers;
 use App\Category;
 use App\Brands;
-use DB;
-
-use Session;
-use Illuminate\Support\Facades\Redirect;
+use Hash;
 session_start();
 
-class AdminController extends Controller
+class ProductController extends Controller
 {
-    //
-    public function getLoginAdmin(){
-    	return view('admin.admin_login');
-    }
-
-    public function postLoginAdmin(Request $request){
-        
-
-        $username_user = $request->_username_user;
-    	$password =md5($request->_password_user);
-
-    	$result = Users::where('email_user', $username_user)->where('password_user', $password)->first();
-        
-    	if($result){
-            Session::put('username_user',$result->username_user);
-            Session::put('email_user',$result->email_user);
-
-            Session::put('id_users',$result->id_users);
-            return view('admin.admin_dashboard');
-            
-    	}else{
-    		return redirect::to('/admin');
+	public function AuthLogin(){
+        $customer_id = Session::get('id_customer');
+        if($customer_id){
+            return Redirect::to('banhang');
+        }else{
+            return Redirect::to('/')->send();
         }
     }
-
-    public function setAddProduct(){
+    public function getAddProduct(){
+        $this->AuthLogin();
         $listCategory = Category::all();
         $listBrand = Brands::all();
         //var_dump($listCategory);
-    	return view('admin.admin_addproduct')->with('listCategory',$listCategory)->with('listBrand',$listBrand);
-
+        return view('users.banhang_quanlysanpham')->with('listCategory',$listCategory)->with('listBrand',$listBrand);
     }
-
-    public function getSubCategory(){
+     public function getSubCategory(){
         if(isset($_GET['val_id_category'])){
             if($_GET['val_id_category'] == -1)
                 echo ' ';
@@ -97,25 +81,29 @@ class AdminController extends Controller
     public function saveProduct(Request $req){
         
         $get_image = $req->file('img_product');
-        // NOTE: em dùng "$get_image = $req->file('img_product');" thì nó trả về Null, fix dùm em cái này với :3
-        
         $dataProduct = array();
         $dataProduct['name_product'] = $req->nameProduct;
-        $dataProduct['madeby'] = $req->madebay;
+        $dataProduct['madeby'] = $req->madeby;
         $dataProduct['category_id'] = $req->_id_category;
         $dataProduct['sub_category_id'] = $req->_id_sub_category;
         $dataProduct['brand_id'] = $req->_id_brand;
-        $dataProduct['users_id'] = Session::get('id_users');
-        $dataProduct['img_product'] = $this->setNameImage($req->img_product);
-        $dataProduct['img1_product'] = $this->setNameImage($get_image);
+        $dataProduct['customer_id'] = Session::get('id_customer');
+        
+        $dataProduct['img1_product'] = $this->setNameImage($req->img1_product);
         $dataProduct['img2_product'] = $this->setNameImage($req->img2_product);
         $dataProduct['img3_product'] = $this->setNameImage($req->img3_product);
         $dataProduct['note_product'] = $req->note;
         $dataProduct['description_product'] = $req->description;
         $dataProduct['price_product'] = $req->price;
 
-        dd($dataProduct);
+        
+        DB::table('products')->insert($dataProduct);
+
+        return Redirect::to('/banhang');
+
+        // dd($dataProduct);
+
+        
         
     }
-    
 }

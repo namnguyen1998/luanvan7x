@@ -16,7 +16,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <select name="_id_category" id="_id_category" class="form-control">
-                        <option value="-1">Chọn</option>
+                        <option value="0">Chọn</option>
                         @foreach($listCategory as $category)
                             <option value="{{$category->id_category}}">{{$category->name_category}}</option>
                         @endforeach
@@ -230,8 +230,9 @@
                     method: 'get',
                     data: 'val_id_category=' + val,
                 }).done(function(data_sub_category){
+                    console.log(data_sub_category)
                     data_sub_category = JSON.parse(data_sub_category)
-                    // console.log(data_sub_category)
+                    console.log(data_sub_category)
                     $('#_id_sub_category').empty();
                     $.each(data_sub_category, function(key, value){
                         $('#_id_sub_category').append("<option value='" + value.id_sub + "'>" + value.name_sub + "</option>")
