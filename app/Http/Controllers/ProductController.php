@@ -29,6 +29,8 @@ class ProductController extends Controller
         $this->AuthLogin();
         $listCategory = Category::all();
         $listBrand = Brands::all();
+        $customer = Customers::all()->first();
+        Session::put('customer_id_db', $customer->id_customer);
         //var_dump($listCategory);
         return view('users.banhang_quanlysanpham')->with('listCategory',$listCategory)->with('listBrand',$listBrand);
     }
@@ -84,14 +86,36 @@ class ProductController extends Controller
         $dataProduct = array();
         $dataProduct['name_product'] = $req->nameProduct;
         $dataProduct['madeby'] = $req->madeby;
-        $dataProduct['category_id'] = $req->_id_category;
         $dataProduct['sub_category_id'] = $req->_id_sub_category;
         $dataProduct['brand_id'] = $req->_id_brand;
-        $dataProduct['customer_id'] = Session::get('id_customer');
+        $dataProduct['customer_id'] = Session::get('customer_id_db');
+         $getimage = '';
+                if($req->hasFile('img_product'))
+                {
+                    //Hàm kiểm tra dữ liệu
+                    $this->validate($req, 
+                        [
+                            //Kiểm tra đúng file đuôi .jpg,.jpeg,.png.gif và dung lượng không quá 2M
+                            'image' => 'mimes:jpg,jpeg,png,gif|max:2048',
+                        ],          
+                        [
+                            //Tùy chỉnh hiển thị thông báo không thõa điều kiện
+                            'image.mimes' => 'Chỉ chấp nhận với đuôi .jpg .jpeg .png .gif',
+                            'image.max' => 'Hình ảnh giới hạn dung lượng không quá 2M',
+                        ]
+                    );
+                    
+                  
+                    $image = $req->file('img_product');
+                    $getimage = $image->getClientOriginalName();//echo $getimage;
+                    $destinationPath = 'public/petmart/images/';//var_dump( $destinationPath);
+                    $image->move($destinationPath, $getimage);
+                }    
+        $dataProduct['img_product'] = $getimage;
         
-        $dataProduct['img1_product'] = $this->setNameImage($req->img1_product);
-        $dataProduct['img2_product'] = $this->setNameImage($req->img2_product);
-        $dataProduct['img3_product'] = $this->setNameImage($req->img3_product);
+        // $dataProduct['img1_product'] = $this->setNameImage($req->img1_product);
+        // $dataProduct['img2_product'] = $this->setNameImage($req->img2_product);
+        // $dataProduct['img3_product'] = $this->setNameImage($req->img3_product);
         $dataProduct['note_product'] = $req->note;
         $dataProduct['description_product'] = $req->description;
         $dataProduct['price_product'] = $req->price;
