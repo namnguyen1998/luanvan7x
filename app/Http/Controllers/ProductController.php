@@ -29,6 +29,8 @@ class ProductController extends Controller
         $this->AuthLogin();
         $listCategory = Category::all();
         $listBrand = Brands::all();
+        $customer = Customers::all()->first();
+        Session::put('customer_id_db', $customer->id_customer);
         //var_dump($listCategory);
         return view('users.banhang_quanlysanpham')->with('listCategory',$listCategory)->with('listBrand',$listBrand);
     }
@@ -86,7 +88,7 @@ class ProductController extends Controller
         $dataProduct['madeby'] = $req->madeby;
         $dataProduct['sub_category_id'] = $req->_id_sub_category;
         $dataProduct['brand_id'] = $req->_id_brand;
-        $dataProduct['customer_id'] = Session::get('id_customer');
+        $dataProduct['customer_id'] = Session::get('customer_id_db');
          $getimage = '';
                 if($req->hasFile('img_product'))
                 {
