@@ -1,12 +1,14 @@
-@include('admin.header_seller')
-    <!-- Left side column. contains the logo and sidebar -->
 
-@include('users.menu_banhang')
+@include('admin.header_admin')
+    <!-- Left side column. contains the logo and sidebar -->
     <!-- dropify in ADMIN  -->
     <link rel="stylesheet" href="{{asset('public/backend/dist/plugins/dropify/dropify.min.css')}}">
+ 
+@include('admin.menu_admin')
+    <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper"> 
         <!-- Content Header (Page header) -->
-        <form action="{{URL::to('/admin-them')}}" class="form-horizontal form-bordered" enctype="multipart/form-data" method="POST" >
+        <form action="{{URL::to('/admin-them')}}" class="form-horizontal form-bordered" >
         <input type="hidden" name="_token" value="{{csrf_token()}}" >
         <!-- Main content -->
         <div class="content">
@@ -63,14 +65,14 @@
                             <div class="form-group row">
                                 <label class="control-label text-right col-md-3">Nơi sản xuất *</label>
                                 <div class="col-md-9">
-                                <input name="madeby" placeholder="Nơi sản xuất" class="form-control" type="text">
+                                <input name="madebay" placeholder="Nơi sản xuất" class="form-control" type="text">
                                 </div>
                             </div>
                             
                             <div class="form-group row">
                                 <label class="control-label text-right col-md-3">Giá *</label>
                                 <div class="col-md-9">
-                                <input name="price" id="_price" placeholder="Giá sản phẩm" class="form-control" type="text">
+                                <input name="price" placeholder="Giá sản phẩm" class="form-control" type="text">
                                 </div>
                             </div>
 
@@ -90,6 +92,8 @@
                             </div>
                         </div>
 
+                        
+
                     </div>
                 </div>
                 </div>
@@ -101,7 +105,7 @@
                     <div class="card-body">
                     <h4 class="card-title">Hình 1</h4>
                     <label for="input-file-now-custom-1">Chọn hình</label>
-                    <input  type="file" id="input-file-now-custom-1" class="dropify" name="img_product" />
+                    <input  type="file" id="input-file-now-custom-1" class="dropify" data-default-file="{{asset('public/backend/dist/img/img13.jpg')}}" name="img_product" />
                     </div>
                 </div>
             </div>
@@ -112,7 +116,7 @@
                     <div class="card-body">
                     <h4 class="card-title">Hình 2</h4>
                     <label for="input-file-now-custom-1">Chọn hình</label>
-                    <input type="file" id="input-file-now-custom-1" class="dropify" name="img1_product" />
+                    <input type="file" id="input-file-now-custom-1" class="dropify" />
                     </div>
                 </div>
             </div>
@@ -123,7 +127,7 @@
                     <div class="card-body">
                     <h4 class="card-title">Hình 3</h4>
                     <label for="input-file-now-custom-1">Chọn hình</label>
-                    <input type="file" id="input-file-now-custom-1" class="dropify" name="img2_product" />
+                    <input type="file" id="input-file-now-custom-1" class="dropify" />
                     </div>
                 </div>
             </div>
@@ -134,23 +138,23 @@
                     <div class="card-body">
                     <h4 class="card-title">Hình 4</h4>
                     <label for="input-file-now-custom-1">Chọn hình</label>
-                    <input type="file" id="input-file-now-custom-1" class="dropify" name="img3_product"/>
+                    <input type="file" id="input-file-now-custom-1" class="dropify" />
                     </div>
                 </div>
             </div>
             <div class="card m-t-3">
             <div style="text-align: center;" class="card-body">
-            <div class="click2edit m-b-3"></div>
-            <button id="save" class="btn btn-success" onclick="save()" type="submit">Thêm</button>
-            <button id="cancel" class="btn btn-info"  type="button">Huỷ</button>
+              <div class="click2edit m-b-3"></div>
+              <button id="save" class="btn btn-success" onclick="save()" type="submit">Thêm</button>
+              <button id="cancel" class="btn btn-info"  type="button">Huỷ</button>
             </div>
-        </div>
+          </div>
         </div>
         </form>
         <!-- /.content --> 
     </div>
-
-    <!-- CKeditor  -->
+    
+    <!-- jQuery 3 --> 
     <script src="{{asset('public/backend/dist/js/jquery.min.js')}}"></script>  
     <script src="{{asset('public/backend/dist/bootstrap/js/bootstrap.min.js')}}"></script> 
 
@@ -237,14 +241,6 @@
             })
         })
 
-        // $(document).ready(function(){
-        //     $('#_price').keyup(function(){
-        //         val = document.getElementById('_price').value
-        //         val = parseInt(val)
-        //         convert = new Intl.NumberFormat('de-DE').format(val)
-        //         console.log(convert)
-        //         document.getElementById("_price").value = convert;
-        //     })
-            
-        // })
     </script>
+    </body>
+</html>

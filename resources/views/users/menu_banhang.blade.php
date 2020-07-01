@@ -12,7 +12,7 @@
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">Doanh Thu</li>
         <li class="treeview"> 
-          <a href="#"> <i class="icon-home"></i> 
+          <a href="{{URL::to('/banhang')}}"> <i class="icon-home"></i> 
             <span>Thống kê</span> 
             <span class="pull-right-container"> 
               <i class="fa fa-angle-left pull-right"></i> 

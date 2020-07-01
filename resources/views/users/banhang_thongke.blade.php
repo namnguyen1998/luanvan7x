@@ -1,18 +1,9 @@
-@include('admin.header_admin')
-<!-- Left side column. contains the logo and sidebar -->
- @include('admin.menu_admin')
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper"> 
-    <!-- Content Header (Page header) -->
-    <div class="content-header sty-one">
+@extends('users.banhang')
+@section('content')
+<div class="content-header sty-one">
       <h1>Thống kê</h1>
-      <ol class="breadcrumb">
-        <li><a href="#">Admin</a></li>
-        <li><i class="fa fa-angle-right"></i>Thống kê</li>
-      </ol>
-    </div>
-    <!-- Main content -->
-    <div class="content">
+</div>
+<div class="content">
       <div class="row">
         <div class="col-lg-3 col-sm-6 col-xs-12 m-b-3">
           <div class="card">
@@ -56,6 +47,7 @@
         </div>
       </div>
       <!-- /.row -->
+      
       <div class="row">
         <div class="col-lg-6">
           <div class="card m-b-3">
@@ -147,10 +139,5 @@
           </div>
         </div>
       </div>
-      <!-- /.row -->
-      <!-- /.row --> 
     </div>
-    <!-- /.content --> 
-  </div>
-  <!-- /.content-wrapper -->
-  @include('admin.footer_admin')
+@endsection

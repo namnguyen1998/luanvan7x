@@ -42,9 +42,9 @@
 </script>
 
 <!-- for demo purposes --> 
-<script src="{{asset('dist/js/demo.js')}}"></script>
+<script src="{{asset('public/backend/dist/js/demo.js')}}"></script>
 <!--Start of Tawk.to Script-->
-<script type="text/javascript">
+<!-- <script type="text/javascript">
 var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
 (function(){
 var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
@@ -54,8 +54,29 @@ s1.charset='UTF-8';
 s1.setAttribute('crossorigin','*');
 s0.parentNode.insertBefore(s1,s0);
 })();
-</script>
+</script> -->
 <!--End of Tawk.to Script-->
+<script>
+        $(document).ready(function(){
+            $('#_id_category').change(function(){
+                val = document.getElementById('_id_category').value
+                // console.log(val)
+                $.ajax({
+                    url: '{{URL::to('/admin-danh-sach-sub')}}',
+                    method: 'get',
+                    data: 'val_id_category=' + val,
+                }).done(function(data_sub_category){
+                    data_sub_category = JSON.parse(data_sub_category)
+                    // console.log(data_sub_category)
+                    $('#_id_sub_category').empty();
+                    $.each(data_sub_category, function(key, value){
+                        $('#_id_sub_category').append("<option value='" + value.id_sub + "'>" + value.name_sub + "</option>")
+                    })
+                })
+            })
+        })
+
+    </script>
 </body>
 
 <!-- Mirrored from uxliner.com/bizadmin/demo/main/index-agency.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 25 Jun 2020 17:56:53 GMT -->

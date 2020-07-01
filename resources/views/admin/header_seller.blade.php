@@ -5,7 +5,7 @@
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>OGANI | Admin</title>
+<title>OGANI | Kênh bán hàng</title>
 <!-- Tell the browser to be responsive to screen width -->
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -133,11 +133,11 @@
             </ul>
           </li>
           <!-- User Account  -->
-          <li class="dropdown user user-menu p-ph-res"> <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <img src="{{asset('public/backend/dist/img/img1.jpg')}}" class="user-image" alt="User Image"> <span class="hidden-xs">{{Session::get('username_user')}}</span> </a>
+          <li class="dropdown user user-menu p-ph-res"> <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <img src="{{asset('public/backend/dist/img/img1.jpg')}}" class="user-image" alt="User Image"> <span class="hidden-xs">{{Session::get('name_customer')}}</span> </a>
             <ul class="dropdown-menu">
               <li class="user-header">
                 <div class="pull-left user-img"><img src="{{asset('public/backend/dist/img/img1.jpg')}}" class="img-responsive img-circle" alt="User"></div>
-                <p class="text-left">{{Session::get('username_user')}}<small>{{Session::get('email_user')}}</small> </p>
+                <p class="text-left">{{Session::get('name_customer')}}<small>{{Session::get('email_customer')}}</small> </p>
               </li>
               <li><a href="{{URL::to('/profile')}}"><i class="icon-profile-male"></i> My Profile</a></li>
               <li><a href="#"><i class="icon-wallet"></i> My Balance</a></li>
