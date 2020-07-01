@@ -45,7 +45,7 @@
 <div class="wrapper boxed-wrapper">
   <header class="main-header"> 
     <!-- Logo --> 
-    <a href="index.html" class="logo blue-bg"> 
+    <a href="{{URL::to('/')}}" class="logo blue-bg"> 
     <!-- mini logo for sidebar mini 50x50 pixels --> 
     <span class="logo-mini"><img src="{{asset('public/backend/dist/img/logo-small.png')}}" alt=""></span> 
     <!-- logo for regular state and mobile devices --> 

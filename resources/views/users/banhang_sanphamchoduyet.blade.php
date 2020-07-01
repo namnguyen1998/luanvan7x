@@ -48,11 +48,9 @@
 			}
 			?>
         </td>
+        <td>{{$product->name_category}}</td>
        	<td>{{$product->name_sub}}</td>
         <td>{{$product->name_brand}}</td>
-		<!-- @foreach($nameCategory as $nameCategory)
-		<td>{{$nameCategory->name_category}}</td>
-		@endforeach -->
       </tr>
     </tbody>
      @endforeach
