@@ -122,25 +122,15 @@ class AdminController extends Controller
         return view('admin.admin_dashboard');
     }
     public function listProductsPending(){
-         $listProductsPending = DB::table('products')
-        ->join('sub_category','id_sub','=','sub_category_id')
-        ->join('brands','id_brand','=','brand_id')
-        ->join('customers','id_customer','=','customer_id')
-        ->select('products.id_product','products.name_product','products.madeby','products.price_product','products.created_at','products.status_product','sub_category.name_sub','brands.name_brand','sub_category.category_id','customers.id_customer','customers.email_customer')
-        ->where('products.status_product','=',0)
-        ->get();
+        $listProductsPendingAdmin = DB::table('products_category')
+        ->where('status_product','=',0)->where('is_deleted','=',0)->get();
 
-        return view('admin.admin_duyetsanpham',compact('listProductsPending'));
+        return view('admin.admin_duyetsanpham',compact('listProductsPendingAdmin'));
     }
     public function listProductsApprove(){
-        $listProductsApprove = DB::table('products')
-        ->join('sub_category','id_sub','=','sub_category_id')
-        ->join('brands','id_brand','=','brand_id')
-        ->join('customers','id_customer','=','customer_id')
-        ->select('products.id_product','products.name_product','products.madeby','products.price_product','products.created_at','products.status_product','sub_category.name_sub','brands.name_brand','sub_category.category_id','customers.id_customer','customers.email_customer')
-        ->where('products.status_product','=',1)
-        ->get();
+        $listProductsApprove = DB::table('products_category')
+        ->where('status_product','=',1)->where('is_deleted','=',0)->get();
 
-        return view('admin.admin_listsanpham',compact('listProductsApprove'));
+        return view('admin.admin_duyetsanpham',compact('listProductsApprove'));
     }
 }

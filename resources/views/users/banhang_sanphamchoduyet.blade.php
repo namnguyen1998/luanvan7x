@@ -22,8 +22,10 @@
         <th>Name</th>
         <th>Xuất sứ</th>
         <th>Giá</th>
+        <th>Hình</th>
         <th>Trạng thái</th>
         <th>Danh mục</th>
+        <th>Loại</th>
        	<th>Hãng</th>
       </tr>
     </thead>
@@ -35,22 +37,47 @@
         <td>{{$product->name_product}}</td>
         <td>{{$product->madeby}}</td>
         <td>{{$product->price_product}}</td>
-         <td>
-			<?php
-			if($product->status_product==0){
-			?>
-			<span class="label label-warning">Chờ phê duyệt</span></td>              
-			<?php
-			}else{
-			?>  
-			<span class="label label-success">Đã phê duyệt</span></td>
-			<?php
-			}
-			?>
+        <td>
+          <img src='{{asset("public/frontend/img/product/$product->img_product")}}' height="70" width="70">
+          <?php
+            if(($product->img1_product)!=null){
+          ?>
+          <img src='{{asset("public/frontend/img/product/$product->img1_product")}}' height="70" width="70">
+          <?php 
+            }
+          ?>
+         <?php
+            if(($product->img2_product)!=null){
+          ?>
+          <img src='{{asset("public/frontend/img/product/$product->img2_product")}}' height="70" width="70">
+          <?php 
+            }
+          ?>
+          <?php
+            if(($product->img3_product)!=null){
+          ?>
+          <img src='{{asset("public/frontend/img/product/$product->img3_product")}}' height="70" width="70">
+          <?php 
+            }
+          ?>
+        </td>
+        <td>
+      			<?php
+      			if($product->status_product==0){
+      			?>
+      			<span class="label label-warning">Chờ phê duyệt</span></td>              
+      			<?php
+      			}else{
+      			?>  
+      			<span class="label label-success">Đã phê duyệt</span></td>
+      			<?php
+      			}
+      			?>
         </td>
         <td>{{$product->name_category}}</td>
        	<td>{{$product->name_sub}}</td>
         <td>{{$product->name_brand}}</td>
+       
       </tr>
     </tbody>
      @endforeach

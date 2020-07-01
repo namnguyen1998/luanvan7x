@@ -168,7 +168,7 @@ class ProductController extends Controller
         // ->where('products.customer_id','=',$this->checkUser())
         // ->get();
         $listProductsPending = DB::table('products_category')->where('customer_id','=',$this->checkUser())
-        ->where('status_product','=',0)->get();
+        ->where('status_product','=',0)->where('is_deleted','=',0)->get();
         return view('users.banhang_sanphamchoduyet',compact('listProductsPending'));
     }
 
