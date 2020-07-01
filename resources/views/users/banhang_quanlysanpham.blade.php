@@ -215,20 +215,22 @@
         });
     </script>
 
+
     <!-- Get Data Sub Category -->
+    <script src="{{asset('public/backend/dist/js/hashtable.js')}}"></script>
+    <script src="{{asset('public/backend/dist/js/jquery.numberformatter.js')}}"></script> 
     <script>
         $(document).ready(function(){
             $('#_id_category').change(function(){
                 val = document.getElementById('_id_category').value
-                // console.log(val)
                 $.ajax({
                     url: '{{URL::to('/admin-danh-sach-sub')}}',
                     method: 'get',
                     data: 'val_id_category=' + val,
                 }).done(function(data_sub_category){
-                    console.log(data_sub_category)
+                    // console.log(data_sub_category)
                     data_sub_category = JSON.parse(data_sub_category)
-                    console.log(data_sub_category)
+                    // console.log(data_sub_category)
                     $('#_id_sub_category').empty();
                     $.each(data_sub_category, function(key, value){
                         $('#_id_sub_category').append("<option value='" + value.id_sub + "'>" + value.name_sub + "</option>")
@@ -237,14 +239,10 @@
             })
         })
 
-        // $(document).ready(function(){
-        //     $('#_price').keyup(function(){
-        //         val = document.getElementById('_price').value
-        //         val = parseInt(val)
-        //         convert = new Intl.NumberFormat('de-DE').format(val)
-        //         console.log(convert)
-        //         document.getElementById("_price").value = convert;
-        //     })
-            
-        // })
+        $("#_price").keyup(function(){
+            $(this).parseNumber({format:"#,###", locale:"VND"});
+            $(this).formatNumber({format:"#,###", locale:"VND"});
+        });
+
     </script>
+

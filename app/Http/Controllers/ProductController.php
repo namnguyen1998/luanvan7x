@@ -74,6 +74,51 @@ class ProductController extends Controller
             return Session::get('id_customer');
     }
 
+    public function stringToNumber($string) {
+        // return 0 if the string contains no number at all or is not a string:
+        if (!is_string($string) || !preg_match('/\d/', $string)) {
+            return 0;
+        } 
+    
+        // Replace all ',' with '.':
+        $workingString = str_replace(',', '.', $string);
+    
+        // Keep only number and '.':
+        $workingString = preg_replace("/[^0-9.]+/", "", $workingString);
+    
+        // Split the integer part and the decimal part,
+        // (and eventually a third part if there are more 
+        //     than 1 decimal delimiter in the string):
+        $explodedString = explode('.', $workingString, 5);
+    
+        if ($explodedString[0] === '') {
+            // No number was present before the first decimal delimiter, 
+            // so we assume it was meant to be a 0:
+            $explodedString[0] = '0';
+        } 
+
+        if (sizeof($explodedString) === 1) 
+            $workingString = $explodedString[0];
+        
+        elseif (sizeof($explodedString) === 2)
+            $workingString = $explodedString[0] .  $explodedString[1];
+        
+        elseif (sizeof($explodedString) === 3)
+            $workingString = $explodedString[0] .  $explodedString[1] . $explodedString[2];
+
+        elseif (sizeof($explodedString) === 4)
+            $workingString = $explodedString[0] .  $explodedString[1] . $explodedString[2] . $explodedString[3];
+
+        else 
+            $workingString = $explodedString[0] .  $explodedString[1] . $explodedString[2] . $explodedString[3] . $explodedString[4];
+        
+
+        // Create a number from this now non-ambiguous string:
+        $number = $workingString * 1;
+    
+        return $number;
+    }
+
     public function saveProduct(Request $req){
         $this->validate($req, 
         [
@@ -94,7 +139,6 @@ class ProductController extends Controller
             'img3_product.max' => 'Hình ảnh giới hạn dung lượng không quá 2M',
         ]);
 
-        
         $dataProduct = array();
         $dataProduct['name_product'] = $req->nameProduct;
         $dataProduct['madeby'] = $req->madeby;
@@ -107,8 +151,8 @@ class ProductController extends Controller
         $dataProduct['img3_product'] = $this->setNameImage($req->img3_product);
         $dataProduct['note_product'] = $req->note;
         $dataProduct['description_product'] = $req->description;
-        $dataProduct['price_product'] = $req->price;
-
+        $dataProduct['price_product'] = $this->stringToNumber($req->price);
+        
         // dd($dataProduct);
         DB::table('products')->insert($dataProduct);
 
