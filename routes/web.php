@@ -27,9 +27,8 @@ Route::get('/register','CustomerController@getRegisterForm');
 Route::post('/postRegister','CustomerController@postRegister');
 Route::get('/logout','CustomerController@logout');
 
-
+// Seller
 Route::get('/banhang','CustomerController@sellerChannel');
-
 Route::get('/profile','CustomerController@profile');
 Route::post('/capnhap','CustomerController@capnhap');
 Route::get('/them-san-pham','ProductController@getAddProduct');
@@ -41,15 +40,10 @@ Route::post('/admin-them','ProductController@saveProduct');
 Route::get('/redirect/{provider}', 'CustomerController@redirect')->name('redirect');
 Route::get('/callback', 'CustomerController@handleProviderCallback');
 
-Route::get('/profile','CustomerController@profile');
-Route::post('/capnhap','CustomerController@capnhap');
-Route::get('/them-san-pham','CustomerController@getAddProduct');
-
 // Admin
 Route::get('/admin', 'AdminController@getLoginAdmin');
 // Route::post('/postLogin','AdminController@postLoginAdmin');
 Route::post('/admin-dashboard','AdminController@postLoginAdmin');
 Route::get('/admin-them-san-pham','AdminController@setAddProduct');
-Route::get('/admin-danh-sach-sub','AdminController@getSubCategory');
 Route::get('/admin-danh-sach-sub','AdminController@getSubCategory');
 Route::get('/admin-them','AdminController@saveProduct');

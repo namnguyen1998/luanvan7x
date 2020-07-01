@@ -102,6 +102,7 @@ class CustomerController extends Controller
     public function logout(){
         Session::forget('id_customer');
         Session::forget('name_customer');
+        Session::forget('provider_id');
 
         return Redirect::to('/');
     }
@@ -137,7 +138,7 @@ class CustomerController extends Controller
             $newCustomers                            = new Customers;
             $newCustomers->name_customer             = $Customers->name;
             $newCustomers->email_customer            = $Customers->email;
-            $newCustomers->address_customer          = $Customers->id;
+            $newCustomers->provider_id               = $Customers->id;
             $newCustomers->img_customer              = $Customers->avatar;
             $newCustomers->password_customer         = '';
             $newCustomers->save();
@@ -145,7 +146,8 @@ class CustomerController extends Controller
 
         Session::put('name_customer',$Customers->name);
         Session::put('id_customer',$Customers->id);
-         //dd(Session::get('id_customer'));
+        Session::put('provider_id',$Customers->id);
+        // dd(Session::get('provider_id'));
         return redirect()->to('/');
     }
 
