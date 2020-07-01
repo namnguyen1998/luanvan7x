@@ -114,4 +114,25 @@ class ProductController extends Controller
 
         return Redirect::to('/banhang');
     }
+    public function getProductPending(){
+        $this->AuthLogin();
+        $listProductsPending = DB::table('products')
+        ->join('sub_category','id_sub','=','sub_category_id')
+        ->join('brands','id_brand','=','brand_id')
+        ->join('customers','id_customer','=','customer_id')
+        ->select('products.id_product','products.name_product','products.madeby','products.price_product','products.created_at','products.status_product','sub_category.name_sub','brands.name_brand','sub_category.category_id','customers.id_customer')
+        ->where('products.customer_id','=',$this->checkUser())
+        ->get();
+
+
+        $nameCategory = DB::table('category')->join('sub_category','category_id','=','id_category')->where('id_category','=','$listProductsPending->category_id')->get();
+
+        // $subCategory = SubCategory::where('id_sub','=','$listProductsPending->sub_category_id')->get();
+        // $listCategory = Category::all();
+        // $category = SubCategory::where('category_id','=','$listCategory->category_id')->get();
+        // $brand = Brands::where('id_brand','=','$listProductsPending->brand_id')->get();
+        var_dump($listProductsPending);
+        return view('users.banhang_sanphamchoduyet',compact('listProductsPending','nameCategory'));
+    }
+
 }

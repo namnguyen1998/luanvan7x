@@ -34,7 +34,7 @@ Route::post('/capnhap','CustomerController@capnhap');
 Route::get('/them-san-pham','ProductController@getAddProduct');
 Route::get('/admin-danh-sach-sub','ProductController@getSubCategory');
 Route::post('/admin-them','ProductController@saveProduct');
-
+Route::get('/san-pham-cho-duyet','ProductController@getProductPending');
 
 // Api login Google
 Route::get('/redirect/{provider}', 'CustomerController@redirect')->name('redirect');
@@ -42,6 +42,9 @@ Route::get('/callback', 'CustomerController@handleProviderCallback');
 
 // Admin
 Route::get('/admin', 'AdminController@getLoginAdmin');
+Route::get('/admin/dashboard', 'AdminController@dashboard');
+Route::get('admin/list-san-pham-cho-duyet','AdminController@listProductsPending');
+Route::get('admin/list-san-pham','AdminController@listProductsApprove');
 // Route::post('/postLogin','AdminController@postLoginAdmin');
 Route::post('/admin-dashboard','AdminController@postLoginAdmin');
 Route::get('/admin-them-san-pham','AdminController@setAddProduct');

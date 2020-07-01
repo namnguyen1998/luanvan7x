@@ -33,7 +33,7 @@
           <ul class="treeview-menu">
             <li><a href="apps-calendar.html"><i class="fa fa-angle-right"></i>Tất cả sản phẩm</a></li>
             <li><a href="{{URL::to('/them-san-pham')}}"><i class="fa fa-angle-right"></i>Thêm sản phẩm</a></li>
-            <li><a href="apps-contacts.html"><i class="fa fa-angle-right"></i>Sản phẩm chờ duyệt</a></li>
+            <li><a href="{{URL::to('/san-pham-cho-duyet')}}"><i class="fa fa-angle-right"></i>Sản phẩm chờ duyệt</a></li>
           </ul>
         </li>
         <li class="treeview"> <a href="#"> <i class="ti-email"></i> <span>Inbox</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span> </a>

@@ -1,0 +1,63 @@
+@extends('users.banhang')
+@section('content')
+ <div class="content">
+  <div class="card">
+  <div class="card-body">
+  	<div class="row">
+	  <div class="col-10 ">
+	  		<h4 class="text-black mb-2 mt-2">Data Export</h4>
+		</div>
+	  <div class="col-2 text-right">
+	    <a class="btn btn-success btn-md mb-2 mt-2" style="color: white">
+	       + ADD PRODUCT
+	    </a>
+	</div>
+</div>
+<div class="table-responsive">
+  <table id="example2" class="table table-bordered table-hover" data-name="cool-table">
+    <thead>
+      <tr>
+      	<th>Ngày đăng</th>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Xuất sứ</th>
+        <th>Giá</th>
+        <th>Trạng thái</th>
+        <th>Danh mục</th>
+       	<th>Hãng</th>
+      </tr>
+    </thead>
+    @foreach($listProductsPending as $product)
+    <tbody>
+      <tr>
+      	<td>{{$product->created_at}}</td>
+        <td>{{$product->id_product}}</td>
+        <td>{{$product->name_product}}</td>
+        <td>{{$product->madeby}}</td>
+        <td>{{$product->price_product}}</td>
+         <td>
+			<?php
+			if($product->status_product==0){
+			?>
+			<span class="label label-warning">Chờ phê duyệt</span></td>              
+			<?php
+			}else{
+			?>  
+			<span class="label label-success">Đã phê duyệt</span></td>
+			<?php
+			}
+			?>
+        </td>
+       	<td>{{$product->name_sub}}</td>
+        <td>{{$product->name_brand}}</td>
+		<!-- @foreach($nameCategory as $nameCategory)
+		<td>{{$nameCategory->name_category}}</td>
+		@endforeach -->
+      </tr>
+    </tbody>
+     @endforeach
+  </table>
+  </div>
+</div></div>
+</div>
+@endsection
