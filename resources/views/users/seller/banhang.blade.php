@@ -1,6 +1,6 @@
 @include('admin.header_seller')
 <!-- Left side column. contains the logo and sidebar -->
- @include('users.menu_banhang')
+@include('users.seller.menu_banhang')
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper"> 
     <!-- Content Header (Page header) -->

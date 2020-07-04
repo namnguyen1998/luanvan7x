@@ -33,7 +33,7 @@ class ProductController extends Controller
         // $provider_id =  Session::get('id_customer');
         
         //var_dump($listCategory);
-        return view('users.banhang_quanlysanpham')->with('listCategory',$listCategory)->with('listBrand',$listBrand);
+        return view('users.seller.banhang_themsanpham')->with('listCategory',$listCategory)->with('listBrand',$listBrand);
     }
     
      public function getSubCategory(){
@@ -156,20 +156,22 @@ class ProductController extends Controller
         // dd($dataProduct);
         DB::table('products')->insert($dataProduct);
 
-        return Redirect::to('/banhang');
+        return Redirect::to('/san-pham-cho-duyet');
     }
     public function getProductPending(){
         $this->AuthLogin();
-        // $listProductsPending = DB::table('products')
-        // ->join('sub_category','id_sub','=','sub_category_id')
-        // ->join('brands','id_brand','=','brand_id')
-        // ->join('customers','id_customer','=','customer_id')
-        // ->select('products.id_product','products.name_product','products.madeby','products.price_product','products.created_at','products.status_product','sub_category.name_sub','brands.name_brand','sub_category.category_id','customers.id_customer')
-        // ->where('products.customer_id','=',$this->checkUser())
-        // ->get();
         $listProductsPending = DB::table('products_category')->where('customer_id','=',$this->checkUser())
         ->where('status_product','=',0)->where('is_deleted','=',0)->get();
-        return view('users.banhang_sanphamchoduyet',compact('listProductsPending'));
+        return view('users.seller.banhang_sanphamchoduyet',compact('listProductsPending'));
     }
+
+    public function getListProduct(){
+        $this->AuthLogin();
+        $listProducts = DB::table('products_category')->where('customer_id','=',$this->checkUser())
+        ->where('status_product','=',1)->where('is_deleted','=',0)->get();
+        return view('users.seller.banhang_danhsachsanpham',compact('listProducts'));
+    }
+
+    
 
 }

@@ -1,12 +1,12 @@
 @include('admin.header_seller')
     <!-- Left side column. contains the logo and sidebar -->
 
-@include('users.menu_banhang')
+@include('users.seller.menu_banhang')
     <!-- dropify in ADMIN  -->
     <link rel="stylesheet" href="{{asset('public/backend/dist/plugins/dropify/dropify.min.css')}}">
     <div class="content-wrapper"> 
         <!-- Content Header (Page header) -->
-        <form action="{{URL::to('/admin-them')}}" class="form-horizontal form-bordered" enctype="multipart/form-data" method="POST" >
+        <form action="{{URL::to('/postThem')}}" class="form-horizontal form-bordered" enctype="multipart/form-data" method="POST" >
         <input type="hidden" name="_token" value="{{csrf_token()}}" >
         <!-- Main content -->
         <div class="content">
@@ -224,7 +224,7 @@
             $('#_id_category').change(function(){
                 val = document.getElementById('_id_category').value
                 $.ajax({
-                    url: '{{URL::to('/admin-danh-sach-sub')}}',
+                    url: '{{URL::to('/danh-sach-sub')}}',
                     method: 'get',
                     data: 'val_id_category=' + val,
                 }).done(function(data_sub_category){

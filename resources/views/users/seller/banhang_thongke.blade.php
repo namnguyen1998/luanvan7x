@@ -1,4 +1,4 @@
-@extends('users.banhang')
+@extends('users.seller.banhang')
 @section('content')
 <div class="content-header sty-one">
       <h1>Thống kê</h1>

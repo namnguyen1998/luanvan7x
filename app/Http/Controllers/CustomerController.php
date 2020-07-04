@@ -12,6 +12,7 @@ use DB;
 use App\Customers;
 use App\Category;
 use App\Brands;
+use App\ShippingAddress;
 use Hash;
 session_start();
 
@@ -66,15 +67,6 @@ class CustomerController extends Controller
     		return redirect::to('/login');
     	}
     }
-
-    public function capnhap(){
-        $customer = Customers::find(Session::get('id_customer'));//print_r($customer);
-        $customer->name_customer = $_POST['name_customer'];
-        $customer->save();
-            Session::put('name_customer',$customer->name_customer);
-        return Redirect::to('/');
-
-    }
     public function getRegisterForm(){
     	return 	view('register');
     }
@@ -100,10 +92,15 @@ class CustomerController extends Controller
     	return redirect('/')->with('success','Tạo tài khoản thành công');
     }
     public function logout(){
+        $this->AuthLogin();
         Session::forget('id_customer');
         Session::forget('name_customer');
         Session::forget('provider_id');
-
+        Session::forget('sex_customer');
+        Session::forget('img_customer');
+        Session::forget('phone_customer');
+        Session::forget('address_customer');
+        Session::forget('email_customer');
         return Redirect::to('/');
     }
     // Login Google Api
@@ -124,7 +121,7 @@ class CustomerController extends Controller
         if(explode("@", $Customers->email)[1] !== 'gmail.com'){
             Session::put('name_customer',$Customers->name);
             // dd(Session::get('name_customer'))
-            return redirect()->to('/');
+            return redirect('/');
         }
 
         // check if they're an existing Customers
@@ -147,20 +144,70 @@ class CustomerController extends Controller
         Session::put('name_customer',$Customers->name);
         Session::put('id_customer',$Customers->id);
         Session::put('provider_id',$Customers->id);
-        // dd(Session::get('provider_id'));
+        Session::put('img_customer',$Customers->avatar);
+        //dd(Session::get('img_customer'));
         return redirect()->to('/');
     }
 
+    public function checkUser(){
+        if((Session::get('provider_id'))){
+            $customer = Customers::where('provider_id',  Session::get('provider_id'))->first();
+            return $customer->id_customer;
+        }
+        else
+            return Session::get('id_customer');
+    }
 
     //Bán hàng
     public function sellerChannel(){
         $this->AuthLogin();
-        return view('users.banhang_thongke');
+        return view('users.seller.banhang_thongke');
     }
 
+    //Cập nhật info customer
     public function profile(){
         $this->AuthLogin();
-        return view('users.profile');
+        $phone_customer = substr(Session::get('phone_customer'),7);
+        $email_customer = substr(Session::get('email_customer'),0,3);
+        $customer = Customers::find($this->checkUser());
+        Session::put('name_customer',$customer->name_customer);
+        Session::put('sex_customer',$customer->sex_customer);
+        Session::put('phone_customer',$customer->phone_customer);
+        Session::put('email_customer',$customer->email_customer);
+        //var_dump($customer->email_customer);
+        return view('users.customer.thongtin_customer',compact('phone_customer','email_customer'));
     }   
+
+     public function updateProfile(){
+        $this->AuthLogin();
+        $customer = Customers::find($this->checkUser());
+        // echo Session::get('id_customer');
+        // var_dump($customer);
+        $customer->name_customer = $_POST['name_customer'];
+        $customer->sex_customer = $_POST['sex_customer'];
+        //$customer->phone_customer = $_POST['phone_customer'];
+        $customer->save();
+            
+        return Redirect::to('/profile');
+    }
+    public function getAddressCustomer(){
+        $this->AuthLogin();
+        $addressCustomer = ShippingAddress::where('customer_id','=',$this->checkUser())->first();
+        Session::put('address_default',$addressCustomer->address_default);
+        Session::put('address_customer',$addressCustomer->address_customer);
+        // var_dump($addressCustomer);
+        return view('users.customer.address_customer',compact('addressCustomer'));
+    }
+
+    public function updateAddressCustomer(Request $request){
+        $this->AuthLogin();
+        $addressCustomer = array();
+        $addressCustomer['address_customer'] = $request->address_customer;
+        $addressCustomer['address_default']  = $request->address_default;
+        $addressCustomer['customer_id'] = $this->checkUser();
+        DB::table('shipping_address')->where('customer_id',$this->checkUser())->update($addressCustomer);
+        //var_dump($this->checkUser());
+        return Redirect::to('/profile/address');
+    }
 
 }

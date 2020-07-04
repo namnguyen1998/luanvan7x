@@ -131,6 +131,6 @@ class AdminController extends Controller
         $listProductsApprove = DB::table('products_category')
         ->where('status_product','=',1)->where('is_deleted','=',0)->get();
 
-        return view('admin.admin_duyetsanpham',compact('listProductsApprove'));
+        return view('admin.admin_listsanpham',compact('listProductsApprove'));
     }
 }

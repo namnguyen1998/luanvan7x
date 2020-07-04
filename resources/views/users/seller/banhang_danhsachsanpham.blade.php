@@ -1,14 +1,14 @@
-@extends('users.banhang')
+@extends('users.seller.banhang')
 @section('content')
- <div class="content">
+ <div class="content col-12">
   <div class="card">
   <div class="card-body">
   	<div class="row">
 	  <div class="col-10 ">
-	  		<h4 class="text-black mb-2 mt-2">Data Export</h4>
+	  		<h4 class="text-black mb-2 mt-2">Danh sách sản phẩm đang bán</h4>
 		</div>
 	  <div class="col-2 text-right">
-	    <a class="btn btn-success btn-md mb-2 mt-2" style="color: white">
+	    <a class="btn btn-success btn-md mb-2 mt-2" href="{{URL::to('/them-san-pham')}}" style="color: white">
 	       + ADD PRODUCT
 	    </a>
 	</div>
@@ -27,9 +27,10 @@
         <th>Danh mục</th>
         <th>Loại</th>
        	<th>Hãng</th>
+        <th>Mô tả</th>
       </tr>
     </thead>
-    @foreach($listProductsPending as $product)
+    @foreach($listProducts as $product)
     <tbody>
       <tr>
       	<td>{{$product->created_at}}</td>
@@ -77,7 +78,7 @@
         <td>{{$product->name_category}}</td>
        	<td>{{$product->name_sub}}</td>
         <td>{{$product->name_brand}}</td>
-       
+        <td>{{$product->description_product}}</td>
       </tr>
     </tbody>
      @endforeach

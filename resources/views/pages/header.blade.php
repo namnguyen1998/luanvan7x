@@ -124,14 +124,32 @@
                             <span>All departments</span>
                         </div>
                         <ul>
-                            <li><a href="#">Fresh Meat</a></li>
-                            <li><a href="#">Vegetables</a></li>
-                            <li><a href="#">Fruit & Nut Gifts</a></li>
-                            <li><a href="#">Fresh Berries</a></li>
-                            <li><a href="#">Ocean Foods</a></li>
-                            <li><a href="#">Butter & Eggs</a></li>
-                            <li><a href="#">Fastfood</a></li>
-                            <li><a href="#">Fresh Onion</a></li>
+                            
+                            <li><a href="#">
+                                <img src="{{asset('public/frontend/img/category/icon/dongho.png')}}" 
+                                style="padding-right:10px;width:30px"/>
+                                     Đồng hồ - Đồ trang sức
+                                </a>
+                            </li>
+                            <li><a href="#">
+                                <img src="{{asset('public/frontend/img/category/icon/dienthoai&phukien.png')}}" 
+                                style="padding-right:10px;width:30px"/>
+                                     Điện thoại - phụ kiện
+                                </a>
+                            </li>
+                            <li><a href="#">
+                                <img src="{{asset('public/frontend/img/category/icon/maytinh&laptop.png')}}" 
+                                style="padding-right:10px;width:30px"/>
+                                     Máy tính - Laptop
+                                </a>
+                            </li>
+                           <li><a href="#">
+                                <img src="{{asset('public/frontend/img/category/icon/thethao&dulich.png')}}" 
+                                style="padding-right:10px;width:30px"/>
+                                    Thể thao - Du lịch
+                                </a>
+                            </li>
+                            
                         </ul>
                     </div>
                 </div>
