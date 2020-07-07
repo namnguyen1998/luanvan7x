@@ -42,11 +42,19 @@ Route::get('/callback', 'CustomerController@handleProviderCallback');
 
 // Admin
 Route::get('/admin', 'AdminController@getLoginAdmin');
-Route::get('/admin/dashboard', 'AdminController@dashboard');
-Route::get('admin/list-san-pham-cho-duyet','AdminController@listProductsPending');
-Route::get('admin/list-san-pham','AdminController@listProductsApprove');
-// Route::post('/postLogin','AdminController@postLoginAdmin');
-Route::post('/admin-dashboard','AdminController@postLoginAdmin');
-Route::get('/admin-them-san-pham','AdminController@setAddProduct');
-Route::get('/admin-danh-sach-sub','AdminController@getSubCategory');
-Route::get('/admin-them','AdminController@saveProduct');
+Route::post('/admin-dashboard','AdminController@postLoginAdmin');;
+Route::get('admin-list-san-pham-cho-duyet','AdminController@listProductsPending');
+Route::get('admin-list-san-pham', 'AdminController@listProductsApprove');
+Route::get('/admin-them-san-pham', 'AdminController@setAddProduct');
+Route::get('/admin-danh-sach-sub', 'AdminController@getSubCategory');
+Route::get('/admin-them', 'AdminController@saveProduct');
+Route::get('/admin-danh-sach-danh-muc', 'AdminController@listCategory');
+Route::get('/admin-them-danh-muc', 'AdminController@addCategory');
+Route::post('/admin-save-danh-muc', 'AdminController@saveCategory');
+Route::get('/admin-sua-danh-muc/{id_category}', 'AdminController@editCategory');
+Route::post('/admin-update-danh-muc/{id_category}', 'AdminController@updateCategory');
+Route::get('/admin-danh-sach-danh-muc-con', 'AdminController@listSub');
+Route::get('/admin-them-danh-muc-con', 'AdminController@addSub');
+Route::post('/admin-save-danh-muc-con', 'AdminController@saveSub');
+Route::get('/admin-sua-danh-muc-con/{id_sub}', 'AdminController@editSub');
+Route::post('/admin-update-danh-muc-con/{id_sub}', 'AdminController@updateSub');
