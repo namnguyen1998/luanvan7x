@@ -78,7 +78,7 @@
         <td>{{$product->name_category}}</td>
        	<td>{{$product->name_sub}}</td>
         <td>{{$product->name_brand}}</td>
-        <td>{{$product->description_product}}</td>
+        <td>{!!$product->description_product!!}</td>
       </tr>
     </tbody>
      @endforeach

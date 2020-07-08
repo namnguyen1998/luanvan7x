@@ -37,10 +37,11 @@
                             <ul>
                               @if(Session::get('id_customer'))
                                 <li>
-                                <a href="{{URL::to('/banhang')}}">
-                                    <i class="fa fa-hand-o-right"></i>Kênh bán hàng</li>
+                                <a href="{{URL::to('/dang-ky-shop')}}">
+                                    <i class="fa fa-hand-o-right"></i>Đăng ký shop</li>
                                 </a>
                                 @endif
+                
                                 
                                 <li>Free Shipping for all Order of $99</li>
                             </ul>
@@ -114,78 +115,6 @@
     <!-- Header Section End -->
 
     <!-- Hero Section Begin -->
-    <section class="hero">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-3">
-                    <div class="hero__categories">
-                        <div class="hero__categories__all">
-                            <i class="fa fa-bars"></i>
-                            <span>All departments</span>
-                        </div>
-                        <ul>
-                            
-                            <li><a href="#">
-                                <img src="{{asset('public/frontend/img/category/icon/dongho.png')}}" 
-                                style="padding-right:10px;width:30px"/>
-                                     Đồng hồ - Đồ trang sức
-                                </a>
-                            </li>
-                            <li><a href="#">
-                                <img src="{{asset('public/frontend/img/category/icon/dienthoai&phukien.png')}}" 
-                                style="padding-right:10px;width:30px"/>
-                                     Điện thoại - phụ kiện
-                                </a>
-                            </li>
-                            <li><a href="#">
-                                <img src="{{asset('public/frontend/img/category/icon/maytinh&laptop.png')}}" 
-                                style="padding-right:10px;width:30px"/>
-                                     Máy tính - Laptop
-                                </a>
-                            </li>
-                           <li><a href="#">
-                                <img src="{{asset('public/frontend/img/category/icon/thethao&dulich.png')}}" 
-                                style="padding-right:10px;width:30px"/>
-                                    Thể thao - Du lịch
-                                </a>
-                            </li>
-                            
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-9">     
-                    <div class="col-lg-12" style="width: 100%;">
-                        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-                          <ol class="carousel-indicators">
-                            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-                            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-                          </ol>
-                          <div class="carousel-inner">
-                            <div class="carousel-item active">
-                              <img class="d-block w-100" src="{{asset('public\frontend\img\banner\banner-1.jpg')}}" alt="First slide">
-                            </div>
-                            <div class="carousel-item">
-                              <img class="d-block w-100" src="{{asset('public\frontend\img\banner\banner-2.jpg')}}" alt="Second slide">
-                            </div>
-                            <div class="carousel-item">
-                              <img class="d-block w-100" src="{{asset('public\frontend\img\banner\banner-1.jpg')}}" alt="Third slide">
-                            </div>
-                          </div>
-                          <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="sr-only">Previous</span>
-                          </a>
-                          <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="sr-only">Next</span>
-                          </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </section>
+   
     <!-- Hero Section End -->
 

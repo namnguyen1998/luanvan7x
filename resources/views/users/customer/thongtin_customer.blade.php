@@ -2,7 +2,13 @@
 @section('content')
  <div class="col-lg-9 col-md-7">
     <div class="filter__item">
-        <div class="card">
+        <div class="card"> <?php
+        $message = Session::get('message');
+        if($message){
+            echo'<div class = "alert-success">'.$message.'</div>';
+            Session::put('message',null);
+        }
+        ?>
             <div class="card-header">
                 <strong>Hồ sơ của tôi</strong>
             </div>
@@ -63,7 +69,7 @@
                                 <label for="text-input" class=" form-control-label">Địa chỉ mặc định</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <input type="text" id="text-input" name="address_customer" value="{{Session::get('address_customer')}}" class="form-control" style="width: 280px;">
+                                <input type="text" id="text-input" name="address_default" value="{{Session::get('address_customer')}}" class="form-control" style="width: 280px;">
                             </div>
                         </div>
                 <div class="card-footer" style="text-align: center;">

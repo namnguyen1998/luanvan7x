@@ -19,7 +19,8 @@ Route::get('/', function () {
 //Page
 
 Route::get('/','PagesController@getIndex');
-Route::get('/search?category_id={$id_category}','PagesController@getPagesProductCategory');
+Route::get('/danh-muc-{id_category}','PagesController@getPagesProductCategory');
+Route::get('/chi-tiet-san-pham/{id_product}','PagesController@getPagesProductDetail');	
 
 
 
@@ -35,6 +36,8 @@ Route::get('/profile/address','CustomerController@getAddressCustomer');
 Route::post('/updateAddress','CustomerController@updateAddressCustomer');
 
 // Seller
+Route::get('/dang-ky-shop','CustomerController@getRegisterShop');
+Route::post('/postRegisterShop','CustomerController@postRegisterShop');
 Route::get('/banhang','CustomerController@sellerChannel');
 Route::get('/them-san-pham','ProductController@getAddProduct');
 Route::get('/danh-sach-sub','ProductController@getSubCategory');

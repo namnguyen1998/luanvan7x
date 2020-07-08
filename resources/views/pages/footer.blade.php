@@ -75,6 +75,7 @@
     <script src="{{asset('public/frontend/js/mixitup.min.js')}}"></script>
     <script src="{{asset('public/frontend/js/owl.carousel.min.js')}}"></script>
     <script src="{{asset('public/frontend/js/main.js')}}"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
 
 

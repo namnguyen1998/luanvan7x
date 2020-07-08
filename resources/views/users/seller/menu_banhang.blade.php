@@ -3,7 +3,7 @@
     <div class="sidebar"> 
       <!-- Sidebar user panel -->
       <div class="user-panel">
-        <div class="image text-center"><img src="{{asset('public/backend/dist/img/img1.jpg')}}" class="img-circle" alt="User Image"> </div>
+        <div class="image text-center"><img src="{{Session::get('img_customer')}}" class="img-circle" alt="User Image"> </div>
         <div class="info">
           <p>{{Session::get('name_customer')}}</p>
           <a href="#"><i class="fa fa-envelope"></i></a> <a href="{{URL::to('profile')}}"><i class="fa fa-gear"></i></a> <a href="{{URL::to('/logout')}}"><i class="fa fa-power-off"></i></a> </div>

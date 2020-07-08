@@ -6,6 +6,9 @@
     <link rel="stylesheet" href="{{asset('public/backend/dist/plugins/dropify/dropify.min.css')}}">
     <div class="content-wrapper"> 
         <!-- Content Header (Page header) -->
+        @foreach($errors->all() as $err)
+            <div class="alert alert-danger" role="alert">{{$err}}</div>
+        @endforeach
         <form action="{{URL::to('/postThem')}}" class="form-horizontal form-bordered" enctype="multipart/form-data" method="POST" >
         <input type="hidden" name="_token" value="{{csrf_token()}}" >
         <!-- Main content -->

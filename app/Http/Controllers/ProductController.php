@@ -49,7 +49,6 @@ class ProductController extends Controller
             }
         }
     }
-
     public function setNameImage($data){
         if(empty($data)){
             return null;
@@ -64,7 +63,6 @@ class ProductController extends Controller
             return $plus;
         }
     }
-
     public function checkUser(){
         if((Session::get('provider_id'))){
             $customer = Customers::where('provider_id',  Session::get('provider_id'))->first();

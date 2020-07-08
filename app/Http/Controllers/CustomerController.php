@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Session;
 use Socialite;
 use Illuminate\Support\Facades\Redirect;
+use App\Rules\Captcha;
 use DB;
 use App\Customers;
 use App\Category;
@@ -181,12 +182,15 @@ class CustomerController extends Controller
      public function updateProfile(){
         $this->AuthLogin();
         $customer = Customers::find($this->checkUser());
-        // echo Session::get('id_customer');
-        // var_dump($customer);
         $customer->name_customer = $_POST['name_customer'];
         $customer->sex_customer = $_POST['sex_customer'];
-        //$customer->phone_customer = $_POST['phone_customer'];
         $customer->save();
+
+        $addressDefault = array();
+        $addressDefault['address_default'] = $_POST['address_default'];
+        $addressDefault['customer_id'] = $this->checkUser();
+        DB::table('shipping_address')->insert($addressDefault);
+       
             
         return Redirect::to('/profile');
     }
@@ -208,6 +212,50 @@ class CustomerController extends Controller
         DB::table('shipping_address')->where('customer_id',$this->checkUser())->update($addressCustomer);
         //var_dump($this->checkUser());
         return Redirect::to('/profile/address');
+    }
+
+    public function getRegisterShop(){
+        $this->AuthLogin();
+        return view('users.seller.banhang_dangkyshop');
+    }
+
+    public function setNameImage($data){
+        if(empty($data)){
+            return null;
+        }
+        else{
+            $getNameImage = current(explode('.', $data->getClientOriginalName()));
+            $destinationPath = 'public/frontend/img/shop';
+            $date = date('dmY');
+            $hash = md5($getNameImage);
+            $plus = $date . '_' . $hash . '.jpg';
+            $data->move($destinationPath, $plus);
+            return $plus;
+        }
+    }
+
+    public function postRegisterShop(Request $request){
+        $this->AuthLogin();
+        $data = $request->validate(
+            [
+                'name_shop' => 'required|unique:shop_customer,name_shop',
+                'address_shop' => 'required',
+                'phone_shop' => 'required|max:10',
+                'img_shop' => 'mimes:jpg,jpeg,png,gif|max:2048',
+                'g-recaptcha-response' => new Captcha(),         //dòng kiểm tra Captcha
+            ],[
+                'name_shop.unique' => 'Tên shop đã tồn tại'
+
+            ]);
+        $items = array();
+        $items['name_shop'] = $data['name_shop'];
+        $items['address_shop'] = $data['address_shop'];
+        $items['phone_shop'] = $data['phone_shop'];
+        $items['img_shop'] = $this->setNameImage($data['img_shop']);
+        $items['customer_id'] = $this->checkUser();
+        DB::table('shop_customer')->insert($items);
+        Session::put('message','Đăng ký thành công chờ phê duyệt');
+        return Redirect::to('/banhang');
     }
 
 }

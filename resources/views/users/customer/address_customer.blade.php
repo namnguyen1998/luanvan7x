@@ -14,7 +14,7 @@
                                 <label for="text-input" class=" form-control-label">Địa chỉ mặc định</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <input type="text" id="text-input" name="address_default" value="{{Session::get('address_default')}}" class="form-control" style="width: 280px;">
+                                <input type="text" id="text-input" name="address_default" value="@if(Session::get('address_default')!=null) {{Session::get('address_default')}} @endif" class="form-control" style="width: 280px;">
                             </div>
                         </div>
                         <div class="row form-group">
