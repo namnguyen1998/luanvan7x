@@ -33,11 +33,11 @@
                         <li><a href="#" class = "fa fa-shopping-cart">Đơn mua</a></li>
                         <li><a href="{{URL::to('/profile/address')}}" class = "fa fa-truck">Địa chỉ</a></li>
                         <li><a href="{{URL::to('/dang-ky-shop')}}" class = "fa fa-slideshare">Đăng ký shop bán hàng</a></li>
-                        <li>
-                            <!-- @if($shop_id!=null)
+                        <!-- <li>
+                            @if(Session::get('id_shop'))
                                 <a href="{{URL::to('/dang-ky-shop')}}" class = "fa fa-slideshare">Kênh bán hàng</a>
                             @endif
- -->                    </li>
+                        </li> -->
                     </ul>
                 </div>
                 

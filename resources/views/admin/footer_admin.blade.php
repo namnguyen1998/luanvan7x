@@ -76,6 +76,11 @@ s0.parentNode.insertBefore(s1,s0);
             })
         })
 
+        $("#select").click(function(){
+            val = 1
+            console.log(val)
+
+        });
     </script>
 </body>
 

@@ -3,7 +3,7 @@
 <div class="content-header sty-one">
   <h1>Danh sách sản phẩm</h1>
   <ol class="breadcrumb">
-    <li><a href="{{URL::to('/admin/dashboard')}}">Admin</a></li>
+    <li><a href="{{URL::to('/admin-dashboard')}}">Admin</a></li>
     <li><i class="fa fa-angle-right"></i>Danh sách sản phẩm</li>
   </ol>
 </div>
@@ -19,7 +19,6 @@
         <th>Trạng thái</th>
         <th>Danh mục</th>
        	<th>Hãng</th>
-       	<th>#</th>
       </tr>
     </thead>
     @foreach($listProductsApprove as $product)
@@ -30,19 +29,13 @@
         <td>{{$product->name_product}}</td>
         <td>{{$product->madeby}}</td>
         <td>{{$product->price_product}}</td>
-        <td><span class="label label-success">Đã phê duyệt</span></td>
+        <td><span class="label label-success"><?php if($product->status_product == 0) echo("Đang chờ duyệt"); elseif ($product->status_product == 1) echo("Đã phê duyệt"); else echo("Từ chối duyệt"); ?></span></td>
        	<td>{{$product->name_sub}}</td>
         <td>{{$product->name_brand}}</td>
-        <td>
-          	<a href="#" class="active" ui-toggle-class="">
-            <i class="fa fa-check"></i>
-           	<a onclick="return confirm('Bạn có muốn xóa danh mục này không')" href="#" class="active" ui-toggle-class="">
-            <i class="fa fa-times text-danger text"></i>
-          	</a>
-        </td>
       </tr>
     </tbody>
      @endforeach
   </table>
   </div>
+  
 @endsection

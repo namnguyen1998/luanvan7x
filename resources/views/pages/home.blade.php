@@ -11,7 +11,7 @@
                         <ul>
                             @foreach($Category as $category)
                             <li><a href="{{URL::to('/danh-muc-'.$category->id_category)}}">
-                                <img src="{{asset('public/frontend/img/category/icon/'.$category->img_category)}}" 
+                                <img src="{{asset('public/frontend/img/category/icon/'.$category->icon_category)}}" 
                                 style="padding-right:10px;width:30px"/>
                                      {{$category->name_category}}
                                 </a>
@@ -61,7 +61,7 @@
                 <div class="categories__slider owl-carousel">
                     @foreach($Category as $cat)
                     <div class="col-lg-3">
-                        <div class="categories__item set-bg" data-setbg="{{asset('public/frontend/img/category/banner/'.$cat->banner_category)}}">
+                        <div class="categories__item set-bg" data-setbg="{{asset('public/frontend/img/category/banner/'.$cat->img_category)}}">
                             <h5><a href="#">{{$cat->name_category}}</a></h5>
                         </div>
                     </div>

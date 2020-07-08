@@ -38,6 +38,30 @@
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3">
+                                <label for="text-input" class=" form-control-label">Email</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="email" id="text-input" name="email_shop" value="" class="form-control" style="width: 280px;">
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-input" class=" form-control-label">Password</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="password" class="form-control" id="text-input" name="password_shop" value="" class="form-control" style="width: 280px;">
+                            </div>
+                        </div>
+                         <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-input" class=" form-control-label">Re-Password</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="password" class="form-control" id="text-input" name="re-password" value="" class="form-control" style="width: 280px;">
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
                                 <label for="file-input" class=" form-control-label">Chọn ảnh</label>
                             </div>
                             <div class="col-12 col-md-9">

@@ -1,85 +1,173 @@
 @extends('admin.admin')
 @section('content')
-<div class="content-header sty-one">
-  <h1>Sản phẩm chờ duyệt</h1>
-  <ol class="breadcrumb">
-    <li><a href="{{URL::to('/admin/dashboard')}}">Admin</a></li>
-    <li><i class="fa fa-angle-right"></i>Sản phẩm chờ duyệt</li>
-  </ol>
-</div>
-<div class="table-responsive">
-  <table id="example2" class="table table-bordered table-hover" data-name="cool-table">
-    <thead>
-      <tr>
-      	<th>Ngày đăng</th>
-        <th>Shop</th>
-        <th>Name</th>
-        <th>Xuất sứ</th>
-        <th>Giá</th>
-        <th>Hình</th>
-        <th>Trạng thái</th>
-        <th>Danh mục</th>
-       	<th>Hãng</th>
-       	<th>#</th>
-      </tr>
-    </thead>
-    @foreach($listProductsPendingAdmin as $product)
-    <tbody>
-      <tr>
-      	<td>{{$product->created_at}}</td>
-        <td>{{$product->email_customer}}</td>
-        <td>{{$product->name_product}}</td>
-        <td>{{$product->madeby}}</td>
-        <td>{{$product->price_product}}</td>
-        <td>
-          <img src='{{asset("public/frontend/img/product/$product->img_product")}}' height="70" width="70">
-          <?php
-            if(($product->img1_product)!=null){
-          ?>
-          <img src='{{asset("public/frontend/img/product/$product->img1_product")}}' height="70" width="70">
-          <?php 
-            }
-          ?>
-         <?php
-            if(($product->img2_product)!=null){
-          ?>
-          <img src='{{asset("public/frontend/img/product/$product->img2_product")}}' height="70" width="70">
-          <?php 
-            }
-          ?>
-          <?php
-            if(($product->img3_product)!=null){
-          ?>
-          <img src='{{asset("public/frontend/img/product/$product->img3_product")}}' height="70" width="70">
-          <?php 
-            }
-          ?>
-        </td>
-        <td>
-      			<?php
-      			if($product->status_product==0){
-      			?>
-      			<span class="label label-warning">Chờ phê duyệt</span></td>              
-      			<?php
-      			}else{
-      			?>  
-      			<span class="label label-success">Đã phê duyệt</span></td>
-      			<?php
-      			}
-      			?>
-        </td>
-       	<td>{{$product->name_sub}}</td>
-        <td>{{$product->name_brand}}</td>
-        <td>
-          	<a href="#" class="active" ui-toggle-class="">
-            <i class="fa fa-check"></i>
-           	<a onclick="return confirm('Bạn có muốn xóa danh mục này không')" href="#" class="active" ui-toggle-class="">
-            <i class="fa fa-times text-danger text"></i>
-          	</a>
-        </td>
-      </tr>
-    </tbody>
-     @endforeach
-  </table>
-  </div>
+<div class="row">
+    <div class="col-md-12">
+        <!-- DATA TABLE -->
+        <h3 class="title-5 m-b-35">data table</h3>
+       
+        <div class="table-responsive table-responsive-data2">
+            <table class="table table-data2">
+                <thead>
+                    <tr>
+                        <th>
+                            <label class="au-checkbox">
+                                <input type="checkbox">
+                                <span class="au-checkmark"></span>
+                            </label>
+                        </th>
+                        <th>name</th>
+                        <th>email</th>
+                        <th>description</th>
+                        <th>date</th>
+                        <th>status</th>
+                        <th>price</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="tr-shadow">
+                        <td>
+                            <label class="au-checkbox">
+                                <input type="checkbox">
+                                <span class="au-checkmark"></span>
+                            </label>
+                        </td>
+                        <td>Lori Lynch</td>
+                        <td>
+                            <span class="block-email">lori@example.com</span>
+                        </td>
+                        <td class="desc">Samsung S8 Black</td>
+                        <td>2018-09-27 02:12</td>
+                        <td>
+                            <span class="status--process">Processed</span>
+                        </td>
+                        <td>$679.00</td>
+                        <td>
+                            <div class="table-data-feature">
+                                <button class="item" data-toggle="tooltip" data-placement="top" title="Send">
+                                    <i class="zmdi zmdi-mail-send"></i>
+                                </button>
+                                <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
+                                    <i class="zmdi zmdi-edit"></i>
+                                </button>
+                                <button class="item" data-toggle="tooltip" data-placement="top" title="Delete">
+                                    <i class="zmdi zmdi-delete"></i>
+                                </button>
+                                <button class="item" data-toggle="tooltip" data-placement="top" title="More">
+                                    <i class="zmdi zmdi-more"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="spacer"></tr>
+                    <tr class="tr-shadow">
+                        <td>
+                            <label class="au-checkbox">
+                                <input type="checkbox">
+                                <span class="au-checkmark"></span>
+                            </label>
+                        </td>
+                        <td>Lori Lynch</td>
+                        <td>
+                            <span class="block-email">john@example.com</span>
+                        </td>
+                        <td class="desc">iPhone X 64Gb Grey</td>
+                        <td>2018-09-29 05:57</td>
+                        <td>
+                            <span class="status--process">Processed</span>
+                        </td>
+                        <td>$999.00</td>
+                        <td>
+                            <div class="table-data-feature">
+                                <button class="item" data-toggle="tooltip" data-placement="top" title="Send">
+                                    <i class="zmdi zmdi-mail-send"></i>
+                                </button>
+                                <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
+                                    <i class="zmdi zmdi-edit"></i>
+                                </button>
+                                <button class="item" data-toggle="tooltip" data-placement="top" title="Delete">
+                                    <i class="zmdi zmdi-delete"></i>
+                                </button>
+                                <button class="item" data-toggle="tooltip" data-placement="top" title="More">
+                                    <i class="zmdi zmdi-more"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="spacer"></tr>
+                    <tr class="tr-shadow">
+                        <td>
+                            <label class="au-checkbox">
+                                <input type="checkbox">
+                                <span class="au-checkmark"></span>
+                            </label>
+                        </td>
+                        <td>Lori Lynch</td>
+                        <td>
+                            <span class="block-email">lyn@example.com</span>
+                        </td>
+                        <td class="desc">iPhone X 256Gb Black</td>
+                        <td>2018-09-25 19:03</td>
+                        <td>
+                            <span class="status--denied">Denied</span>
+                        </td>
+                        <td>$1199.00</td>
+                        <td>
+                            <div class="table-data-feature">
+                                <button class="item" data-toggle="tooltip" data-placement="top" title="Send">
+                                    <i class="zmdi zmdi-mail-send"></i>
+                                </button>
+                                <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
+                                    <i class="zmdi zmdi-edit"></i>
+                                </button>
+                                <button class="item" data-toggle="tooltip" data-placement="top" title="Delete">
+                                    <i class="zmdi zmdi-delete"></i>
+                                </button>
+                                <button class="item" data-toggle="tooltip" data-placement="top" title="More">
+                                    <i class="zmdi zmdi-more"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="spacer"></tr>
+                    <tr class="tr-shadow">
+                        <td>
+                            <label class="au-checkbox">
+                                <input type="checkbox">
+                                <span class="au-checkmark"></span>
+                            </label>
+                        </td>
+                        <td>Lori Lynch</td>
+                        <td>
+                            <span class="block-email">doe@example.com</span>
+                        </td>
+                        <td class="desc">Camera C430W 4k</td>
+                        <td>2018-09-24 19:10</td>
+                        <td>
+                            <span class="status--process">Processed</span>
+                        </td>
+                        <td>$699.00</td>
+                        <td>
+                            <div class="table-data-feature">
+                                <button class="item" data-toggle="tooltip" data-placement="top" title="Send">
+                                    <i class="zmdi zmdi-mail-send"></i>
+                                </button>
+                                <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
+                                    <i class="zmdi zmdi-edit"></i>
+                                </button>
+                                <button class="item" data-toggle="tooltip" data-placement="top" title="Delete">
+                                    <i class="zmdi zmdi-delete"></i>
+                                </button>
+                                <button class="item" data-toggle="tooltip" data-placement="top" title="More">
+                                    <i class="zmdi zmdi-more"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- END DATA TABLE -->
+    </div>
+
 @endsection

@@ -102,6 +102,8 @@ class CustomerController extends Controller
         Session::forget('phone_customer');
         Session::forget('address_customer');
         Session::forget('email_customer');
+        Session::forget('email_shop');
+        Session::forget('img_shop');
         return Redirect::to('/');
     }
     // Login Google Api
@@ -158,24 +160,20 @@ class CustomerController extends Controller
         else
             return Session::get('id_customer');
     }
-
-    //Bán hàng
-    public function sellerChannel(){
-        $this->AuthLogin();
-        return view('users.seller.banhang_thongke');
-    }
-
     //Cập nhật info customer
     public function profile(){
         $this->AuthLogin();
+        
         $phone_customer = substr(Session::get('phone_customer'),7);
         $email_customer = substr(Session::get('email_customer'),0,3);
         $customer = Customers::find($this->checkUser());
+        
+        
         Session::put('name_customer',$customer->name_customer);
         Session::put('sex_customer',$customer->sex_customer);
         Session::put('phone_customer',$customer->phone_customer);
         Session::put('email_customer',$customer->email_customer);
-        //var_dump($customer->email_customer);
+        //var_dump($shop_customer);
         return view('users.customer.thongtin_customer',compact('phone_customer','email_customer'));
     }   
 
@@ -185,7 +183,6 @@ class CustomerController extends Controller
         $customer->name_customer = $_POST['name_customer'];
         $customer->sex_customer = $_POST['sex_customer'];
         $customer->save();
-
         $addressDefault = array();
         $addressDefault['address_default'] = $_POST['address_default'];
         $addressDefault['customer_id'] = $this->checkUser();
@@ -242,20 +239,33 @@ class CustomerController extends Controller
                 'address_shop' => 'required',
                 'phone_shop' => 'required|max:10',
                 'img_shop' => 'mimes:jpg,jpeg,png,gif|max:2048',
+                'email_shop' => 'required',
+                'password_shop' => 'required|min:6|max:20',
+                're-password' => 'required|same:password_shop',
                 'g-recaptcha-response' => new Captcha(),         //dòng kiểm tra Captcha
             ],[
-                'name_shop.unique' => 'Tên shop đã tồn tại'
-
+                'name_shop.unique' => 'Tên shop đã tồn tại',
+                'email.required'=>'Vui lòng nhập Email',
+                'password.required'=>'Vui lòng nhập mật khẩu',
+                're_password.same'=>'Mật khẩu không giống nhau',
+                'password.min'=>'Mật khẩu có ít nhất 6 kí tự'
             ]);
         $items = array();
         $items['name_shop'] = $data['name_shop'];
         $items['address_shop'] = $data['address_shop'];
         $items['phone_shop'] = $data['phone_shop'];
+        $items['email_shop'] = $data['email_shop'];
+        $items['password_shop'] = md5($data['password_shop']);
         $items['img_shop'] = $this->setNameImage($data['img_shop']);
         $items['customer_id'] = $this->checkUser();
-        DB::table('shop_customer')->insert($items);
+        DB::table('shop')->insert($items);
         Session::put('message','Đăng ký thành công chờ phê duyệt');
-        return Redirect::to('/banhang');
+        return Redirect::to('/profile');
     }
+
+
+    
+    
+
 
 }

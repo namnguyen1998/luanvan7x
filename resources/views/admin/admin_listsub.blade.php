@@ -1,0 +1,48 @@
+@extends('admin.admin')
+@section('content')
+
+<div class="content-header sty-one">
+  <h1>Danh sách sản phẩm</h1>
+  <ol class="breadcrumb">
+    <li><a href="{{URL::to('/admin-dashboard')}}">Admin</a></li>
+    <li><i class="fa fa-angle-right"></i>Danh sách danh muc con</li>
+  </ol>
+  <div class="row">
+	  <div class="col-10 ">
+	  		<h4 class="text-black mb-2 mt-2"></h4>
+		</div>
+	  <div class="col-2 text-right">
+	    <a href="{{URL::to('/admin-them-danh-muc-con')}}" class="btn btn-success btn-md mb-2 mt-2" style="color: white">
+	       + Thêm danh mục con
+	    </a>
+	</div>
+</div>
+</div>
+<div class="table-responsive">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th></th>
+        <th></th>
+        <th scope="col">Tên danh mục con</th>
+        <th scope="col">Tên danh mục cha</th>
+        <th style="text-align: right" scope="col">Chỉnh sửa</th>
+      </tr>
+    </thead>
+    <tbody>
+      @foreach ($listSub as $sub)
+      <tr>
+        <th>{{$sub->id_sub}}</th>
+        <td></td>
+        <td></td>
+        <td>{{$sub->name_sub}}</td>
+        <td>{{$sub->name_category}}</td>
+        <td style="text-align: right"><a href="{{URL::to('/admin-sua-danh-muc-con/'.$sub->id_sub)}}"><button class="btn"><span class="icon-wrench"></span></button></a></td>
+      </tr>
+      @endforeach
+    </tbody>
+  </table>
+</div>
+  
+@endsection

@@ -23,7 +23,7 @@ class PagesController extends Controller
         $productCategory = DB::table('products_category')->where('category_id','=',1)
         ->where('status_product','=',1)->get();
         $listProducts = Products::where('status_product','=',1)->get();
-        var_dump(Session::get('id_shop'));
+        //var_dump(Session::get('id_shop'));
         //var_dump($productCategory);
     	return view('pages.home',compact('Category','listProducts'));
     }

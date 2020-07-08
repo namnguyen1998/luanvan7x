@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Users;
 use App\Category;
 use App\Brands;
+use App\SubCategory;
 use DB;
 
 use Session;
@@ -78,19 +79,17 @@ class AdminController extends Controller
     }
 
     public function setNameImage($data){
-        if(empty($data))
+        if(empty($data)){
             return null;
+        }
         else{
-            if($this->checkImage($data) == 1){
-                $name_image = current(explode('.', $data));
-                $file_image = explode('.', $data);
-                $file = end($file_image);
-                $date = date('dmY');
-                $hash = md5($name_image);
-                $plus = $date . '_' . $hash . '.' .$file;
-                // $data->move('public/frontend/images/product',$plus);
-                return $plus;
-            }
+            $getNameImage = current(explode('.', $data->getClientOriginalName()));
+            $destinationPath = 'public/frontend/img/categories';
+            $date = date('dmY');
+            $hash = md5($getNameImage);
+            $plus = $date . '_' . $hash . '.jpg';
+            $data->move($destinationPath, $plus);
+            return $plus;
         }
     }
 
@@ -128,9 +127,112 @@ class AdminController extends Controller
         return view('admin.admin_duyetsanpham',compact('listProductsPendingAdmin'));
     }
     public function listProductsApprove(){
-        $listProductsApprove = DB::table('products_category')
-        ->where('status_product','=',1)->where('is_deleted','=',0)->get();
+        $listProductsApprove = DB::table('products_category')->get();
 
         return view('admin.admin_listsanpham',compact('listProductsApprove'));
+    }
+
+    public function listCategory(){
+        $listCategory = Category::all();
+        return view('admin.admin_listcategory', compact('listCategory'));
+    }
+
+    public function addCategory(){
+        return view('admin.admin_addcategory');
+    }
+
+    public function saveCategory(Request $req){
+        $this->validate($req, 
+        [
+            //Kiểm tra đúng file đuôi .jpg,.jpeg,.png.gif và dung lượng không quá 2M
+            'imgCategory' => 'mimes:jpg,jpeg,png,gif|max:2048',
+        ], [
+            //Tùy chỉnh hiển thị thông báo không thõa điều kiện
+            'imgCategory.mimes' => 'Chỉ chấp nhận với đuôi .jpg .jpeg .png .gif',
+            'imgCategory.max' => 'Hình ảnh giới hạn dung lượng không quá 2M',
+        ]);
+        $dataCategory = array();
+        $dataCategory['name_category'] = $req->nameCategory;
+        $dataCategory['img_category'] = $this->setNameImage($req->imgCategory);
+        DB::table('category')->insert($dataCategory);
+        // dd($dataCategory);
+
+        return redirect::to('/admin-danh-sach-danh-muc');
+    }
+
+    public function editCategory($id_category){
+        $id_category = DB::table('category')->where('id_category', $id_category)->get();
+        return view('admin.admin_editcategory', compact('id_category'));
+    }
+
+    public function updateCategory(Request $req, $id_category){
+        $this->validate($req, 
+        [
+            //Kiểm tra đúng file đuôi .jpg,.jpeg,.png.gif và dung lượng không quá 2M
+            'imgCategory' => 'mimes:jpg,jpeg,png,gif|max:2048',
+        ], [
+            //Tùy chỉnh hiển thị thông báo không thõa điều kiện
+            'imgCategory.mimes' => 'Chỉ chấp nhận với đuôi .jpg .jpeg .png .gif',
+            'imgCategory.max' => 'Hình ảnh giới hạn dung lượng không quá 2M',
+        ]);
+        $dataCategory = array();
+        $dataCategory['name_category'] = $req->nameCategory;
+        if (!empty($req->imgCategory))
+            $dataCategory['img_category'] = $this->setNameImage($req->imgCategory);
+        else {
+            $id_category = DB::table('category')->where('id_category', $id_category)->pluck('img_category');
+            $dataCategory['img_category'] = $id_category;
+        }
+        // dd($dataCategory);
+        DB::table('category')->where('id_category',$id_category)->update($dataCategory);
+        return redirect::to('/admin-danh-sach-danh-muc');
+    }
+
+    public function listSub(){
+        $listSub = DB::table('sub_category')
+                    ->select('sub_category.id_sub', 'sub_category.name_sub', 'category.name_category')
+                    ->join('category', 'category.id_category', '=', 'sub_category.category_id')
+                    ->get();
+                    
+        return view('admin.admin_listsub', compact('listSub'));
+    }
+
+    public function addSub(){
+        $listCategory = Category::all();
+        return view('admin.admin_addsub', compact('listCategory'));
+    }
+
+    public function saveSub(Request $req){
+        $dataSub = array();
+        $dataSub['name_sub'] = $req->nameSub;
+        $dataSub['category_id'] = $req->categorySub;
+
+        DB::table('sub_category')->insert($dataSub);
+        return redirect::to('/admin-danh-sach-danh-muc-con');
+    }
+
+    public function editSub($id_sub){
+        $id_sub = DB::table('sub_category')
+                    ->join('category', 'category.id_category', '=', 'sub_category.category_id')
+                    ->where('id_sub', $id_sub)
+                    ->select('sub_category.id_sub', 'sub_category.category_id', 'sub_category.name_sub', 'category.name_category')
+                    ->get();
+        $listCategory = Category::all();
+        return view('admin.admin_editsub', compact('id_sub', 'listCategory'));
+    }
+
+    public function updateSub(Request $req, $id_sub){
+        
+        $dataSub = array();
+        $dataSub['name_sub'] = $req->nameSub;
+        $dataSub['category_id'] = $req->categorySub;
+
+
+        return view('admin.admin_listsanpham',compact('listProductsApprove'));
+
+        // dd($dataSub);
+        DB::table('sub_category')->where('id_sub',$id_sub)->update($dataSub);
+        return redirect::to('/admin-danh-sach-danh-muc-con');
+
     }
 }
