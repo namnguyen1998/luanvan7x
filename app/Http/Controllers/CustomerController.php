@@ -22,9 +22,9 @@ class CustomerController extends Controller
     public function AuthLogin(){
         $customer_id = Session::get('id_customer');
         if($customer_id){
-            return Redirect::to('banhang');
+            return Redirect::to('/');
         }else{
-            return Redirect::to('/')->send();
+            return Redirect::to('/login')->send();
         }
     }
     public function getLoginForm(){

@@ -22,6 +22,10 @@ Route::get('/','PagesController@getIndex');
 Route::get('/danh-muc-{id_category}','PagesController@getPagesProductCategory');
 Route::get('/chi-tiet-san-pham/{id_product}','PagesController@getPagesProductDetail');	
 
+//Cart
+Route::get('/gio-hang','CartController@showCart');
+Route::post('/saveCart','CartController@saveCart');
+Route::get('/delete-cart/{rowId}', 'CartController@deleteCart');
 
 
 //Customers

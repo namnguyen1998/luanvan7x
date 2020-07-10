@@ -1,5 +1,5 @@
 @include('pages.header')
-<section class="breadcrumb-section set-bg" data-setbg="{{asset('public/frontend/img/breadcrumb.jpg')}}">
+<section class="breadcrumb-section set-bg" data-setbg="{{asset('public/frontend/img/green1.png')}}">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">
