@@ -14,7 +14,8 @@ use App\Category;
 use App\Brands;
 use App\ShippingAddress;
 use App\Products;
-use Cart;
+use App\Cart;
+//use Cart;
 session_start();
 
 
@@ -53,9 +54,59 @@ class CartController extends Controller
     	// echo '</pre>';
     	return Redirect::to('/gio-hang');
     }
-    public function deleteCart($rowId){
+    public function deleteCart1($rowId){
         Cart::update($rowId,0);
         return Redirect::to('/gio-hang');
     }
+
+    public function addCart(Request $request, $id_product){
+        $product_Info = Products::where('id_product',$id_product)->first();
+        if($product_Info !== null){
+            $oldCart = Session::get('Cart') ? Session::get('Cart') : null;
+            $newCart = new Cart($oldCart);
+            $newCart->addCart($product_Info, $id_product);
+
+            $request->session()->put('Cart', $newCart);
+            //dd(Session::get('Cart'));
+
+            return view('pages.cart_ajax');
+        }    
+    }
+
+    // public function deleteCart1(Request $request, $id_product){
+    //     $oldCart = Session::get('Cart') ? Session::get('Cart') : null;
+    //     $newCart = new Cart($oldCart);
+    //     $newCart->deleteCart($id_product);
+
+    //     if(Count($newCart->products) > 0){
+    //         $request->Session()->put('Cart', $newCart);
+    //     }
+    //     else{
+    //         $request->Session()->forget('Cart');
+    //     }
+    //     //return view('pages.giohang1');
+    // }   
+
+    public function listItemsCart(){
+        //dd(Session::get('Cart'));
+        return view ('pages.giohang2');
+    }
+
+    public function deleteItemsCart(Request $request, $id_product){
+        $oldCart = Session::get('Cart') ? Session::get('Cart') : null;
+        $newCart = new Cart($oldCart);
+        $newCart->deleteCart($id_product);
+
+        if(Count($newCart->products) > 0){
+            $request->Session()->put('Cart', $newCart);
+        }
+        else{
+            $request->Session()->forget('Cart');
+        }
+        return view('pages.cart_ajax');
+    }   
+
+
+
 }
 

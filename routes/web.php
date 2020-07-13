@@ -25,8 +25,14 @@ Route::get('/chi-tiet-san-pham/{id_product}','PagesController@getPagesProductDet
 //Cart
 Route::get('/gio-hang','CartController@showCart');
 Route::post('/saveCart','CartController@saveCart');
-Route::get('/delete-cart/{rowId}', 'CartController@deleteCart');
+// Route::get('/delete-cart/{rowId}', 'CartController@deleteCart1');
+Route::get('/list-cart','CartController@listItemsCart');
 
+Route::get('/add-cart/{id_product}','CartController@addCart');
+Route::get('/chi-tiet-san-pham/add-cart/{id_product}','CartController@addCart');
+Route::get('/delete-cart1/{id_product}', 'CartController@deleteCart1');
+
+Route::get('/delete-cart/{id_product}', 'CartController@deleteItemsCart');
 
 //Customers
 Route::get('/login','CustomerController@getLoginForm');

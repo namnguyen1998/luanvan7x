@@ -176,6 +176,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+
     ],
 
     /*
@@ -230,6 +231,7 @@ return [
 
         // Login API
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
+        
     ],
 
 ];
