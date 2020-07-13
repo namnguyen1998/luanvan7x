@@ -2,10 +2,10 @@
 @section('content')
 
 <div class="content-header sty-one">
-  <h1>Danh sách sản phẩm</h1>
+  <h1>Danh sách danh mục con</h1>
   <ol class="breadcrumb">
     <li><a href="{{URL::to('/admin-dashboard')}}">Admin</a></li>
-    <li><i class="fa fa-angle-right"></i>Danh sách danh muc con</li>
+    <li><i class="fa fa-angle-right"></i>Danh sách danh mục con</li>
   </ol>
   <div class="row">
 	  <div class="col-10 ">

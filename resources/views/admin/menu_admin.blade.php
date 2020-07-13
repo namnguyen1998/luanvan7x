@@ -21,19 +21,65 @@
             <li><a href="index-ecommerce.html"><i class="fa fa-angle-right"></i> Ecommerce</a></li>
           </ul>
         </li>
+
+        <!-- Quản lý danh muc -->
+        @if (Session::get('role_id') == 2)
         <li class="treeview"> <a href="#"> <i class="icon-grid"></i> <span>Quản lý danh mục</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span> </a>
           <ul class="treeview-menu">
-          <li><a href="{{URL::to('admin-danh-sach-danh-muc')}}"><i class="fa fa-angle-right"></i>Danh mục cha</a></li>
-            <li><a href="{{URL::to('admin-danh-sach-danh-muc-con')}}"><i class="fa fa-angle-right"></i>Danh mục con</a></li>
+          <li><a href="{{URL::to('admin-danh-sach-danh-muc')}}"><i class="fa fa-angle-right"></i> Danh mục cha</a></li>
+            <li><a href="{{URL::to('admin-danh-sach-danh-muc-con')}}"><i class="fa fa-angle-right"></i> Danh mục con</a></li>
           </ul>
         </li>
+
+        <!-- Quản lý sản phẩm -->
+        @elseif (Session::get('role_id') == 3)
         <li class="treeview"> <a href="#"> <i class="icon-grid"></i> <span>Quản lý sản phẩm</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span> </a>
           <ul class="treeview-menu">
-          <li><a href="{{URL::to('admin-list-san-pham')}}"><i class="fa fa-angle-right"></i>Tất cả sản phẩm</a></li>
-            <li><a href="{{URL::to('admin-list-san-pham-cho-duyet')}}"><i class="fa fa-angle-right"></i>Sản phẩm chờ duyệt</a></li>
+          <li><a href="{{URL::to('admin-danh-sach-san-pham')}}"><i class="fa fa-angle-right"></i> Tất cả sản phẩm</a></li>
+            <li><a href="{{URL::to('admin-danh-sach-san-pham-cho-duyet')}}"><i class="fa fa-angle-right"></i> Sản phẩm chờ duyệt</a></li>
           </ul>
         </li>
-        <li class="treeview"> <a href="#"> <i class="ti-email"></i> <span>Inbox</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span> </a>
+        
+        <!-- Quản lý nhân viên -->
+        @elseif (Session::get('role_id') == 4)
+        <li class="treeview"> <a href="#"> <i class="icon-note"></i> <span>Quản lý nhân viên</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span> </a>
+          <ul class="treeview-menu">
+            <li><a href="{{URL::to('admin-danh-sach-nhan-vien')}}"><i class="fa fa-angle-right"></i> Danh sách nhân viên</a></li>
+            <!-- <li><a href="form-validation.html"><i class="fa fa-angle-right"></i> Cấp quyền nhân viên</a></li>
+            <li><a href="form-wizard.html"><i class="fa fa-angle-right"></i> Form Wizard</a></li>
+            <li><a href="form-layouts.html"><i class="fa fa-angle-right"></i> Form Layouts</a></li>
+            <li><a href="form-uploads.html"><i class="fa fa-angle-right"></i> Form File Upload</a></li>
+            <li><a href="form-summernote.html"><i class="fa fa-angle-right"></i> Summernote</a></li> -->
+          </ul>
+        </li>
+
+        <!-- Quản lý Shop -->
+        @elseif (Session::get('role_id') == 5)
+        <li class="treeview"> <a href="#"> <i class="fa fa-table"></i> <span>Quản lý Shop</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span> </a>
+          <ul class="treeview-menu">
+            <li><a href="{{URL::to('admin-danh-sach-shop')}}"><i class="fa fa-angle-right"></i> Danh sách Shop</a></li>
+            <li><a href="{{URL::to('admin-danh-sach-shop-cho-phe-duyet')}}"><i class="fa fa-angle-right"></i> DS Shop chờ phê duyệt</a></li>
+            <li><a href="{{URL::to('admin-danh-sach-shop-tam-ngung-hoat-dong')}}"><i class="fa fa-angle-right"></i> DS Shop bị tạm ngưng hoạt động</a></li>
+            <!-- <li><a href="table-jsgrid.html"><i class="fa fa-angle-right"></i> Js Grid Table</a></li> -->
+          </ul>
+        </li>
+
+        <!-- Admin -->
+        @else
+        <li class="treeview"> <a href="#"> <i class="icon-grid"></i> <span>Quản lý danh mục</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span> </a>
+          <ul class="treeview-menu">
+          <li><a href="{{URL::to('admin-danh-sach-danh-muc')}}"><i class="fa fa-angle-right"></i> Danh mục cha</a></li>
+            <li><a href="{{URL::to('admin-danh-sach-danh-muc-con')}}"><i class="fa fa-angle-right"></i> Danh mục con</a></li>
+          </ul>
+        </li>
+
+        <li class="treeview"> <a href="#"> <i class="icon-grid"></i> <span>Quản lý sản phẩm</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span> </a>
+          <ul class="treeview-menu">
+          <li><a href="{{URL::to('admin-danh-sach-san-pham')}}"><i class="fa fa-angle-right"></i> Tất cả sản phẩm</a></li>
+            <li><a href="{{URL::to('admin-danh-sach-san-pham-cho-duyet')}}"><i class="fa fa-angle-right"></i> Sản phẩm chờ duyệt</a></li>
+          </ul>
+        </li>
+        <!-- <li class="treeview"> <a href="#"> <i class="ti-email"></i> <span>Inbox</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span> </a>
           <ul class="treeview-menu">
             <li><a href="apps-mailbox.html"><i class="fa fa-angle-right"></i> Mailbox</a></li>
             <li><a href="apps-mailbox-detail.html"><i class="fa fa-angle-right"></i> Mailbox Detail</a></li>
@@ -59,27 +105,29 @@
             <li><a href="ui-list-media.html"><i class="fa fa-angle-right"></i> List Media</a></li>
             <li><a href="ui-carousel.html"><i class="fa fa-angle-right"></i> Carousel</a></li>
           </ul>
-        </li>
+        </li> -->
+
         <li class="header">FORMS, TABLE & WIDGETS</li>
-        <li class="treeview"> <a href="#"> <i class="icon-note"></i> <span>Forms</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span> </a>
+        <li class="treeview"> <a href="#"> <i class="icon-note"></i> <span>Quản lý nhân viên</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span> </a>
           <ul class="treeview-menu">
-            <li><a href="form-elements.html"><i class="fa fa-angle-right"></i> Form Elements</a></li>
-            <li><a href="form-validation.html"><i class="fa fa-angle-right"></i> Form Validation</a></li>
+            <li><a href="{{URL::to('admin-danh-sach-nhan-vien')}}"><i class="fa fa-angle-right"></i> Danh sách nhân viên</a></li>
+            <!-- <li><a href="form-validation.html"><i class="fa fa-angle-right"></i> Cấp quyền nhân viên</a></li>
             <li><a href="form-wizard.html"><i class="fa fa-angle-right"></i> Form Wizard</a></li>
             <li><a href="form-layouts.html"><i class="fa fa-angle-right"></i> Form Layouts</a></li>
             <li><a href="form-uploads.html"><i class="fa fa-angle-right"></i> Form File Upload</a></li>
-            <li><a href="form-summernote.html"><i class="fa fa-angle-right"></i> Summernote</a></li>
+            <li><a href="form-summernote.html"><i class="fa fa-angle-right"></i> Summernote</a></li> -->
           </ul>
         </li>
-        <li class="treeview"> <a href="#"> <i class="fa fa-table"></i> <span>Tables</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span> </a>
+
+        <li class="treeview"> <a href="#"> <i class="fa fa-table"></i> <span>Quản lý Shop</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span> </a>
           <ul class="treeview-menu">
-            <li><a href="table-basic.html"><i class="fa fa-angle-right"></i> Basic Tables</a></li>
-            <li><a href="table-layout.html"><i class="fa fa-angle-right"></i> Table Layouts</a></li>
-            <li><a href="table-data-table.html"><i class="fa fa-angle-right"></i> Data Tables</a></li>
-            <li><a href="table-jsgrid.html"><i class="fa fa-angle-right"></i> Js Grid Table</a></li>
+            <li><a href="{{URL::to('admin-danh-sach-shop')}}"><i class="fa fa-angle-right"></i> Danh sách Shop</a></li>
+            <li><a href="{{URL::to('admin-danh-sach-shop-cho-phe-duyet')}}"><i class="fa fa-angle-right"></i> DS Shop chờ phê duyệt</a></li>
+            <li><a href="{{URL::to('admin-danh-sach-shop-tam-ngung-hoat-dong')}}"><i class="fa fa-angle-right"></i> DS Shop bị tạm ngưng hoạt động</a></li>
+            <!-- <li><a href="table-jsgrid.html"><i class="fa fa-angle-right"></i> Js Grid Table</a></li> -->
           </ul>
         </li>
-        <li class="treeview"> <a href="#"> <i class="icon-layers"></i> <span>Widgets</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span> </a>
+        <!-- <li class="treeview"> <a href="#"> <i class="icon-layers"></i> <span>Widgets</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span> </a>
           <ul class="treeview-menu">
             <li><a href="widget-data.html"><i class="fa fa-angle-right"></i> Data Widgets</a></li>
             <li><a href="widget-apps.html"><i class="fa fa-angle-right"></i> Apps Widgets</a></li>
@@ -148,7 +196,8 @@
             </li>
             <li><a href="#"><i class="fa fa-angle-right"></i> Level One</a></li>
           </ul>
-        </li>
+        </li> -->
+        @endif
       </ul>
     </div>
     <!-- /.sidebar --> 

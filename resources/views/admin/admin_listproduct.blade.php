@@ -28,8 +28,15 @@
         <td>{{$product->email_customer}}</td>
         <td>{{$product->name_product}}</td>
         <td>{{$product->madeby}}</td>
-        <td>{{$product->price_product}}</td>
-        <td><span class="label label-success"><?php if($product->status_product == 0) echo("Đang chờ duyệt"); elseif ($product->status_product == 1) echo("Đã phê duyệt"); else echo("Từ chối duyệt"); ?></span></td>
+        <td>{{number_format($product->price_product, 0, ',', '.') . " ₫"}}</td>
+        <?php 
+              if($product->status_product == 0)
+                echo('<td><span class="label label-warning">Đang chờ duyệt</span></td>');
+              if ($product->status_product == 1)
+                echo('<td><span class="label label-success">Đã phê duyệt</span></td>');
+              if ($product->status_product == -1)
+                echo('<td><span class="label label-danger">Từ chối duyệt</span></td>')
+        ?>
        	<td>{{$product->name_sub}}</td>
         <td>{{$product->name_brand}}</td>
       </tr>

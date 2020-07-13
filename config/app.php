@@ -166,7 +166,7 @@ return [
          * Package Service Providers...
          */
         Laravel\Socialite\SocialiteServiceProvider::class,
-
+        Yajra\Datatables\DatatablesServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -175,6 +175,8 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        
+        
 
     ],
 
@@ -230,6 +232,7 @@ return [
 
         // Login API
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
+        'Datatables' => Yajra\Datatables\Facades\Datatables::class,
     ],
 
 ];

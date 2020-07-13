@@ -19,27 +19,52 @@ session_start();
 class SellerController extends Controller
 {
 	public function AuthLogin(){
-	    $customer_id = Session::get('id_customer');
-	    if($customer_id){
-	        return Redirect::to('banhang');
+	    $id_shop = Session::get('id_shop');
+	    if($id_shop){
+	        return Redirect::to('/banhang/dashboard');
 	    }else{
-	        return Redirect::to('/')->send();
+	        return Redirect::to('/banhang')->send();
 	    }
 	}
+
     public function sellerChannel(){
-        return view('users.seller.banhang_login');
-    }
+		if(!empty(Session::get('id_shop')))
+			return Redirect::to('/banhang/dashboard');
+		else
+			if(!empty(Session::get('id_customer')))
+				return view('users.seller.banhang_login');
+			else
+				return Redirect::to('/');
+	}
+	
     public function sellerDashBoard(){
     	$this->AuthLogin();
     	return view('users.seller.banhang_thongke');
-    }
+	}
+	
     public function postSellerDashBoard(Request $request){
     	$this->AuthLogin();
     	$email_shop = $request->email_shop;
     	$password_shop = md5($request->password_shop);
-    	$result = DB::table('shop')->where('email_shop', $email_shop)->where('password_shop', $password_shop)->first();
-    		Session::put('name_shop',$result->name_shop);
-    		Session::put('img_shop',md5($result->img_shop));
-    	return Redirect::to('/banhang/dashboard');
+    	$result = DB::table('shop')
+					->where('email_shop', $email_shop)
+					->where('password_shop', $password_shop)
+					->where('status_shop', '=', 1)
+					->first();
+		if(!empty($result)){
+			Session::put('name_shop',$result->name_shop);
+			Session::put('img_shop',$result->img_shop);
+			Session::put('id_shop',$result->id_shop);
+			return Redirect::to('/banhang/dashboard');
+		}
+		else
+			return Redirect::to('/banhang');
+		
+	}
+	
+    public function logoutShop(){
+    	$this->AuthLogin();
+    	Session::forget('id_shop');
+    	return Redirect::to('/');
     }
 }
