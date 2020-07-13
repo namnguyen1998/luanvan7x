@@ -280,7 +280,7 @@ class AdminController extends Controller
         // $role_id == 5 Quản lý Shop
 
         if($role_id == 2)
-            return Request::to('/admin-danh-sach-danh-muc');
+            return redirect::to('/admin-danh-sach-danh-muc');
         elseif($role_id == 3)
             return redirect::to('/admin-danh-sach-san-pham');
         elseif($role_id == 4)
