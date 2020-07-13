@@ -35,7 +35,7 @@
                     <div class="col-lg-6 col-md-6">
                         <div class="header__top__left">
                             <ul>
-                              @if(Session::get('id_customer'))
+                              @if(Session::get('customer')!=null)
                                 <li>
                                 <a href="{{URL::to('/banhang')}}">
                                     <i class="fa fa-hand-o-right"></i>Kênh bán hàng</li>
@@ -55,11 +55,15 @@
                                 <a href="#"><i class="fa fa-linkedin"></i></a>
                                 <a href="#"><i class="fa fa-pinterest-p"></i></a>
                             </div>
-                            @if(Session::get('id_customer'))
+                            @if(Session::get('customer')!=null)
                             <div class="header__top__right__language">
                                 <div>
                                 <i class="fa fa-user"></i>
-                                {{Session::get('name_customer')}}
+                                @if(Session::get('customer')->name_customer != null)
+                                    {{Session::get('customer')->name_customer}}
+                                @else
+                                    {{Session::get('customer')->email_customer}}
+                                @endif
                                 <span class="arrow_carrot-down"></span>
                                 <ul>
                                     <li><a href="{{URL::to('/profile')}}">Hồ sơ của tôi</a></li>
@@ -68,7 +72,7 @@
                                 </div>
                             </div>
                             @endif
-                            @if(Session::get('id_customer')==null)                   
+                            @if(Session::get('customer')==null)                   
                             <div class="header__top__right__auth">
                                 <a href="{{URL::to('login')}}"><i class="fa fa-user"></i>Login</a>
                             </div>

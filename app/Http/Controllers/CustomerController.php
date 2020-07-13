@@ -53,7 +53,9 @@ class CustomerController extends Controller
     	$result = Customers::where('email_customer', $email)->where('password_customer',$password)->first();
         
     	if($result){
-            Session::put('customer',$result);
+            Session::put('name_customer',$result->name_customer);
+            Session::put('email_customer',$result->email_customer);
+
             if(!empty($result->name_customer))
                 Session::put('name_customer',$result->name_customer);
             else
