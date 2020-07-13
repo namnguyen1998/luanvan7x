@@ -42,10 +42,10 @@
   <div class="login-box-body">
     <h3 class="login-box-msg">Sign In</h3>
     
-    <form action="{{URL::to('/admin-dashboard')}}" method="post">
+    <form action="{{URL::to('/admin-post-login')}}" method="post">
     {{ csrf_field() }}
       <div class="form-group has-feedback">
-        <input type="email" class="form-control sty1" name="_username_user" placeholder="Email">
+        <input type="" class="form-control sty1" name="_username_user" placeholder="Email or User">
       </div>
       <div class="form-group has-feedback">
         <input type="password" class="form-control sty1" name="_password_user" placeholder="Password">

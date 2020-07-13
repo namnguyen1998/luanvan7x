@@ -64,21 +64,11 @@ Route::get('/callback', 'CustomerController@handleProviderCallback');
 
 // Admin
 Route::get('/admin', 'AdminController@getLoginAdmin');
-Route::get('/admin/dashboard', 'AdminController@dashboard');
-Route::get('admin/list-san-pham-cho-duyet','AdminController@listProductsPending');
-Route::get('admin/list-san-pham','AdminController@listProductsApprove');
-// Route::post('/postLogin','AdminController@postLoginAdmin');
-Route::post('/admin-dashboard','AdminController@postLoginAdmin');
-// Route::get('/admin-them-san-pham','AdminController@setAddProduct');
-// Route::get('/admin-danh-sach-sub','AdminController@getSubCategory');
-Route::get('/admin-them','AdminController@saveProduct');
-
-Route::post('/admin-dashboard','AdminController@postLoginAdmin');;
-Route::get('admin-list-san-pham-cho-duyet','AdminController@listProductsPending');
-Route::get('admin-list-san-pham', 'AdminController@listProductsApprove');
-Route::get('/admin-them-san-pham', 'AdminController@setAddProduct');
-Route::get('/admin-danh-sach-sub', 'AdminController@getSubCategory');
-Route::get('/admin-them', 'AdminController@saveProduct');
+Route::post('/admin-post-login','AdminController@postLoginAdmin');
+Route::get('/admin-dashboard','AdminController@showDashboard');
+Route::get('/logout-admin','AdminController@logOutAdmin');
+Route::get('admin-danh-sach-san-pham', 'AdminController@listProduct');
+Route::get('admin-danh-sach-san-pham-cho-duyet','AdminController@listProductApprove');
 Route::get('/admin-danh-sach-danh-muc', 'AdminController@listCategory');
 Route::get('/admin-them-danh-muc', 'AdminController@addCategory');
 Route::post('/admin-save-danh-muc', 'AdminController@saveCategory');
@@ -89,4 +79,18 @@ Route::get('/admin-them-danh-muc-con', 'AdminController@addSub');
 Route::post('/admin-save-danh-muc-con', 'AdminController@saveSub');
 Route::get('/admin-sua-danh-muc-con/{id_sub}', 'AdminController@editSub');
 Route::post('/admin-update-danh-muc-con/{id_sub}', 'AdminController@updateSub');
+Route::get('/admin-danh-sach-duyet-san-pham','AdminController@listProductApprove');
+Route::post('/admin-duyet-san-pham/{id_product}', 'AdminController@editAgree');
+Route::post('/admin-tu-choi-duyet-san-pham/{id_product}', 'AdminController@editRefuse');
+Route::get('/admin-danh-sach-shop', 'AdminController@listShop');
+Route::get('/admin-danh-sach-shop-cho-phe-duyet', 'AdminController@listShopApprove');
+Route::post('/admin-duyet-shop/{id_shop}', 'AdminController@editAgreeShop');
+Route::get('/admin-danh-sach-shop-tam-ngung-hoat-dong', 'AdminController@listShopBlock');
 
+Route::get('/admin-danh-sach-nhan-vien', 'AdminController@listUser');
+Route::get('/admin-them-nhan-vien', 'AdminController@addUser');
+Route::post('/admin-save-nhan-vien', 'AdminController@saveUser');
+Route::get('/admin-sua-quyen-nhan-vien/{id_users}', 'AdminController@editApproveUser');
+Route::post('/admin-update-nhan-vien/{id_users}', 'AdminController@updateApproveUser');
+Route::get('/admin-doi-mat-khau/{id_users}', 'AdminController@loadPasswordUser');
+Route::post('/admin-update-password-nhan-vien/{id_users}', 'AdminController@updatePasswordUser');
