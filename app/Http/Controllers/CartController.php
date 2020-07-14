@@ -72,6 +72,19 @@ class CartController extends Controller
             return view('pages.cart_ajax');
         }    
     }
+    public function addCartQuantity(Request $request, $id_product, $quantity){
+        $product_Info = Products::where('id_product',$id_product)->first();
+        if($product_Info !== null){
+            $oldCart = Session::get('Cart') ? Session::get('Cart') : null;
+            $newCart = new Cart($oldCart);
+            $newCart->addCartQuantity($product_Info, $id_product, $quantity);
+
+            $request->session()->put('Cart', $newCart);
+            //dd(Session::get('Cart'));
+
+            return view('pages.cart_ajax');
+        }    
+    }
 
     // public function deleteCart1(Request $request, $id_product){
     //     $oldCart = Session::get('Cart') ? Session::get('Cart') : null;
@@ -106,7 +119,26 @@ class CartController extends Controller
         return view('pages.cart_ajax');
     }   
 
+    public function saveItemsCart(Request $request, $id_product, $quantity){
+        $oldCart = Session::get('Cart') ? Session::get('Cart') : null;
+        $newCart = new Cart($oldCart);
+        $newCart->updateCart($id_product,$quantity);
 
+        $request->Session()->put('Cart', $newCart);
+        return view('pages.cart_ajax');
+    }
 
+    public function saveAllCart(Request $request){
+
+        $data = $request->data;
+        foreach ($request->data as $item){
+            $oldCart = Session::get('Cart') ? Session::get('Cart') : null;
+            $newCart = new Cart($oldCart);
+            $newCart->updateCart($item["key"], $item["value"]);
+            $request->Session()->put('Cart', $newCart);
+        }
+       
+        // return view('pages.cart_ajax');
+    }
 }
 

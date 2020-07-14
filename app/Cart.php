@@ -19,6 +19,28 @@ class Cart extends Model
     	}
     	
     }
+    public function addCartQuantity($product, $id, $quantity){
+        $newProduct = ['quantity' => 0, 'price' =>$product->price_product,'productInfo'=>$product];
+        if($this->products){
+            if(array_key_exists($id,$this->products)){
+                $newProduct = $this->products[$id];
+            }
+        }
+        $newProduct['quantity']++;
+        $newProduct['price'] = $newProduct['quantity']*$product->price_product;
+        $this->products[$id] = $newProduct;
+        $this->totalPrice += $product->price_product;
+        $this->totalQuantity++;
+
+        $this->totalQuantity -= $this->products[$id]['quantity'];
+        $this->totalPrice -= $this->products[$id]['price'];
+
+        $this->products[$id]['quantity'] = $quantity;
+        $this->products[$id]['price'] = $quantity * $this->products[$id]['productInfo']->price_product;
+
+        $this->totalQuantity += $this->products[$id]['quantity'];
+        $this->totalPrice += $this->products[$id]['price'];
+    }
     public function addCart($product, $id){
     	$newProduct = ['quantity' => 0, 'price' =>$product->price_product,'productInfo'=>$product];
     	if($this->products){
@@ -36,5 +58,15 @@ class Cart extends Model
     	$this->totalQuantity -= $this->products[$id]['quantity']; 
     	$this->totalPrice -= $this->products[$id]['price'];
     	unset($this->products[$id]); 
+    }
+    public function updateCart($id, $quantity){
+        $this->totalQuantity -= $this->products[$id]['quantity'];
+        $this->totalPrice -= $this->products[$id]['price'];
+
+        $this->products[$id]['quantity'] = $quantity;
+        $this->products[$id]['price'] = $quantity * $this->products[$id]['productInfo']->price_product;
+
+        $this->totalQuantity += $this->products[$id]['quantity'];
+        $this->totalPrice += $this->products[$id]['price'];
     }
 }

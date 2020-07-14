@@ -27,12 +27,13 @@ Route::get('/gio-hang','CartController@showCart');
 Route::post('/saveCart','CartController@saveCart');
 // Route::get('/delete-cart/{rowId}', 'CartController@deleteCart1');
 Route::get('/list-cart','CartController@listItemsCart');
-
+//Ajax
 Route::get('/add-cart/{id_product}','CartController@addCart');
-Route::get('/chi-tiet-san-pham/add-cart/{id_product}','CartController@addCart');
-Route::get('/delete-cart1/{id_product}', 'CartController@deleteCart1');
-
+Route::get('/chi-tiet-san-pham/add-cart-quantity/{id_product}/{quantity}','CartController@addCartQuantity');
+//Route::get('/delete-cart1/{id_product}', 'CartController@deleteCart1');
 Route::get('/delete-cart/{id_product}', 'CartController@deleteItemsCart');
+Route::get('/save-item-cart/{id_product}/{quantity}','CartController@saveItemsCart');
+Route::post('/save-all-cart','CartController@saveAllCart');
 
 //Customers
 Route::get('/login','CustomerController@getLoginForm');

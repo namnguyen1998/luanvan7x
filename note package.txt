@@ -1,0 +1,11 @@
++ Load Datatables Ajax:
+	composer require yajra/laravel-datatables-oracle
+
++ Captcha:
+	composer require google/recaptcha
+
++ Login Google
+	composer require laravel/socialite
++ Cart Bumbum:
+	composer require bumbummen99/shoppingcart
+NOTE: e sợ xóa package phát sinh lỗi nên để đó đi k có xài tới =)))

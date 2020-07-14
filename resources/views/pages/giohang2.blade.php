@@ -30,6 +30,7 @@
                                     <th>Price</th>
                                     <th>Quantity</th>
                                     <th>Total</th>
+                                    <th>Update</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -46,13 +47,16 @@
                                     </td>
                                     <td class="shoping__cart__quantity">
                                         <div class="quantity">
-                                            <div class="pro-qty1">
-                                                <input type="number" min="0" max="100" value="{{$item['quantity']}}">
+                                            <div class="pro-qty">
+                                                <input data-id="{{$item['productInfo']->id_product}}" id="quantity-item-{{$item['productInfo']->id_product}}" type="number" min="0" max="100" value="{{$item['quantity']}}">
                                             </div>
                                         </div>
                                     </td>
                                     <td class="shoping__cart__total">
                                         {{number_format($item['price'])}}VNĐ
+                                    </td>
+                                    <td class="shoping__cart__item__save" >
+                                        <span class="fa fa-floppy-o" style="margin-left:40px;margin-right:40px"onclick="saveItemsCart({{$item['productInfo']->id_product}});"></span>
                                     </td>
                                     <td class="shoping__cart__item__close" id="change-items-cart">
                                         <span class="icon_close" onclick="deleteItemsCart({{$item['productInfo']->id_product}});"></span>
@@ -69,7 +73,7 @@
                 <div class="col-lg-12">
                     <div class="shoping__cart__btns">
                         <a href="#" class="primary-btn cart-btn">CONTINUE SHOPPING</a>
-                        <a href="#" class="primary-btn cart-btn cart-btn-right"><span class="icon_loading"></span>
+                        <a href="#" class="primary-btn cart-btn cart-btn-right" id="edit-all"><span class="icon_loading"></span>
                             Upadate Cart</a>
                     </div>
                 </div>
@@ -88,8 +92,8 @@
                     <div class="shoping__checkout">
                         <h5>Cart Total</h5>
                         <ul>
-                            <li>Subtotal <span>$454.98</span></li>
                             @if(Session::get('Cart')!=null)
+                            <li>Total Quantity<span>{{Session::get('Cart')->totalQuantity}}</span></li>
                              <li>Total <span>{{number_format(Session::get('Cart')->totalPrice)}} VND</span></li>
                             @endif
                             
@@ -115,7 +119,40 @@
             alertify.success('Xóa sản phẩm thành công');
                     
         }
-        
+        function saveItemsCart(id){
+            //console.log($("#quantity-item-"+id).val());
+            $.ajax({
+                url:'save-item-cart/'+id+'/'+$("#quantity-item-"+id).val(),
+                type:'GET',
+            }).done(function(response){               
+               $("#list-cart").empty();
+               $("#list-cart").html(response);
+            });
+            alertify.success('Cập nhật sản phẩm thành công');
+                    
+        }
+        $("#edit-all").on("click", function(){
+            var list = [];
+            $("table tbody tr td").each(function(){
+                $(this).find("input").each(function(){
+                    var element = {key: $(this).data("id"), value: $(this).val()};
+                    list.push(element);
+                });
+            });
+            $.ajax({
+                url:'save-all-cart',
+                type:'POST',
+                data:{
+                    "_token" : "{{ csrf_token() }}",
+                    "data" : list
+                }
+            }).done(function(response){               
+               location.reload(); 
+            });
+            alertify.success('Cập nhật sản phẩm thành công');
+        });
+
+
     </script>
 
     <!-- Shoping Cart Section End -->

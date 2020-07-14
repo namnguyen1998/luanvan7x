@@ -36,8 +36,8 @@
                         <p>{{$product->note_product}}</p>
                             <div class="product__details__quantity">
                                 <div class="quantity">
-                                    <div class="pro-qty1">
-                                        <input type="number" name="qty"  min="1" value="1">
+                                    <div class="pro-qty">
+                                        <input type="text" name="qty"  min="1" value="1" id="quantity-item-{{$product->id_product}}">
                                         <input type="hidden" name="productid_hidden" value="{{$product->id_product}}">
                                     </div>
                                 </div>
@@ -181,9 +181,10 @@
     <script>
         function AddCart(id){
             $.ajax({
-                url:'add-cart/'+id,
+                url:'add-cart-quantity/'+id + '/' + $("#quantity-item-"+id).val(),
                 type:'GET',
             }).done(function(response){
+                
             });
             alertify.success('Đã thêm sản phẩm vào giỏ hàng');
             
