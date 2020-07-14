@@ -20,7 +20,9 @@ Route::get('/', function () {
 
 Route::get('/','PagesController@getIndex');
 Route::get('/danh-muc-{id_category}','PagesController@getPagesProductCategory');
-Route::get('/chi-tiet-san-pham/{id_product}','PagesController@getPagesProductDetail');	
+Route::get('/chi-tiet-san-pham/{id_product}','PagesController@getPagesProductDetail');
+Route::get('/danh-muc-{id_category}/sub-{id_sub}','PagesController@getProductsSubCategory');
+	
 
 //Cart
 Route::get('/gio-hang','CartController@showCart');

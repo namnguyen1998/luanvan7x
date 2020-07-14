@@ -14,11 +14,14 @@ use App\Category;
 use App\Brands;
 use Hash;
 session_start();
-
+    
 class ProductController extends Controller
 {
 	public function AuthLogin(){
-        $customer_id = Session::get('id_customer');
+        if(Session::get('id_customer')!=null)
+            $customer_id = Session::get('id_customer');
+        else
+            $customer_id = Session::get('id_shop');
         if($customer_id){
             return Redirect::to('banhang');
         }else{
@@ -63,10 +66,9 @@ class ProductController extends Controller
             return $plus;
         }
     }
-    public function checkUser(){
-        if((Session::get('provider_id'))){
-            $customer = Customers::where('provider_id',  Session::get('provider_id'))->first();
-            return $customer->id_customer;
+    public function checkShop(){
+        if((Session::get('id_shop')!=null)){
+            return Session::get('id_shop');
         }
         else
             return Session::get('id_customer');
@@ -142,7 +144,7 @@ class ProductController extends Controller
         $dataProduct['madeby'] = $req->madeby;
         $dataProduct['sub_category_id'] = $req->_id_sub_category;
         $dataProduct['brand_id'] = $req->_id_brand;
-        $dataProduct['customer_id'] = $this->checkUser();
+        $dataProduct['customer_id'] = $this->checkShop();
         $dataProduct['img_product'] = $this->setNameImage($req->img_product);
         $dataProduct['img1_product'] = $this->setNameImage($req->img1_product);
         $dataProduct['img2_product'] = $this->setNameImage($req->img2_product);
@@ -158,14 +160,14 @@ class ProductController extends Controller
     }
     public function getProductPending(){
         $this->AuthLogin();
-        $listProductsPending = DB::table('products_category')->where('customer_id','=',$this->checkUser())
+        $listProductsPending = DB::table('products_category')->where('customer_id','=',$this->checkShop())
         ->where('status_product','=',0)->where('is_deleted','=',0)->get();
         return view('users.seller.banhang_sanphamchoduyet',compact('listProductsPending'));
     }
 
     public function getListProduct(){
         $this->AuthLogin();
-        $listProducts = DB::table('products_category')->where('customer_id','=',$this->checkUser())
+        $listProducts = DB::table('products_category')->where('customer_id','=',$this->checkShop())
         ->where('status_product','=',1)->where('is_deleted','=',0)->get();
         return view('users.seller.banhang_danhsachsanpham',compact('listProducts'));
     }

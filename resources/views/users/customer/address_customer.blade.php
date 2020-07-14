@@ -14,7 +14,7 @@
                                 <label for="text-input" class=" form-control-label">Địa chỉ mặc định</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <input type="text" id="text-input" name="address_default" value="@if(Session::get('address_default')!=null) {{Session::get('customer')->address_default}} @endif" class="form-control" style="width: 280px;">
+                                <input type="text" id="text-input" name="address_default" value="@if(Session::get('address_default')!=null) {{Session::get('address_default')}} @endif" class="form-control" style="width: 280px;">
                             </div>
                         </div>
                         <div class="row form-group">
@@ -22,7 +22,7 @@
                                 <label for="email-input" class=" form-control-label">Địa chỉ khác</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <input type="text" id="text-input" name="address_customer" value="{{Session::get('customer')->address_customer}}" class="form-control"style="width: 280px;">
+                                <input type="text" id="text-input" name="address_customer" value="@if(Session::get('address_customer')!=null) {{Session::get('address_customer')}} @endif" class="form-control"style="width: 280px;">
                             </div>
                         </div>
                 <div class="card-footer" style="text-align: center;">

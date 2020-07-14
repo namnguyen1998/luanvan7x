@@ -21,8 +21,8 @@ class PagesController extends Controller
 	public function getIndex(){
         $Category = Category::all();
         $productCategory = DB::table('products_category')->where('category_id','=',1)
-        ->where('status_product','=',1)->get();
-        $listProducts = Products::where('status_product','=',1)->get();
+        ->where('status_product','=',1)->where('is_deleted','=',0)->get();
+        $listProducts = Products::where('status_product','=',1)->where('is_deleted','=',0)->get();
         //var_dump(Session::get('id_shop'));
         //var_dump($productCategory);
     	return view('pages.home',compact('Category','listProducts'));
@@ -39,5 +39,16 @@ class PagesController extends Controller
         $productByID = DB::table('products')->where('id_product','=',$id_product)->get();
         //var_dump($productByID);
         return view('pages.chitietsanpham',compact('productByID'));
+    }
+    public function getProductsSubCategory($id_category, $id_sub){
+        $subCategorybyCategory = DB::table('sub_category')->join('category','id_category','=','category_id')
+        ->where('category_id','=',$id_category)
+        ->get();
+        $products_sub = Products::where('sub_category_id','=',$id_sub)
+            ->where('status_product','=',1)
+            ->where('is_deleted','=',0)->get();
+
+        return view('pages.sanpham_sub',compact('subCategorybyCategory','products_sub'));
+        
     }
 }
