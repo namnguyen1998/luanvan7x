@@ -178,6 +178,7 @@ return [
         
         
 
+
     ],
 
     /*
@@ -232,7 +233,9 @@ return [
 
         // Login API
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
+
         'Datatables' => Yajra\Datatables\Facades\Datatables::class,
+
     ],
 
 ];

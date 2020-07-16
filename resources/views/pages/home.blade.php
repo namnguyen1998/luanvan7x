@@ -11,7 +11,7 @@
                         <ul>
                             @foreach($Category as $category)
                             <li><a href="{{URL::to('/danh-muc-'.$category->id_category)}}">
-                                <img src="{{asset('public/frontend/img/category/icon/'.$category->icon_category)}}" 
+                                <img src="{{asset('public/frontend/img/categories/'.$category->icon_category)}}" 
                                 style="padding-right:10px;width:30px"/>
                                      {{$category->name_category}}
                                 </a>
@@ -61,7 +61,7 @@
                 <div class="categories__slider owl-carousel">
                     @foreach($Category as $cat)
                     <div class="col-lg-3">
-                        <div class="categories__item set-bg" data-setbg="{{asset('public/frontend/img/category/banner/'.$cat->img_category)}}">
+                        <div class="categories__item set-bg" data-setbg="{{asset('public/frontend/img/categories/'.$cat->img_category)}}">
                             <h5><a href="#">{{$cat->name_category}}</a></h5>
                         </div>
                     </div>
@@ -99,7 +99,7 @@
                             <ul class="featured__item__pic__hover">
                                 <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                 <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                <li><a onClick="AddCart({{$product->id_product}})" href="javascript:"><i class="fa fa-shopping-cart"></i></a></li>
                             </ul>
                         </div>
                         <div class="featured__item__text">
@@ -395,7 +395,28 @@
                 </div>
             </div>
         </div>
+       @if(Session::get('Cart')!=null)
+       <input type="hidden" id="total-quantity-cart" type="number" value="{{Session::get('Cart')->totalQuantity}}">
+       @endif
     </section>
     <!-- Blog Section End -->
+    
+    <script>
+        function AddCart(id){
+            $.ajax({
+                url:'add-cart/'+id,
+                type:'GET',
+            }).done(function(response){
+                console.log(response);
+                $("#list-cart").empty();
+                $("#list-cart").html(response);
+                $("#total-quantity-show").text($("#total-quantity-cart").val());
+            });
+            alertify.success('Đã thêm sản phẩm vào giỏ hàng');
+            
+        }
+    </script>
 
    @include('pages.footer')
+
+  

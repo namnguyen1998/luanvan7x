@@ -34,15 +34,16 @@
                         </div>
                         <div class="product__details__price">{{number_format($product->price_product)}} VNĐ</div>
                         <p>{{$product->note_product}}</p>
-                        <div class="product__details__quantity">
-                            <div class="quantity">
-                                <div class="pro-qty">
-                                    <input type="text" value="1">
+                            <div class="product__details__quantity">
+                                <div class="quantity">
+                                    <div class="pro-qty">
+                                        <input type="text" name="qty"  min="1" value="1" id="quantity-item-{{$product->id_product}}">
+                                        <input type="hidden" name="productid_hidden" value="{{$product->id_product}}">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <a href="#" class="primary-btn">ADD TO CARD</a>
-                        <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
+                            <i class="fa fa-shopping-cart"><a onClick="AddCart({{$product->id_product}})" href="javascript:" style="color:black">ADD TO CARD</a></i>
+                            <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
                         <ul>
                             <li><b>Availability</b> <span>In Stock</span></li>
                             <li><b>Shipping</b> <span>01 day shipping. <samp>Free pickup today</samp></span></li>
@@ -176,5 +177,18 @@
             </div>
         </div>
     </section>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        function AddCart(id){
+            $.ajax({
+                url:'add-cart-quantity/'+id + '/' + $("#quantity-item-"+id).val(),
+                type:'GET',
+            }).done(function(response){
+                
+            });
+            alertify.success('Đã thêm sản phẩm vào giỏ hàng');
+            
+        }
+    </script>
     <!-- Related Product Section End -->
     @include('pages.footer')

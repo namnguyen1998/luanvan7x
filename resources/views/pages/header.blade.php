@@ -35,7 +35,7 @@
                     <div class="col-lg-6 col-md-6">
                         <div class="header__top__left">
                             <ul>
-                              @if(Session::get('id_customer'))
+                              @if(Session::get('id_customer')!=null)
                                 <li>
                                 <a href="{{URL::to('/banhang')}}">
                                     <i class="fa fa-hand-o-right"></i>Kênh bán hàng</li>
@@ -55,11 +55,15 @@
                                 <a href="#"><i class="fa fa-linkedin"></i></a>
                                 <a href="#"><i class="fa fa-pinterest-p"></i></a>
                             </div>
-                            @if(Session::get('id_customer'))
+                            @if(Session::get('id_customer')!=null)
                             <div class="header__top__right__language">
                                 <div>
                                 <i class="fa fa-user"></i>
-                                {{Session::get('name_customer')}}
+                                @if(Session::get('name_customer') != null)
+                                    {{Session::get('name_customer')}}
+                                @else
+                                    {{Session::get('email_customer')}}
+                                @endif
                                 <span class="arrow_carrot-down"></span>
                                 <ul>
                                     <li><a href="{{URL::to('/profile')}}">Hồ sơ của tôi</a></li>
@@ -97,11 +101,20 @@
                         </form>
                     </div>
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-3" id="total-quantity">
                     <div class="header__cart">
                         <ul>
                             <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-                            <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+                            <li><a href="{{URL::to('list-cart')}}">
+                                <i class="fa fa-shopping-bag">
+                                @if(Session::get('Cart')!=null)
+                                    <span id="total-quantity-show">{{Session::get('Cart')->totalQuantity}}</span>
+                                @else
+                                    <span id="total-quantity-show">0</span>
+                                @endif
+                                </i>
+                                </a>
+                            </li>
                         </ul>
                         <div class="header__cart__price">item: <span>$150.00</span></div>
                     </div>

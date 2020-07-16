@@ -26,7 +26,7 @@
                             <h4>CATEGORY</h4>
                             <ul>
                                 @foreach($subCategorybyCategory as $sub)
-                                <li><a href="#">{{$sub->name_sub}}</a></li>
+                                <li><a href="{{URL::to('/danh-muc-'.$sub->category_id.'/sub-'.$sub->id_sub)}}">{{$sub->name_sub}}</a></li>
                                 @endforeach
                             </ul>
                         </div>

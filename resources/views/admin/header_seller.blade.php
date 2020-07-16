@@ -133,7 +133,7 @@
             </ul>
           </li>
           <!-- User Account  -->
-          <li class="dropdown user user-menu p-ph-res"> <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <img src="{{Session::get('img_customer')}}" class="user-image" alt="User Image"> <span class="hidden-xs">{{Session::get('name_customer')}}</span> </a>
+          <li class="dropdown user user-menu p-ph-res"> <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <img src="{{asset('public/frontend/img/shop/'.Session::get('img_shop'))}}" class="user-image" alt="User Image"> <span class="hidden-xs">{{Session::get('name_shop')}}</span> </a>
             <ul class="dropdown-menu">
               <li class="user-header">
                 <div class="pull-left user-img"><img src="{{Session::get('img_customer')}}" class="img-responsive img-circle" alt="User"></div>
