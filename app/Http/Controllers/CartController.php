@@ -67,8 +67,8 @@ class CartController extends Controller
             $newCart->addCart($product_Info, $id_product);
 
             $request->session()->put('Cart', $newCart);
-            //dd(Session::get('Cart'));
-
+            // dd(Session::get('Cart'));
+            echo Session::get('Cart')->totalQuantity;
             return view('pages.cart_ajax');
         }    
     }
@@ -112,11 +112,12 @@ class CartController extends Controller
 
         if(Count($newCart->products) > 0){
             $request->Session()->put('Cart', $newCart);
+            echo Session::get('Cart')->totalQuantity;
+            return view('pages.cart_ajax');
         }
         else{
             $request->Session()->forget('Cart');
         }
-        return view('pages.cart_ajax');
     }   
 
     public function saveItemsCart(Request $request, $id_product, $quantity){
@@ -125,6 +126,7 @@ class CartController extends Controller
         $newCart->updateCart($id_product,$quantity);
 
         $request->Session()->put('Cart', $newCart);
+        echo Session::get('Cart')->totalQuantity;
         return view('pages.cart_ajax');
     }
 
