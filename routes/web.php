@@ -82,5 +82,7 @@ Route::get('/admin-them-nhan-vien', 'AdminController@addUser');
 Route::post('/admin-save-nhan-vien', 'AdminController@saveUser');
 Route::get('/admin-sua-quyen-nhan-vien/{id_users}', 'AdminController@editApproveUser');
 Route::post('/admin-update-nhan-vien/{id_users}', 'AdminController@updateApproveUser');
-Route::get('/admin-doi-mat-khau/{id_users}', 'AdminController@loadPasswordUser');
+Route::get('/admin-dat-lai-mat-khau/{id_users}', 'AdminController@loadPasswordUser');
 Route::post('/admin-update-password-nhan-vien/{id_users}', 'AdminController@updatePasswordUser');
+Route::get('/admin-doi-mat-khau', 'AdminController@changePasswordUser');
+Route::post('/admin-update-change-password-nhan-vien/{id_users}', 'AdminController@updateChangePasswordUser');

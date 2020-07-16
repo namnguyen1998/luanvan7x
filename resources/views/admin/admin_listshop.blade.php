@@ -8,9 +8,11 @@
   </ol>
 </div>
 <div class="table-responsive">
+  <?php $number = 1; ?>
   <table id="example2" class="table table-bordered table-hover" data-name="cool-table">
     <thead>
       <tr>
+        <th>STT</th>
         <th>Ngày</th>
       	<th>Tên Shop</th>
         <th>Email</th>
@@ -23,6 +25,7 @@
     @foreach($listShop as $shop)
     <tbody>
       <tr>
+        <td><?php echo $number ++ ;?></td>
       	<td>{{$shop->created_at}}</td>
         <td>{{$shop->name_shop}}</td>
         <td>{{$shop->email_shop}}</td>

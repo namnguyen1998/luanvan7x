@@ -19,6 +19,13 @@
 </div>
 </div>
 <div class="table-responsive">
+  <?php
+    if (!empty(Session::get('message'))){
+        echo'<div class = "alert-success">'.Session::get('message').'</div></br>';
+        Session::put('message', null);
+    }
+    $number = 1;
+  ?>
   <table class="table table-striped">
     <thead>
       <tr>
@@ -34,14 +41,14 @@
     <tbody>
       @foreach ($listUser as $user)
       <tr>
-        <th>{{$user->id_users}}</th>
+        <th><?php echo $number ++ ;?></th>
         <td>{{$user->name_user}}</td>
         <td>{{$user->email_user}}</td>
         <td>{{$user->phone_user}}</td>
         <td>{{$user->name_role}}</td>
         <?php if($user->id_role != 1) { ?>
           <td meth style="text-align: right"><a href="{{URL::to('/admin-sua-quyen-nhan-vien/'.$user->id_users)}}"><button class="btn"><span class="icon-wrench"></span></button></a></td>
-          <td style="text-align: right"><a href="{{URL::to('/admin-doi-mat-khau/'.$user->id_users)}}"><button class="btn"><span class="icon-wrench"></span></button></a></td>
+          <td style="text-align: right"><a href="{{URL::to('/admin-dat-lai-mat-khau/'.$user->id_users)}}"><button class="btn"><span class="icon-wrench"></span></button></a></td>
         <?php } if($user->id_role == 1) { ?>
             <td> </td><td></td>
         <?php } ?>

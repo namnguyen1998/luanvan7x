@@ -6,7 +6,7 @@
        @foreach ($loadUser as $user)
         <form action="{{URL::to('/admin-update-nhan-vien/'.$user->id_users)}}" class="form-horizontal form-bordered" enctype="multipart/form-data" method="POST" >
         
-        @csrf;
+        @csrf
         <!-- Main content -->
             <hr class="m-t-2 m-b-2">
             <div class="row m-t-3">

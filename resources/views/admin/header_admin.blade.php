@@ -139,11 +139,11 @@
                 <div class="pull-left user-img"><img src="{{asset('public/backend/dist/img/img1.jpg')}}" class="img-responsive img-circle" alt="User"></div>
                 <p class="text-left">{{Session::get('username_user')}}<small>{{Session::get('email_user')}}</small> </p>
               </li>
-              <li><a href="{{URL::to('/profile')}}"><i class="icon-profile-male"></i> Thông tin cá nhân</a></li>
+              <li><a href="{{URL::to('/thong-tin-ca-nhan')}}"><i class="icon-profile-male"></i> Thông tin cá nhân</a></li>
               <!-- <li><a href="#"><i class="icon-wallet"></i> My Balance</a></li>
               <li><a href="#"><i class="icon-envelope"></i> Inbox</a></li> -->
               <li role="separator" class="divider"></li>
-              <li><a href="{{URL::to('/profile')}}"><i class="icon-gears"></i> Cài đặt tài khoản</a></li>
+              <li><a href="{{URL::to('/admin-doi-mat-khau')}}"><i class="icon-gears"></i> Đổi mật khẩu</a></li>
               <li role="separator" class="divider"></li>
               <li><a href="{{URL::to('/logout-admin')}}"><i class="fa fa-power-off"></i> Đăng xuất</a></li>
             </ul>
