@@ -149,7 +149,10 @@ class CustomerController extends Controller
         Session::put('id_customer',$Customers->id);
         Session::put('provider_id',$Customers->id);
         Session::put('img_customer',$Customers->avatar);
-        //dd(Session::get('img_customer'));
+        Session::put('email_customer',$Customers->email);
+        //dd($Customers);
+
+
         return redirect()->to('/');
     }
 
@@ -161,6 +164,7 @@ class CustomerController extends Controller
         else
             return Session::get('id_customer');
     }
+
     //Cập nhật info customer
     public function profile(){
         $this->AuthLogin();

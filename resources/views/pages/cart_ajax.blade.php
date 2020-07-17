@@ -27,7 +27,7 @@
                                     <td class="shoping__cart__quantity">
                                         <div class="quantity">
                                             <div class="pro-qty">
-                                                <input data-id="{{$item['productInfo']->id_product}}" id="quantity-item-{{$item['productInfo']->id_product}}" type="text" min="0" max="100" value="{{$item['quantity']}}">
+                                                <input data-id="{{$item['productInfo']->id_product}}" id="quantity-item-{{$item['productInfo']->id_product}}" type="text" min="0" max="100" value="{{$item['productInfo']->id_product}}">
                                             </div>
                                         </div>
                                     </td>

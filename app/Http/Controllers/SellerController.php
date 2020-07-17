@@ -31,7 +31,7 @@ class SellerController extends Controller
 		if(!empty(Session::get('id_shop')))
 			return Redirect::to('/banhang/dashboard');
 		else
-			if(empty(Session::get('id_customer')))
+			if(!empty(Session::get('id_customer')))
 				return view('users.seller.banhang_login');
 			else
 				return Redirect::to('/');

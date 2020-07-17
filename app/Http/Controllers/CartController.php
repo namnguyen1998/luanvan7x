@@ -40,7 +40,7 @@ class CartController extends Controller
         $data['name']=$product_info->name_product;
         $data['price']=$product_info->price_product;
         $data['weight']='123';
-        $data['options']['image']=$product_info->img_product;
+        $data['options']['image']= $product_info->img_product;
     	$data['options']['shop'] = $shop_customer_product->name_shop;
         $content = Cart::content();
     	Cart::add($data);
@@ -61,16 +61,21 @@ class CartController extends Controller
 
     public function addCart(Request $request, $id_product){
         $product_Info = Products::where('id_product',$id_product)->first();
+        //$shop_customer_product = DB::table('shop_customer')->where('id_product','=',$id_product)->first();
+
         if($product_Info !== null){
             $oldCart = Session::get('Cart') ? Session::get('Cart') : null;
             $newCart = new Cart($oldCart);
             $newCart->addCart($product_Info, $id_product);
-
             $request->session()->put('Cart', $newCart);
+            
             //dd(Session::get('Cart'));
-
+        }  
+         Session::put('shop',$shop_customer_product);
+            //print_r(Session::get('shop')->img_shop);
             return view('pages.cart_ajax');
-        }    
+        
+        //print_r(Session::get('shop_name'));  
     }
     public function addCartQuantity(Request $request, $id_product, $quantity){
         $product_Info = Products::where('id_product',$id_product)->first();
@@ -81,7 +86,6 @@ class CartController extends Controller
 
             $request->session()->put('Cart', $newCart);
             //dd(Session::get('Cart'));
-
             return view('pages.cart_ajax');
         }    
     }

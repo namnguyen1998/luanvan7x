@@ -62,7 +62,7 @@
                     @foreach($Category as $cat)
                     <div class="col-lg-3">
                         <div class="categories__item set-bg" data-setbg="{{asset('public/frontend/img/categories/'.$cat->img_category)}}">
-                            <h5><a href="#">{{$cat->name_category}}</a></h5>
+                            <h5><a href="{{URL::to('/danh-muc-'.$cat->id_category)}}">{{$cat->name_category}}</a></h5>
                         </div>
                     </div>
                     @endforeach

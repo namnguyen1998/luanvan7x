@@ -280,15 +280,15 @@ class AdminController extends Controller
         // $role_id == 5 Quản lý Shop
 
         if($role_id == 2)
-            return redirect::to('/admin-danh-sach-danh-muc');
-        elseif($role_id == 3)
-            return redirect::to('/admin-danh-sach-san-pham');
-        elseif($role_id == 4)
-            return redirect::to('/admin-danh-sach-nhan-vien');
-        elseif($role_id == 5)
-            return redirect::to('/admin-danh-sach-shop');
+            return Redirect::to('/admin-danh-sach-danh-muc');
+        else if($role_id == 3)
+            return Redirect::to('/admin-danh-sach-san-pham');
+        else if($role_id == 4)
+            return Redirect::to('/admin-danh-sach-nhan-vien');
+        else if($role_id == 5)
+            return Redirect::to('/admin-danh-sach-shop');
         else
-            return redirect::to('/admin-dashboard');
+            return Redirect::to('/admin-dashboard');
     }
     
     public function checkRoleUser($dataRoleUser){
