@@ -122,12 +122,14 @@ class ProductController extends Controller
     public function saveProduct(Request $req){
         $this->validate($req, 
         [
+            'nameProduct' => 'required|unique:products,name_product',
             //Kiểm tra đúng file đuôi .jpg,.jpeg,.png.gif và dung lượng không quá 2M
             'img_product' => 'mimes:jpg,jpeg,png,gif|max:2048',
             'img1_product' => 'mimes:jpg,jpeg,png,gif|max:2048',
             'img2_product' => 'mimes:jpg,jpeg,png,gif|max:2048',
             'img3_product' => 'mimes:jpg,jpeg,png,gif|max:2048',
         ], [
+            'nameProduct.required' => 'Tên sản phẩm đã tồn tại. Vui lòng chọn tên khác',
             //Tùy chỉnh hiển thị thông báo không thõa điều kiện
             'img_product.mimes' => 'Chỉ chấp nhận với đuôi .jpg .jpeg .png .gif',
             'img_product.max' => 'Hình ảnh giới hạn dung lượng không quá 2M',
@@ -143,8 +145,9 @@ class ProductController extends Controller
         $dataProduct['name_product'] = $req->nameProduct;
         $dataProduct['madeby'] = $req->madeby;
         $dataProduct['sub_category_id'] = $req->_id_sub_category;
+        $dataProduct['slug'] = $req->slug;
         $dataProduct['brand_id'] = $req->_id_brand;
-        $dataProduct['customer_id'] = $this->checkShop();
+        $dataProduct['shop_id'] = Session::get('id_shop');
         $dataProduct['img_product'] = $this->setNameImage($req->img_product);
         $dataProduct['img1_product'] = $this->setNameImage($req->img1_product);
         $dataProduct['img2_product'] = $this->setNameImage($req->img2_product);
@@ -160,15 +163,15 @@ class ProductController extends Controller
     }
     public function getProductPending(){
         $this->AuthLogin();
-        $listProductsPending = DB::table('products_category')->where('customer_id','=',$this->checkShop())
-        ->where('status_product','=',0)->where('is_deleted','=',0)->get();
+        $listProductsPending = DB::table('products_category')->where('id_shop','=',Session::get('id_shop'))
+        ->where('is_deleted','=',0)->get();
         return view('users.seller.banhang_sanphamchoduyet',compact('listProductsPending'));
     }
 
     public function getListProduct(){
         $this->AuthLogin();
-        $listProducts = DB::table('products_category')->where('customer_id','=',$this->checkShop())
-        ->where('status_product','=',1)->where('is_deleted','=',0)->get();
+        $listProducts = DB::table('products_category')->where('id_shop','=',Session::get('id_shop'))
+        ->where('is_deleted','=',0)->get();
         return view('users.seller.banhang_danhsachsanpham',compact('listProducts'));
     }
 

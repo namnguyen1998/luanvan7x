@@ -45,8 +45,8 @@
                             <i class="fa fa-shopping-cart"><a onClick="AddCart({{$product->id_product}})" href="javascript:" style="color:black">ADD TO CARD</a></i>
                             <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
                         <ul>
-                            <li><b>Availability</b> <span>In Stock</span></li>
-                            <li><b>Shipping</b> <span>01 day shipping. <samp>Free pickup today</samp></span></li>
+                            <li><b>THÔNG TIN SHOP</b> <span>{{$product->name_shop}}</span></li>
+                            <li><b>Địa chỉ</b> <span>{{$product->address_shop}}</span></li>
                             <li><b>Weight</b> <span>0.5 kg</span></li>
                             <li><b>Share on</b>
                                 <div class="share">

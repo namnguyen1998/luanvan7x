@@ -97,3 +97,6 @@ Route::get('/admin-sua-quyen-nhan-vien/{id_users}', 'AdminController@editApprove
 Route::post('/admin-update-nhan-vien/{id_users}', 'AdminController@updateApproveUser');
 Route::get('/admin-doi-mat-khau/{id_users}', 'AdminController@loadPasswordUser');
 Route::post('/admin-update-password-nhan-vien/{id_users}', 'AdminController@updatePasswordUser');
+
+
+Route::get('/{slug_id}','PagesController@getPagesProductDetailSlug');

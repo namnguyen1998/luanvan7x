@@ -103,7 +103,7 @@
                             </ul>
                         </div>
                         <div class="featured__item__text">
-                            <h6><a href="{{URL::to('/chi-tiet-san-pham/'.$product->id_product)}}">{{$product->name_product}}</a></h6>
+                            <h6><a href="{{URL::to($product->slug)}}">{{$product->name_product}}</a></h6>
                             <h5>{{number_format($product->price_product)}} VNĐ</h5>
                         </div>
                     </div>
