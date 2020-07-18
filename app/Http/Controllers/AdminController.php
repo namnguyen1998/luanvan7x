@@ -29,6 +29,11 @@ class AdminController extends Controller
         Session::forget('email_user');
         Session::forget('username_user');
         Session::forget('role_id');
+        Session::forget('message');
+        Session::forget('res_name_user');
+        Session::forget('res_username_user');
+        Session::forget('res_email_user');
+        Session::forget('res_phone_user');
         return redirect::to('/admin');
     }
 
@@ -60,7 +65,6 @@ class AdminController extends Controller
     }
 
     // Products
-
     public function listProduct(){
         $this->AuthAdmin();
         $this->checkUrlRoleUser(Session::get('role_id'));
@@ -107,7 +111,6 @@ class AdminController extends Controller
         $dataProduct = array();
         $dataProduct['status_product'] = -1;
         DB::table('products')->where('id_product',$request->id_product)->update($dataProduct);      
-
         return response()->json(['success'=>'Product saved successfully.']);
     }
 
@@ -150,11 +153,18 @@ class AdminController extends Controller
             'imgCategory.mimes' => 'Chỉ chấp nhận với đuôi .jpg .jpeg .png .gif',
             'imgCategory.max' => 'Hình ảnh giới hạn dung lượng không quá 2M',
         ]);
-        $dataCategory = array();
-        $dataCategory['name_category'] = $req->nameCategory;
-        $dataCategory['img_category'] = $this->setNameImage($req->imgCategory);
-        DB::table('category')->insert($dataCategory);
-        return redirect::to('/admin-danh-sach-danh-muc');
+        if (empty($req->nameCategory) || empty($req->imgCategory)){
+            Session::put('message', 'Bạn chưa điền đầy đủ thông tin. Vui lòng kiểm tra lại.');
+            return redirect::to('/admin-them-danh-muc');
+        }
+        else {
+            $dataCategory = array();
+            $dataCategory['name_category'] = $req->nameCategory;
+            $dataCategory['img_category'] = $this->setNameImage($req->imgCategory);
+            DB::table('category')->insert($dataCategory);
+            Session::put('message', 'Thêm thành công.');
+            return redirect::to('/admin-danh-sach-danh-muc');
+        }
     }
 
     public function editCategory($id_category){
@@ -174,16 +184,24 @@ class AdminController extends Controller
             'imgCategory.mimes' => 'Chỉ chấp nhận với đuôi .jpg .jpeg .png .gif',
             'imgCategory.max' => 'Hình ảnh giới hạn dung lượng không quá 2M',
         ]);
-        $dataCategory = array();
-        $dataCategory['name_category'] = $req->nameCategory;
-        if (!empty($req->imgCategory))
-            $dataCategory['img_category'] = $this->setNameImage($req->imgCategory);
-        else {
-            $id_category = DB::table('category')->where('id_category', $id_category)->pluck('img_category');
-            $dataCategory['img_category'] = $id_category;
+        if (empty($req->nameCategory) || empty($req->imgCategory)){
+            Session::put('message', 'Bạn chưa điền đầy đủ thông tin. Vui lòng kiểm tra lại.');
+            return redirect::to('/admin-sua-danh-muc/'.$id_category);
         }
-        DB::table('category')->where('id_category',$id_category)->update($dataCategory);
-        return redirect::to('/admin-danh-sach-danh-muc');
+        else {
+            $dataCategory = array();
+            $dataCategory['name_category'] = $req->nameCategory;
+            if (!empty($req->imgCategory))
+                $dataCategory['img_category'] = $this->setNameImage($req->imgCategory);
+            else {
+                $id_category = DB::table('category')->where('id_category', $id_category)->pluck('img_category');
+                $dataCategory['img_category'] = $id_category;
+            }
+            DB::table('category')->where('id_category',$id_category)->update($dataCategory);
+            Session::put('message', 'Cập nhật thành công.');
+            return redirect::to('/admin-danh-sach-danh-muc');
+        }
+        
     }
 
     // Sub Categories
@@ -194,7 +212,6 @@ class AdminController extends Controller
                     ->select('sub_category.id_sub', 'sub_category.name_sub', 'category.name_category')
                     ->join('category', 'category.id_category', '=', 'sub_category.category_id')
                     ->get();
-                    
         return view('admin.admin_listsub', compact('listSub'));
     }
 
@@ -208,11 +225,18 @@ class AdminController extends Controller
     public function saveSub(Request $req){
         $this->AuthAdmin();
         $this->checkUrlRoleUser(Session::get('role_id'));
-        $dataSub = array();
-        $dataSub['name_sub'] = $req->nameSub;
-        $dataSub['category_id'] = $req->categorySub;
-        DB::table('sub_category')->insert($dataSub);
-        return redirect::to('/admin-danh-sach-danh-muc-con');
+        if (empty($req->nameSub) || empty($req->categorySub)){
+            Session::put('message', 'Bạn chưa điền đầy đủ thông tin. Vui lòng kiểm tra lại.');
+            return redirect::to('/admin-them-danh-muc-con');
+        }
+        else {
+            $dataSub = array();
+            $dataSub['name_sub'] = $req->nameSub;
+            $dataSub['category_id'] = $req->categorySub;
+            DB::table('sub_category')->insert($dataSub);
+            Session::put('message', 'Thêm thành công.');
+            return redirect::to('/admin-danh-sach-danh-muc-con');
+        }
     }
 
     public function editSub($id_sub){
@@ -230,12 +254,18 @@ class AdminController extends Controller
     public function updateSub(Request $req, $id_sub){
         $this->AuthAdmin();
         $this->checkUrlRoleUser(Session::get('role_id'));
-        $dataSub = array();
-        $dataSub['name_sub'] = $req->nameSub;
-        $dataSub['category_id'] = $req->categorySub;
-        DB::table('sub_category')->where('id_sub',$id_sub)->update($dataSub);
-        return redirect::to('/admin-danh-sach-danh-muc-con');
-
+        if (empty($req->nameSub)){
+            Session::put('message', 'Bạn chưa điền đầy đủ thông tin. Vui lòng kiểm tra lại.');
+            return redirect::to('/admin-sua-danh-muc-con/'.$id_sub);
+        }
+        else{
+            $dataSub = array();
+            $dataSub['name_sub'] = $req->nameSub;
+            $dataSub['category_id'] = $req->categorySub;
+            DB::table('sub_category')->where('id_sub',$id_sub)->update($dataSub);
+            Session::put('message', 'Cập nhật thành công.');
+            return redirect::to('/admin-danh-sach-danh-muc-con');
+        }
     }
 
     // Shop
@@ -316,15 +346,45 @@ class AdminController extends Controller
     public function saveUser(Request $req){
         $this->AuthAdmin();
         $this->checkUrlRoleUser(Session::get('role_id'));
-        $dataUser = array();
-        $dataUser['name_user'] = $req->name_user;
-        $dataUser['username_user'] = $req->username_user;
-        $dataUser['password_user'] = md5(sha1($req->password_user));
-        $dataUser['email_user'] = $req->email_user;
-        $dataUser['phone_user'] = $req->phone_user;
-        $dataUser['role_id'] = $req->role_user;
-        DB::table('users')->insert($dataUser);
-        return redirect::to('/admin-danh-sach-nhan-vien');
+        Session::put('res_name_user', $req->name_user);
+        Session::put('res_username_user', $req->username_user);
+        Session::put('res_email_user', $req->email_user);
+        Session::put('res_phone_user', $req->phone_user);
+
+        if (!empty($req->username_user) || !empty($req->email_user)){
+            $loadUser = Users::all();
+            foreach ($loadUser as $user){
+                if (strcmp($req->username_user, $user->username_user) == 0){
+                    Session::put('message', 'Tài khoản này đã tồn tại. Vui lòng kiểm tra lại.');
+                    return redirect::to('/admin-them-nhan-vien');
+                }
+                if (strcmp($req->email_user, $user->email_user) == 0){
+                    Session::put('message', 'Email này đã tồn tại. Vui lòng kiểm tra lại.');
+                    return redirect::to('/admin-them-nhan-vien');
+                }
+            }
+        }
+        if (empty($req->name_user) || empty($req->username_user)  || empty($req->password_user) 
+                                   || empty($req->email_user) || empty($req->phone_user) || empty($req->role_user)){
+            Session::put('message', 'Bạn chưa điền đầy đủ thông tin. Vui lòng kiểm tra lại.');
+            return redirect::to('/admin-them-nhan-vien');
+        }
+        else {
+            $dataUser = array();
+            $dataUser['name_user'] = $req->name_user;
+            $dataUser['username_user'] = $req->username_user;
+            $dataUser['password_user'] = md5(sha1($req->password_user));
+            $dataUser['email_user'] = $req->email_user;
+            $dataUser['phone_user'] = $req->phone_user;
+            $dataUser['role_id'] = $req->role_user;
+            DB::table('users')->insert($dataUser);
+            Session::put('message', 'Thêm thành công.');
+            Session::forget('res_name_user');
+            Session::forget('res_username_user');
+            Session::forget('res_email_user');
+            Session::forget('res_phone_user');
+            return redirect::to('/admin-danh-sach-nhan-vien');
+        }
     }
 
     public function editApproveUser($id_users){
@@ -346,6 +406,7 @@ class AdminController extends Controller
         $this->checkUrlRoleUser(Session::get('role_id'));
         $updateApproveUser['role_id'] = $req->role_user;
         DB::table('users')->where('id_users', $id_users)->update($updateApproveUser);
+        Session::put('message', 'Cập nhật thành công.');
         return redirect::to('/admin-danh-sach-nhan-vien');
     }
 
@@ -366,13 +427,55 @@ class AdminController extends Controller
     public function updatePasswordUser(Request $req, $id_users){
         $this->AuthAdmin();
         $this->checkUrlRoleUser(Session::get('role_id'));
-        if (strcmp($req->password_user, $req->confirm_password_user) == 0){
-            $updatePasswordUser['password_user'] = md5(sha1($req->password_user));
-            DB::table('users')->where('id_users', $id_users)->update($updatePasswordUser);
-            return redirect::to('/admin-danh-sach-nhan-vien');
+        if (empty($req->password_user)){
+            Session::put('message', 'Bạn chưa nhập mật khẩu. Vui lòng nhập mật khẩu.');
+            return redirect::to('/admin-dat-lai-mat-khau/'.$id_users);
         }
-        else 
-            return redirect::to('/admin-doi-mat-khau/'.$id_users);
+        else {
+            if (strcmp($req->password_user, $req->confirm_password_user) != 0){
+                Session::put('message', 'Mật khẩu nhập lại không đúng. Vui lòng nhập lại.');
+                return redirect::to('/admin-dat-lai-mat-khau/'.$id_users);
+            }
+            else {
+                $updatePasswordUser['password_user'] = md5(sha1($req->confirm_password_user));
+                DB::table('users')->where('id_users', $id_users)->update($updatePasswordUser);
+                Session::put('message', 'Cập nhật thành công.');
+                return redirect::to('/admin-danh-sach-nhan-vien');
+            }
+        }   
     }
 
+    public function changePasswordUser(){
+        $this->AuthAdmin();
+        $this->checkUrlRoleUser(Session::get('role_id'));
+        return view('admin.admin_changepassworduser');
+    }
+
+    public function updateChangePasswordUser(Request $req, $id_users){
+        $this->AuthAdmin();
+        $this->checkUrlRoleUser(Session::get('role_id'));
+        $change_password = Users::where('id_users', $id_users)->where('password_user', md5(sha1($req->password_user)))->first();
+        if (empty($change_password)){
+            Session::put('message', 'Mật khẩu cũ không đúng. Vui lòng nhập lại.');
+            return redirect::to('/admin-doi-mat-khau');
+        }
+        else {
+            if (empty($req->new_password_user)){
+                Session::put('message', 'Bạn chưa nhập mật khẩu mới. Vui lòng nhập mật khẩu mới.');
+                return redirect::to('/admin-doi-mat-khau');
+            }
+            else {
+                if(strcmp($req->new_password_user, $req->confirm_new_password_user) != 0){
+                    Session::put('message', 'Mật khẩu mới nhập lại không đúng. Vui lòng nhập lại.');
+                    return redirect::to('/admin-doi-mat-khau');
+                }
+                else {
+                    $updatePasswordUser['password_user'] = md5(sha1($req->confirm_new_password_user));
+                    DB::table('users')->where('id_users', $id_users)->update($updatePasswordUser);
+                    Session::put('message', 'Cập nhật thành công.');
+                    return redirect::to('/admin-danh-sach-nhan-vien');
+                } 
+            }
+        }
+    }
 }

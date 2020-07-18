@@ -14,11 +14,20 @@
                 </div>
 
                 <div class="card-body">
+                    <?php
+                        if(!empty(Session::get('message'))){
+                            echo'<div class = "alert-danger">'.Session::get('message').'</div></br>';
+                            Session::put('message', null);
+                        }
+                    ?>
                     <div class="form-body">
                         <div class="form-group has-feedback row">
                             <label class="control-label text-right col-md-3">Tên nhân viên*</label>
                             <div class="col-md-9">
-                                <input class="form-control col-md-12" name="name_user" placeholder="Họ và Tên" type="text">
+                                <input class="form-control col-md-12" name="name_user" value="<?php if(!empty(Session::get('res_name_user'))){
+                                                                                                    echo Session::get('res_name_user');
+                                                                                                    Session::put('res_name_user', null);
+                                                                                                } ?>" placeholder="Họ và Tên" type="text">
                                 <span class="fa ti-user form-control-feedback" aria-hidden="true"></span>
                             </div>                
                         </div>
@@ -26,7 +35,10 @@
                         <div class="form-group has-feedback row">
                             <label class="control-label text-right col-md-3">Tài khoản*</label>
                             <div class="col-md-9">
-                                <input class="form-control col-md-12" name="username_user" placeholder="Tài khoản đăng nhập" type="text">
+                                <input class="form-control col-md-12" name="username_user"  value="<?php if(!empty(Session::get('res_username_user'))){
+                                                                                                    echo Session::get('res_username_user');
+                                                                                                    Session::put('res_username_user', null);
+                                                                                                } ?>" placeholder="Tài khoản đăng nhập" type="text">
                                 <span class="fa fa-user form-control-feedback" aria-hidden="true"></span>
                             </div>                
                         </div>
@@ -42,7 +54,10 @@
                         <div class="form-group has-feedback row">
                             <label class="control-label text-right col-md-3">E-mail*</label>
                             <div class="col-md-9">
-                                <input class="form-control col-md-12" name="email_user" placeholder="Email" type="text">
+                                <input class="form-control col-md-12" name="email_user"  value="<?php if(!empty(Session::get('res_email_user'))){
+                                                                                                    echo Session::get('res_email_user');
+                                                                                                    Session::put('res_email_user', null);
+                                                                                                } ?>" placeholder="Email" type="text">
                                 <span class="fa fa-envelope-o form-control-feedback" aria-hidden="true"></span> 
                             </div>
                             
@@ -51,7 +66,10 @@
                         <div class="form-group has-feedback row">
                             <label class="control-label text-right col-md-3">Số điện thoại*</label>
                             <div class="col-md-9">
-                                <input class="form-control col-md-12" name="phone_user" placeholder="SĐT" type="text">
+                                <input class="form-control col-md-12" name="phone_user" value="<?php if(!empty(Session::get('res_phone_user'))){
+                                                                                                    echo Session::get('res_phone_user');
+                                                                                                    Session::put('res_phone_user', null);
+                                                                                                } ?>"  placeholder="SĐT" type="text">
                                 <span class="fa fa-phone form-control-feedback" aria-hidden="true"></span>
                             </div>
                             

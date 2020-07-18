@@ -407,10 +407,11 @@
                 url:'add-cart/'+id,
                 type:'GET',
             }).done(function(response){
-                console.log(response);
+                // console.log(response);
                 $("#list-cart").empty();
                 $("#list-cart").html(response);
-                $("#total-quantity-show").text($("#total-quantity-cart").val());
+                // $("#total-quantity-show").in
+                document.getElementById("total-quantity-show").innerHTML = parseInt(response)
             });
             alertify.success('Đã thêm sản phẩm vào giỏ hàng');
             

@@ -28,8 +28,7 @@ class PagesController extends Controller
     	return view('pages.home',compact('Category','listProducts'));
     }
     public function getPagesProductCategory($id_category){
-    	$productCategory = DB::table('products_category')->where('id_category','=',$id_category)
-        ->where('status_product','=',1)->get();
+    	$productCategory = DB::table('products_category')->where('id_category','=',$id_category)->get();
         $subCategorybyCategory = DB::table('sub_category')->join('category','id_category','=','category_id')
         ->where('category_id','=',$id_category)
         ->get();
@@ -53,9 +52,7 @@ class PagesController extends Controller
         $subCategorybyCategory = DB::table('sub_category')->join('category','id_category','=','category_id')
         ->where('category_id','=',$id_category)
         ->get();
-        $products_sub = Products::where('sub_category_id','=',$id_sub)
-            ->where('status_product','=',1)
-            ->where('is_deleted','=',0)->get();
+        $products_sub = Products::where('sub_category_id','=',$id_sub)->where('is_deleted','=',0)->get();
 
         return view('pages.sanpham_sub',compact('subCategorybyCategory','products_sub'));
         

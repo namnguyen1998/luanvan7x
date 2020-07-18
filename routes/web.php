@@ -22,6 +22,9 @@ Route::get('/','PagesController@getIndex');
 Route::get('/danh-muc-{id_category}','PagesController@getPagesProductCategory');
 Route::get('/chi-tiet-san-pham/{id_product}','PagesController@getPagesProductDetail');
 Route::get('/danh-muc-{id_category}/sub-{id_sub}','PagesController@getProductsSubCategory');
+
+
+Route::get('check-out','CartController@checkoutCart');
 	
 
 //Cart
@@ -31,7 +34,7 @@ Route::post('/saveCart','CartController@saveCart');
 Route::get('/list-cart','CartController@listItemsCart');
 //Ajax
 Route::get('/add-cart/{id_product}','CartController@addCart');
-Route::get('/chi-tiet-san-pham/add-cart-quantity/{id_product}/{quantity}','CartController@addCartQuantity');
+Route::get('/add-cart-quantity/{id_product}/{quantity}','CartController@addCartQuantity');
 //Route::get('/delete-cart1/{id_product}', 'CartController@deleteCart1');
 Route::get('/delete-cart/{id_product}', 'CartController@deleteItemsCart');
 Route::get('/save-item-cart/{id_product}/{quantity}','CartController@saveItemsCart');
@@ -59,6 +62,7 @@ Route::get('/san-pham-cho-duyet','ProductController@getProductPending');
 Route::get('/list-san-pham','ProductController@getListProduct');
 Route::get('/banhang','SellerController@sellerChannel');
 Route::post('/postSellerDashBoard','SellerController@postSellerDashBoard');
+Route::get('/logout-shop','SellerController@logoutShop');
 
 
 // Api login Google
@@ -95,8 +99,13 @@ Route::get('/admin-them-nhan-vien', 'AdminController@addUser');
 Route::post('/admin-save-nhan-vien', 'AdminController@saveUser');
 Route::get('/admin-sua-quyen-nhan-vien/{id_users}', 'AdminController@editApproveUser');
 Route::post('/admin-update-nhan-vien/{id_users}', 'AdminController@updateApproveUser');
-Route::get('/admin-doi-mat-khau/{id_users}', 'AdminController@loadPasswordUser');
+Route::get('/admin-dat-lai-mat-khau/{id_users}', 'AdminController@loadPasswordUser');
 Route::post('/admin-update-password-nhan-vien/{id_users}', 'AdminController@updatePasswordUser');
 
 
+
 Route::get('/{slug_id}','PagesController@getPagesProductDetailSlug');
+
+Route::get('/admin-doi-mat-khau', 'AdminController@changePasswordUser');
+Route::post('/admin-update-change-password-nhan-vien/{id_users}', 'AdminController@updateChangePasswordUser');
+

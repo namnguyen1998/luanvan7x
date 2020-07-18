@@ -19,10 +19,17 @@
 </div>
 </div>
 <div class="table-responsive">
+  <?php
+    if (!empty(Session::get('message'))){
+        echo'<div class = "alert-success">'.Session::get('message').'</div></br>';
+        Session::put('message', null);
+    }
+    $number = 1;
+  ?>
   <table class="table table-striped">
     <thead>
       <tr>
-        <th scope="col">ID</th>
+        <th scope="col">STT</th>
         <th></th>
         <th></th>
         <th scope="col">Tên danh mục con</th>
@@ -33,7 +40,7 @@
     <tbody>
       @foreach ($listSub as $sub)
       <tr>
-        <th>{{$sub->id_sub}}</th>
+        <th><?php echo $number ++ ;?></th>
         <td></td>
         <td></td>
         <td>{{$sub->name_sub}}</td>

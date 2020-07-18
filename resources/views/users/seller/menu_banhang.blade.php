@@ -6,7 +6,7 @@
         <div class="image text-center"><img src="{{asset('public/frontend/img/shop/'.Session::get('img_shop'))}}" class="img-circle" alt="User Image"> </div>
         <div class="info">
           <p>{{Session::get('name_shop')}}</p>
-          <a href="#"><i class="fa fa-envelope"></i></a> <a href="{{URL::to('profile')}}"><i class="fa fa-gear"></i></a> <a href="{{URL::to('/logout')}}"><i class="fa fa-power-off"></i></a> </div>
+          <a href="#"><i class="fa fa-envelope"></i></a> <a href="{{URL::to('profile')}}"><i class="fa fa-gear"></i></a> <a href="{{URL::to('/logout-shop')}}"><i class="fa fa-power-off"></i></a> </div>
       </div>
       <!-- sidebar menu -->
       <ul class="sidebar-menu" data-widget="tree">

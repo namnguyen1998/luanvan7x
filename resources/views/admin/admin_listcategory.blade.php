@@ -19,10 +19,17 @@
 </div>
 </div>
 <div class="table-responsive">
+  <?php
+    if (!empty(Session::get('message'))){
+        echo'<div class = "alert-success">'.Session::get('message').'</div></br>';
+        Session::put('message', null);
+    }
+    $number = 1;
+  ?>
   <table class="table table-striped">
     <thead>
       <tr>
-        <th scope="col">ID</th>
+        <th scope="col">STT</th>
         <th scope="col">Tên danh mục</th>
         <th scope="col">Hình</th>
         <th style="text-align: right" scope="col">Chỉnh sửa</th>
@@ -31,7 +38,7 @@
     <tbody>
       @foreach ($listCategory as $category)
       <tr>
-        <th>{{$category->id_category}}</th>
+        <th><?php echo $number ++ ;?></th>
         <td>{{$category->name_category}}</td>
         <td>
           <?php

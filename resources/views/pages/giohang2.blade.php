@@ -115,8 +115,10 @@
             }).done(function(response){               
                $("#list-cart").empty();
                $("#list-cart").html(response);
+               document.getElementById("total-quantity-show").innerHTML = parseInt(response)
             });
             alertify.success('Xóa sản phẩm thành công');
+            // window.location.reload(true);
                     
         }
         function saveItemsCart(id){
@@ -127,6 +129,8 @@
             }).done(function(response){               
                $("#list-cart").empty();
                $("#list-cart").html(response);
+            //    console.log($("#list-cart").html(response))
+               document.getElementById("total-quantity-show").innerHTML = parseInt(response)
             });
             alertify.success('Cập nhật sản phẩm thành công');
                     

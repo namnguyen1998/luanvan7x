@@ -145,7 +145,7 @@
               <li role="separator" class="divider"></li>
               <li><a href="{{URL::to('/profile')}}"><i class="icon-gears"></i> Account Setting</a></li>
               <li role="separator" class="divider"></li>
-              <li><a href="{{URL::to('/logout')}}"><i class="fa fa-power-off"></i> Logout</a></li>
+              <li><a href="{{URL::to('/logout-shop')}}"><i class="fa fa-power-off"></i> Logout</a></li>
             </ul>
           </li>
           <!-- Control Sidebar Toggle Button -->

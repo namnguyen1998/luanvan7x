@@ -66,7 +66,7 @@
                             <div class="form-group row">
                                 <label class="control-label text-right col-md-3">Slug</label>
                                 <div class="col-md-9">
-                                <input name="slug" id="slug" class="form-control" type="text">
+                                <input name="slug" id="slug" readonly class="form-control" type="text">
                                 </div>
                             </div>
                             <div class="form-group row">

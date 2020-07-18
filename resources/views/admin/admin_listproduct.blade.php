@@ -8,9 +8,17 @@
   </ol>
 </div>
 <div class="table-responsive">
+  <?php
+    if (!empty(Session::get('message'))){
+        echo'<div class = "alert-success">'.Session::get('message').'</div></br>';
+        Session::put('message', null);
+    }
+    $number = 1;
+  ?>
   <table id="example2" class="table table-bordered table-hover" data-name="cool-table">
     <thead>
       <tr>
+        <th>STT</th>
       	<th>Ngày đăng</th>
         <th>Shop</th>
         <th>Name</th>
@@ -24,6 +32,7 @@
     @foreach($listProductsApprove as $product)
     <tbody>
       <tr>
+        <td><?php echo $number ++ ;?></td>
       	<td>{{$product->created_at}}</td>
         <td>{{$product->email_customer}}</td>
         <td>{{$product->name_product}}</td>

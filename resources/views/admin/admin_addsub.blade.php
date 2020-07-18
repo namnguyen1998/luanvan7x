@@ -13,8 +13,13 @@
                     <div class="card-header bg-blue">
                     <h5 class="m-b-0">Thông tin khác</h5>
                     </div>
-
                     <div class="card-body">
+                        <?php
+                            if(!empty(Session::get('message'))){
+                                echo'<div class = "alert-danger">'.Session::get('message').'</div></br>';
+                                Session::put('message', null);
+                            }
+                        ?>
                         <div class="form-body">
                             <div class="form-group row">
                                 <label class="control-label text-right col-md-3">Tên sản danh mục</label>

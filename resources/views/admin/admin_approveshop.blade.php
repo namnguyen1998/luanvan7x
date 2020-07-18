@@ -3,9 +3,6 @@
 <link rel="stylesheet" href="{{asset('public/backend/dist/css/bootstrap.min.css')}}">
 <link rel="stylesheet" href="{{asset('public/backend/dist/css/jquery.dataTables.min.css')}}"/>
 
-
-
-
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <div class="content-wrapper"> 
     <div class="table-responsive">
@@ -22,7 +19,6 @@
                 <table class="table table-striped" id="listApproveShop">
                     <thead>
                         <tr>
-                            
                             <th>STT</th>
                             <th>Ngày đăng ký</th>
                             <th>Tên Shop</th>
@@ -34,7 +30,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                        
                     </tbody>
                 </table>
             </div>

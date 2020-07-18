@@ -105,6 +105,7 @@ class CustomerController extends Controller
         Session::forget('email_shop');
         Session::forget('img_shop');
         Session::forget('id_shop');
+        Session::forget('Cart');
         return Redirect::to('/');
     }
     // Login Google Api
