@@ -23,6 +23,12 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="shoping__cart__table">
+                    <?php
+                        if (!empty(Session::get('message'))){
+                            echo'<div class = "alert-danger">'.Session::get('message').'</div></br>';
+                            Session::put('message', null);
+                        }
+                    ?>
                         <table>
                             <thead>
                                 <tr>
@@ -98,15 +104,14 @@
                             @endif
                             
                         </ul>
-                        <a href="#" class="primary-btn">PROCEED TO CHECKOUT</a>
+                        <a href="{{URL::to('/thanh-toan')}}" class="primary-btn">TIẾN HÀNH THANH TOÁN</a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-
+    
+    <script src="{{asset('public/frontend/js/jquery-3.3.1.min.js')}}"></script>
     <script type="text/javascript">
         function deleteItemsCart(id){
             $.ajax({
@@ -160,4 +165,4 @@
     </script>
 
     <!-- Shoping Cart Section End -->
-<!-- @include('pages.footer') -->
+@include('pages.footer')

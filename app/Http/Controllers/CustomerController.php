@@ -199,21 +199,31 @@ class CustomerController extends Controller
     }
     public function getAddressCustomer(){
         $this->AuthLogin();
-        $addressCustomer = ShippingAddress::where('customer_id','=',$this->checkUser())->first();
-        Session::put('address_default',$addressCustomer->address_default);
-        Session::put('address_customer',$addressCustomer->address_customer);
-        // var_dump($addressCustomer);
-        return view('users.customer.address_customer',compact('addressCustomer'));
+        $addressCustomer = ShippingAddress::where('customer_id','=',$this->checkUser())->get();
+        $addressDefault = ShippingAddress::where('customer_id','=',$this->checkUser())->where('status_default', '=', 1)->pluck('address_customer');
+        // dd($addressDefault);
+        return view('users.customer.address_customer',compact('addressCustomer', 'addressDefault'));
     }
 
     public function updateAddressCustomer(Request $request){
         $this->AuthLogin();
-        $addressCustomer = array();
-        $addressCustomer['address_customer'] = $request->address_customer;
-        $addressCustomer['address_default']  = $request->address_default;
-        $addressCustomer['customer_id'] = $this->checkUser();
-        DB::table('shipping_address')->where('customer_id',$this->checkUser())->update($addressCustomer);
-        //var_dump($this->checkUser());
+        if (!empty($request->new_address_default)){
+            $status_default['status_default'] = 0;
+            DB::table('shipping_address')->where('status_default', '=', 1)->where('customer_id',$this->checkUser())->update($status_default);
+
+            $dataAddress['address_customer'] = $request->new_address_default;
+            $dataAddress['customer_id'] = $this->checkUser();
+            $dataAddress['status_default'] = 1;
+            DB::table('shipping_address')->where('customer_id',$this->checkUser())->insert($dataAddress);
+        }
+        else {
+            $status_default['status_default'] = 0;
+            DB::table('shipping_address')->where('status_default', '=', 1)->where('customer_id',$this->checkUser())->update($status_default);
+
+            $addressCustomer['status_default']  = 1;
+            $addressCustomer['customer_id'] = $this->checkUser();
+            DB::table('shipping_address')->where('id_address', '=', $request->address_default)->update($addressCustomer);
+        }
         return Redirect::to('/profile/address');
     }
 

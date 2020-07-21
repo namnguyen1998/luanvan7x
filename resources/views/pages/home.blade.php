@@ -411,6 +411,7 @@
                 $("#list-cart").empty();
                 $("#list-cart").html(response);
                 // $("#total-quantity-show").in
+                console.log(response)
                 document.getElementById("total-quantity-show").innerHTML = parseInt(response)
             });
             alertify.success('Đã thêm sản phẩm vào giỏ hàng');

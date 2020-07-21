@@ -15,6 +15,9 @@ use App\Brands;
 use App\ShippingAddress;
 use App\Products;
 use App\Cart;
+use Illuminate\Contracts\Session\Session as SessionSession;
+use Illuminate\Support\Facades\Session as FacadesSession;
+
 //use Cart;
 session_start();
 
@@ -72,7 +75,6 @@ class CartController extends Controller
             
             //dd(Session::get('Cart'));
         }  
-         Session::put('shop',$shop_customer_product);
             //print_r(Session::get('shop')->img_shop);
             // dd(Session::get('Cart'));
             echo Session::get('Cart')->totalQuantity;
@@ -151,7 +153,81 @@ class CartController extends Controller
         // return view('pages.cart_ajax');
     }
     public function checkoutCart(){
-        return view('pages.checkout_cart');
+        if (!empty( Session::get('id_customer'))){
+            $loadShippingAddrees = DB::table('shipping_address')->where('customer_id', $this->checkUser())->where('status_default', '=', 1)->first();
+            return view('pages.checkout_cart', compact('loadShippingAddrees'));
+        }
+        else {
+            Session::put('message', 'Bạn chưa đăng nhập. Vui lòng đăng nhập để tiến hành thanh toán.');
+            return redirect('/list-cart');
+        }
+    }
+
+    public function checkUser(){
+        if((Session::get('provider_id'))){
+            $customer = Customers::where('provider_id',  Session::get('provider_id'))->pluck('id_customer')->first();
+            return $customer;
+        }
+        else
+            return Session::get('id_customer');
+    }
+
+    public function saveCheckoutCart(Request $req){
+        if (empty( Session::get('id_customer'))){
+            return redirect('/list-cart');
+        }
+        else {
+            if ($req->totalShip == null){
+                Session::put('message', 'Bạn chưa chọn hình thức bạn chuyển. Vui lòng chọn để tiến hành thanh toán.');
+                return redirect('/thanh-toan');
+            }
+            else{
+                if (empty($req->_address)){
+                    $dataShipping['customer_id'] = $this->checkUser();
+                    $dataShipping['name_recipient'] = $req->_name;
+                    $dataShipping['phone_recipient'] = $req->_phone;
+                    $dataShipping['status_default'] = 1;
+                    $dataShipping['address_customer'] = (string)$req->_street . ', ' . $req->_district . ', ' . $req->_city;
+                    DB::table('shipping_address')->insert($dataShipping);
+
+                    $addressShipping_id = DB::select("SHOW TABLE STATUS LIKE 'shipping_address'");
+                    $dataOrder['address_order'] = $addressShipping_id[0]->Auto_increment -1;
+                    $dataOrder['note'] = $req->_note;
+                    $dataOrder['shipping cost'] = $req->totalShip;
+                    $dataOrder['price_orders'] = $req->totalTotal;
+                    $dataOrder['customer_id'] = $this->checkUser();
+                    DB::table('orders')->insert($dataOrder);
+
+                    $order_id = DB::select("SHOW TABLE STATUS LIKE 'orders'");
+                    foreach (Session::get('Cart')->products as $product){
+                        $dataOrderDetail['orders_id'] = $order_id[0]->Auto_increment -1;
+                        $dataOrderDetail['product_id'] = $product['productInfo']->id_product;
+                        $dataOrderDetail['quantity'] = $product['quantity'];
+                        DB::table('order_detail')->insert($dataOrderDetail);
+                    }
+                }
+
+                else {
+                    $order_id = DB::select("SHOW TABLE STATUS LIKE 'orders'");
+                    $dataOrder['address_order'] = $req->_address;
+                    $dataOrder['note'] = $req->_note;
+                    $dataOrder['shipping cost'] = $req->totalShip;
+                    $dataOrder['price_orders'] = $req->totalTotal;
+                    $dataOrder['customer_id'] = $this->checkUser();
+                    DB::table('orders')->insert($dataOrder);
+
+                    foreach (Session::get('Cart')->products as $product){
+                        $dataOrderDetail['orders_id'] = $order_id[0]->Auto_increment;
+                        $dataOrderDetail['product_id'] = $product['productInfo']->id_product;
+                        $dataOrderDetail['quantity'] = $product['quantity'];
+                        DB::table('order_detail')->insert($dataOrderDetail);
+                    }
+                }
+                Session::forget('Cart');
+                Session::forget('message');
+                return view('pages.thanks_cart');
+            }
+        }
     }
 }
 

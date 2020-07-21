@@ -24,7 +24,7 @@ Route::get('/chi-tiet-san-pham/{id_product}','PagesController@getPagesProductDet
 Route::get('/danh-muc-{id_category}/sub-{id_sub}','PagesController@getProductsSubCategory');
 
 
-Route::get('check-out','CartController@checkoutCart');
+
 	
 
 //Cart
@@ -32,6 +32,11 @@ Route::get('/gio-hang','CartController@showCart');
 Route::post('/saveCart','CartController@saveCart');
 // Route::get('/delete-cart/{rowId}', 'CartController@deleteCart1');
 Route::get('/list-cart','CartController@listItemsCart');
+// Route::get('check-out','CartController@checkoutCart');
+Route::get('/thanh-toan','CartController@checkoutCart');
+Route::post('/tien-hanh-thanh-toan','CartController@saveCheckoutCart');
+
+
 //Ajax
 Route::get('/add-cart/{id_product}','CartController@addCart');
 Route::get('/add-cart-quantity/{id_product}/{quantity}','CartController@addCartQuantity');
