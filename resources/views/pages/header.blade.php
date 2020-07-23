@@ -116,7 +116,6 @@
                                 </a>
                             </li>
                         </ul>
-                        <div class="header__cart__price">item: <span>$150.00</span></div>
                     </div>
                 </div>
             </div>

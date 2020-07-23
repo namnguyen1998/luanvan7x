@@ -18,7 +18,6 @@
     <thead>
       <tr>
       	<th>Ngày đăng</th>
-        <th>ID</th>
         <th>Name</th>
         <th>Xuất sứ</th>
         <th>Giá</th>
@@ -34,7 +33,6 @@
     <tbody>
       <tr>
       	<td>{{$product->created_at}}</td>
-        <td>{{$product->id_product}}</td>
         <td>{{$product->name_product}}</td>
         <td>{{$product->madeby}}</td>
         <td>{{$product->price_product}}</td>
@@ -75,7 +73,6 @@
       			}
       			?>
         </td>
-        <td>{{$product->name_category}}</td>
        	<td>{{$product->name_sub}}</td>
         <td>{{$product->name_brand}}</td>
         <td>{!!$product->description_product!!}</td>

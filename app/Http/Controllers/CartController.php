@@ -92,6 +92,7 @@ class CartController extends Controller
 
             $request->session()->put('Cart', $newCart);
             //dd(Session::get('Cart'));
+            echo Session::get('Cart')->totalQuantity;
             return view('pages.cart_ajax');
         }    
     }

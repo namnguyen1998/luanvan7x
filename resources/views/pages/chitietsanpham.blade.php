@@ -184,7 +184,8 @@
                 url:'add-cart-quantity/'+id + '/' + $("#quantity-item-"+id).val(),
                 type:'GET',
             }).done(function(response){
-                
+                document.getElementById("total-quantity-show").innerHTML = parseInt(response)
+            
             });
             alertify.success('Đã thêm sản phẩm vào giỏ hàng');
             

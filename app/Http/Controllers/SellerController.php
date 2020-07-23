@@ -65,4 +65,15 @@ class SellerController extends Controller
     	Session::forget('id_shop');
     	return Redirect::to('/');
     }
+    public function getShop($id_shop){
+        $dataShop = DB::table('shop')->where('id_shop','=',$id_shop)->first();
+        $subCateProductShop = DB::table('products')->join('sub_category','id_sub','=','sub_category_id')
+        ->where('shop_id','=',$id_shop)->get();
+        if($dataShop != null){
+            Session::put('dataShop',$dataShop);
+
+        }
+        //dd($subCateProductShop);
+        return view('pages.shop', compact('subCateProductShop'));
+    }
 }

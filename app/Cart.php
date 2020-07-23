@@ -30,10 +30,10 @@ class Cart extends Model
         $newProduct['price'] = $newProduct['quantity']*$product->price_product;
         $this->products[$id] = $newProduct;
         $this->totalPrice += $product->price_product;
-        $this->totalQuantity++;
+        //$this->totalQuantity++;
 
-        $this->totalQuantity -= $this->products[$id]['quantity'];
-        $this->totalPrice -= $this->products[$id]['price'];
+        // $this->totalQuantity -= $this->products[$id]['quantity'];
+        // $this->totalPrice -= $this->products[$id]['price'];
 
         $this->products[$id]['quantity'] = $quantity;
         $this->products[$id]['price'] = $quantity * $this->products[$id]['productInfo']->price_product;
