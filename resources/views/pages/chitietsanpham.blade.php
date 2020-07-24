@@ -45,7 +45,9 @@
                             <i class="fa fa-shopping-cart"><a onClick="AddCart({{$product->id_product}})" href="javascript:" style="color:black">ADD TO CARD</a></i>
                             <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
                         <ul>
-                            <li><b>THÔNG TIN SHOP</b> <span>{{$product->name_shop}}</span></li>
+                            <li><b>THÔNG TIN SHOP</b> <span>{{$product->name_shop}}</span>
+                                <a href="{{URL::to('/shop-ban-hang/'.$product->id_shop)}}" class="btn btn-primary" style="margin-left:10px">Xem shop</a>
+                            </li>
                             <li><b>Địa chỉ</b> <span>{{$product->address_shop}}</span></li>
                             <li><b>Weight</b> <span>0.5 kg</span></li>
                             <li><b>Share on</b>

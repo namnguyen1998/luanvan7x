@@ -7,7 +7,7 @@
                     <h2>Organi</h2>
                     <div class="breadcrumb__option">
                         <a href="./index.html">OGANI</a>
-                        <span>Profile</span>
+                        <span>SHOP</span>
                     </div>
                 </div>
             </div>
