@@ -52,7 +52,11 @@
                             </div>
                             <div class="col-12 col-md-9">
                                 <div class="col-12 col-md-9">
+                                @if($phone_customer!=null)
                                 <label for="text-input" class=" form-control-label">********{{$phone_customer}}</label>
+                                @else
+                                <label for="text-input" class=" form-control-label"></label>
+                                @endif
                             </div>
                             </div>
                         </div>

@@ -18,26 +18,22 @@
     <thead>
       <tr>
       	<th>Ngày đăng</th>
-        <th>ID</th>
         <th>Name</th>
         <th>Xuất sứ</th>
         <th>Giá</th>
         <th>Hình</th>
         <th>Trạng thái</th>
         <th>Danh mục</th>
-        <th>Loại</th>
        	<th>Hãng</th>
-        <th>Mô tả</th>
       </tr>
     </thead>
     @foreach($listProductsPending as $product)
     <tbody>
       <tr>
       	<td>{{$product->created_at}}</td>
-        <td>{{$product->id_product}}</td>
         <td>{{$product->name_product}}</td>
         <td>{{$product->madeby}}</td>
-        <td>{{$product->price_product}}</td>
+        <td>{{ number_format($product->price_product)}}</td>
         <td>
           <img src='{{asset("public/frontend/img/product/$product->img_product")}}' height="70" width="70">
           <?php
@@ -75,10 +71,8 @@
       			}
       			?>
         </td>
-        <td>{{$product->name_category}}</td>
        	<td>{{$product->name_sub}}</td>
         <td>{{$product->name_brand}}</td>
-        <td>{!!$product->description_product!!}</td>
       </tr>
     </tbody>
      @endforeach

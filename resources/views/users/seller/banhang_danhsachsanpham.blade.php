@@ -17,16 +17,14 @@
   <table id="example2" class="table table-bordered table-hover" data-name="cool-table">
     <thead>
       <tr>
-      	<th>Ngày đăng</th>
-        <th>Name</th>
+      	<th>Ngày</th>
+        <th>Tên sản phẩm</th>
         <th>Xuất sứ</th>
         <th>Giá</th>
         <th>Hình</th>
         <th>Trạng thái</th>
         <th>Danh mục</th>
-        <th>Loại</th>
        	<th>Hãng</th>
-        <th>Mô tả</th>
       </tr>
     </thead>
     @foreach($listProducts as $product)
@@ -75,7 +73,10 @@
         </td>
        	<td>{{$product->name_sub}}</td>
         <td>{{$product->name_brand}}</td>
-        <td>{!!$product->description_product!!}</td>
+        <td>
+            <a href="{{URL::to('/update-san-pham/'.$product->id_product)}}" class="btn btn-primary fa fa-pencil"></a>
+            <a href="{{URL::to('/delete-san-pham/'.$product->id_product)}}" onclick="return confirm('Bạn có chắc muốn xóa sản phẩm này?')" class="btn btn-danger fa fa-trash-o"></a>
+        </td>
       </tr>
     </tbody>
      @endforeach

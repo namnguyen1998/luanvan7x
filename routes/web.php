@@ -65,10 +65,13 @@ Route::get('/banhang/dashboard','SellerController@sellerDashBoard');
 Route::get('/them-san-pham','ProductController@getAddProduct');
 Route::get('/danh-sach-sub','ProductController@getSubCategory');
 Route::post('/postThem','ProductController@saveProduct');
+Route::get('/update-san-pham/{id_product}','ProductController@getUpdateProduct');
+Route::get('/delete-san-pham/{id_product}','ProductController@deleteProduct');
 Route::get('/san-pham-cho-duyet','ProductController@getProductPending');
 Route::get('/list-san-pham','ProductController@getListProduct');
 Route::get('/banhang','SellerController@sellerChannel');
 Route::post('/postSellerDashBoard','SellerController@postSellerDashBoard');
+Route::post('/updateProduct/{id_product}','ProductController@updateProduct');
 Route::get('/logout-shop','SellerController@logoutShop');
 
 

@@ -190,7 +190,7 @@ class CustomerController extends Controller
         $customer->sex_customer = $_POST['sex_customer'];
         $customer->save();
         $addressDefault = array();
-        $addressDefault['address_default'] = $_POST['address_default'];
+        $addressDefault['address_customer'] = $_POST['address_default'];
         $addressDefault['customer_id'] = $this->checkUser();
         DB::table('shipping_address')->insert($addressDefault);
        

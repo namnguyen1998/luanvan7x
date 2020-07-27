@@ -68,9 +68,11 @@ class SellerController extends Controller
     public function getShop($id_shop){
         $dataShop = DB::table('shop')->where('id_shop','=',$id_shop)->first();
         
-        $subCateProductShop = DB::table('sub_category')->join('products','sub_category_id','=','id_sub')
+        $productShop = DB::table('sub_category')->join('products','sub_category_id','=','id_sub')
         ->where('shop_id','=',$id_shop)
+        ->where('is_deleted','=','0')
         ->get();
+        $categoryShop = DB::table('shop')->join('products_category','shop_id','=','id_shop')->where('id_shop','=',$id_shop)->get();
         
         $countProductsByShop = DB::table('products')->join('sub_category','id_sub','=','sub_category_id')
         ->where('shop_id','=',$id_shop)->count();
@@ -78,6 +80,6 @@ class SellerController extends Controller
             Session::put('dataShop',$dataShop);
         }
         //dd($subCateProductShop);
-        return view('pages.page_product_shop', compact('subCateProductShop','countProductsByShop'));
+        return view('pages.page_product_shop', compact('productShop','countProductsByShop','categoryShop'));
     }
 }
