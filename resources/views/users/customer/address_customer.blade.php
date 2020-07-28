@@ -34,7 +34,6 @@
 
                         <div class="col-12 col-md-9">
                             <select id="address_default" name="address_default">.
-                            <option id="_default" >{{$addressDefault[0]}}</option>
                                 @foreach ($addressCustomer as $address)
                                     <option id="_default" value="{{$address->id_address}}">{{$address->address_customer}}</option>
                                 @endforeach

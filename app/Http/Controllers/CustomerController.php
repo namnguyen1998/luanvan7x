@@ -94,6 +94,7 @@ class CustomerController extends Controller
     }
     public function logout(){
         $this->AuthLogin();
+        Session::forget('customer');
         Session::forget('id_customer');
         Session::forget('name_customer');
         Session::forget('provider_id');
@@ -169,16 +170,14 @@ class CustomerController extends Controller
     //Cập nhật info customer
     public function profile(){
         $this->AuthLogin();
-        
-        $phone_customer = substr(Session::get('phone_customer'),7);
-        $email_customer = substr(Session::get('email_customer'),0,3);
-        $customer = Customers::find($this->checkUser());
-        
-        
-        Session::put('name_customer',$customer->name_customer);
-        Session::put('sex_customer',$customer->sex_customer);
-        Session::put('phone_customer',$customer->phone_customer);
-        Session::put('email_customer',$customer->email_customer);
+        $customer = DB::table('customers')
+        ->where('id_customer','=',$this->checkUser())
+        ->first();       
+        if(!empty($customer)){
+            Session::put('customer',$customer);
+            $phone_customer = substr(Session::get('customer')->phone_customer,7);
+            $email_customer = substr(Session::get('customer')->email_customer,0,3);
+        }
         //var_dump($shop_customer);
         return view('users.customer.thongtin_customer',compact('phone_customer','email_customer'));
     }   
@@ -188,6 +187,7 @@ class CustomerController extends Controller
         $customer = Customers::find($this->checkUser());
         $customer->name_customer = $_POST['name_customer'];
         $customer->sex_customer = $_POST['sex_customer'];
+        $customer->phone_customer = $_POST['phone_customer'];
         $customer->save();
         $addressDefault = array();
         $addressDefault['address_customer'] = $_POST['address_default'];
