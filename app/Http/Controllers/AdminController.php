@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use DateTimeZone;
+use Carbon\Carbon;
 use App\Users;
 use App\Category;
 use App\Brands;
 use App\SubCategory;
 use App\Products;
+use App\Orders;
 use DataTables;
 use DB;
 
@@ -68,18 +71,17 @@ class AdminController extends Controller
     public function listProduct(){
         $this->AuthAdmin();
         $this->checkUrlRoleUser(Session::get('role_id'));
-        $listProductsApprove = DB::table('products_category')->where('status_product', '=', 1)->get();
-        return view('admin.admin_listproduct',compact('listProductsApprove'));
+        $listProductsPending = DB::table('products_category')->where('status_product', '=', 1)->get();
+        return view('admin.admin_listproduct',compact('listProductsPending'));
     }
 
-    public function listProductApprove(Request $request){
+    public function listProductPending(Request $request){
         $this->AuthAdmin();
         $this->checkUrlRoleUser(Session::get('role_id'));
         if ($request->ajax()) {
             $data = DB::table('products')
-                        ->join('customers', 'customers.id_customer', '=', 'products.customer_id')
                         ->join('brands', 'brands.id_brand', '=', 'products.brand_id')
-                        ->leftjoin('shop', 'customers.id_customer', '=', 'shop.customer_id')
+                        ->join('shop', 'products.shop_id', '=', 'shop.id_shop')
                         ->where('products.status_product', '!=', 1)
                         ->select('products.id_product', 'products.name_product', 'products.price_product', 'products.madeby', 'products.created_at', 'products.status_product', 'shop.name_shop', 'brands.name_brand')
                         ->get();
@@ -99,7 +101,6 @@ class AdminController extends Controller
     public function editAgree(Request $request){
         $this->AuthAdmin();
         $this->checkUrlRoleUser(Session::get('role_id'));
-        $dataProduct = array();
         $dataProduct['status_product'] = 1;
         DB::table('products')->where('id_product',$request->id_product)->update($dataProduct);      
         return response()->json(['success'=>'Product saved successfully.']);
@@ -108,7 +109,6 @@ class AdminController extends Controller
     public function editRefuse(Request $request){
         $this->AuthAdmin();
         $this->checkUrlRoleUser(Session::get('role_id'));
-        $dataProduct = array();
         $dataProduct['status_product'] = -1;
         DB::table('products')->where('id_product',$request->id_product)->update($dataProduct);      
         return response()->json(['success'=>'Product saved successfully.']);
@@ -158,7 +158,6 @@ class AdminController extends Controller
             return redirect::to('/admin-them-danh-muc');
         }
         else {
-            $dataCategory = array();
             $dataCategory['name_category'] = $req->nameCategory;
             $dataCategory['img_category'] = $this->setNameImage($req->imgCategory);
             DB::table('category')->insert($dataCategory);
@@ -189,7 +188,6 @@ class AdminController extends Controller
             return redirect::to('/admin-sua-danh-muc/'.$id_category);
         }
         else {
-            $dataCategory = array();
             $dataCategory['name_category'] = $req->nameCategory;
             if (!empty($req->imgCategory))
                 $dataCategory['img_category'] = $this->setNameImage($req->imgCategory);
@@ -230,7 +228,6 @@ class AdminController extends Controller
             return redirect::to('/admin-them-danh-muc-con');
         }
         else {
-            $dataSub = array();
             $dataSub['name_sub'] = $req->nameSub;
             $dataSub['category_id'] = $req->categorySub;
             DB::table('sub_category')->insert($dataSub);
@@ -259,7 +256,6 @@ class AdminController extends Controller
             return redirect::to('/admin-sua-danh-muc-con/'.$id_sub);
         }
         else{
-            $dataSub = array();
             $dataSub['name_sub'] = $req->nameSub;
             $dataSub['category_id'] = $req->categorySub;
             DB::table('sub_category')->where('id_sub',$id_sub)->update($dataSub);
@@ -276,7 +272,7 @@ class AdminController extends Controller
         return view('admin.admin_listshop', compact('listShop'));
     }
 
-    public function listShopApprove(Request $request){
+    public function listShopPending(Request $request){
         $this->AuthAdmin();
         $this->checkUrlRoleUser(Session::get('role_id'));
         if ($request->ajax()) {
@@ -290,13 +286,12 @@ class AdminController extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
         }
-        return view('admin.admin_approveshop');
+        return view('admin.admin_listshoppending');
     }
 
     public function editAgreeShop(Request $request){
         $this->AuthAdmin();
         $this->checkUrlRoleUser(Session::get('role_id'));
-        $dataShop = array();
         $dataShop['status_shop'] = 1;
         DB::table('shop')->where('id_shop',$request->id_shop)->update($dataShop);      
         return response()->json(['success'=>'Product saved successfully.']);
@@ -370,7 +365,6 @@ class AdminController extends Controller
             return redirect::to('/admin-them-nhan-vien');
         }
         else {
-            $dataUser = array();
             $dataUser['name_user'] = $req->name_user;
             $dataUser['username_user'] = $req->username_user;
             $dataUser['password_user'] = md5(sha1($req->password_user));
@@ -387,7 +381,7 @@ class AdminController extends Controller
         }
     }
 
-    public function editApproveUser($id_users){
+    public function editRoleUser($id_users){
         $this->AuthAdmin();
         $this->checkUrlRoleUser(Session::get('role_id'));
         $loadUser = DB::table('users')->where('id_users', $id_users)
@@ -401,11 +395,11 @@ class AdminController extends Controller
             return view('admin.admin_edituser', compact('loadUser', 'loadRole'));
     }
 
-    public function updateApproveUser(Request $req, $id_users){
+    public function updateRoleUser(Request $req, $id_users){
         $this->AuthAdmin();
         $this->checkUrlRoleUser(Session::get('role_id'));
-        $updateApproveUser['role_id'] = $req->role_user;
-        DB::table('users')->where('id_users', $id_users)->update($updateApproveUser);
+        $updateRoleUser['role_id'] = $req->role_user;
+        DB::table('users')->where('id_users', $id_users)->update($updateRoleUser);
         Session::put('message', 'Cập nhật thành công.');
         return redirect::to('/admin-danh-sach-nhan-vien');
     }
@@ -478,4 +472,96 @@ class AdminController extends Controller
             }
         }
     }
+
+    // Revenue
+    public function profitDashboard(){
+        $dayNow = now()->setTimezone( new DateTimeZone('Asia/Ho_Chi_Minh'));
+        $dayNow = date_format($dayNow, 'Y-m-d 23:59:59');
+        $lastMonth = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), date("d") -30, date("Y")));
+        $loadOrder = Orders::whereBetween('created_at', [$lastMonth, $dayNow])->where('status_order', '!=', -1)->get();
+        return $loadOrder->count();
+    }
+
+    public function revenueDashboard(){
+        $dayNow = now()->setTimezone( new DateTimeZone('Asia/Ho_Chi_Minh'));
+        $dayNow = date_format($dayNow, 'Y-m-d 23:59:59');
+        $lastMonth = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), date("d") -30, date("Y")));
+        $loadOrder = Orders::whereBetween('created_at', [$lastMonth, $dayNow])->where('status_order', '!=', -1)->get();
+        return $loadOrder->sum('price_orders');
+    }
+
+    public function profitChartDashboard(){
+        $dayNow = now()->setTimezone( new DateTimeZone('Asia/Ho_Chi_Minh'));
+        $dayNow = date_format($dayNow, 'Y-m-d 23:59:59');
+        $lastWeek = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), date("d") -7, date("Y")));
+        $loadOrder = Orders::whereBetween('created_at', [$lastWeek, $dayNow])
+                            ->where('status_order', '!=', -1)
+                            ->groupBy('date')
+                            ->orderBy('date', 'ASC')
+                            ->get(array(
+                                Orders::raw('Date(created_at) as date'),
+                                Orders::raw('COUNT(*) as "profit"')
+                            ));
+        return json_decode($loadOrder);
+    }
+    
+   public function revenueChartDashboard(){
+        $dayNow = now()->setTimezone( new DateTimeZone('Asia/Ho_Chi_Minh'));
+        $dayNow = date_format($dayNow, 'Y-m-d 23:59:59');
+        $lastWeek = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), date("d") -7, date("Y")));
+        $loadOrder = Orders::whereBetween('created_at', [$lastWeek, $dayNow])
+                            ->where('status_order', '!=', -1)
+                            ->groupBy('date')
+                            ->orderBy('date', 'ASC')
+                            ->get(array(
+                                Orders::raw('Date(created_at) as date'),
+                                Orders::raw('SUM(price_orders) as "revenue"')
+                            ));
+        return json_decode($loadOrder);
+    }
+
+    public function pageRevenue(){
+        $dayNow = now();
+        $dayNow->setTimezone( new DateTimeZone('Asia/Ho_Chi_Minh'));
+        $loadOrderDay = Orders::whereDate('created_at', $dayNow)->where('status_order', '!=', -1)->get();
+        return view('admin.admin_revenueOrders', compact('loadOrderDay'));
+    }
+
+    public function Revenue($val_revenue){
+        if ($val_revenue == -11){
+            $yesterday = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d") -1, date("Y")));
+            $loadOrder = Orders::whereDate('created_at', $yesterday)->where('status_order', '!=', -1)->get();
+            return view('admin.admin_revenueOrdersAjax', compact('loadOrder'));
+        }
+        elseif ($val_revenue == -10){
+            $dayNow = now();
+            $dayNow->setTimezone( new DateTimeZone('Asia/Ho_Chi_Minh'));
+            $loadOrder = Orders::whereDate('created_at', $dayNow)->where('status_order', '!=', -1)->get();
+            return view('admin.admin_revenueOrdersAjax', compact('loadOrder'));
+        }
+        elseif ($val_revenue == -1){
+            $lastMonth = date("m", mktime(0, 0, 0, date("m") -1, date("d"), date("Y")));
+            $loadOrder = Orders::whereMonth('created_at', $lastMonth)->where('status_order', '!=', -1)->get();
+            return view('admin.admin_revenueOrdersAjax', compact('loadOrder'));
+        }
+        elseif ($val_revenue == 0){
+            $lastMonth = date("m", mktime(0, 0, 0, date("m"), date("d"), date("Y")));
+            $loadOrder = Orders::whereMonth('created_at', $lastMonth)->where('status_order', '!=', -1)->get();
+            return view('admin.admin_revenueOrdersAjax', compact('loadOrder'));
+        }
+        else {
+            $dayNow = now();
+            $yearNow = date_format($dayNow, 'Y');
+            $loadOrder = Orders::whereMonth('created_at', '=', $val_revenue)
+                                ->whereYear('created_at', '=', $yearNow)
+                                ->where('status_order', '!=', -1)
+                                ->get();
+            return view('admin.admin_revenueOrdersAjax', compact('loadOrder'));
+        }
+    }
+
+    // public function pageRevenueShop(){
+    //     return view('admin.admin_revenueShop');
+    // }
+    
 }

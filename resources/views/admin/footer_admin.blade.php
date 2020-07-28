@@ -29,9 +29,7 @@
 <script src="{{asset('public/backend/dist/plugins/jquery-sparklines/jquery.sparkline.min.js')}}"></script> 
 <script src="{{asset('public/backend/dist/plugins/jquery-sparklines/sparkline-int.js')}}"></script> 
 
-<!-- Chartjs JavaScript --> 
-<script src="{{asset('public/backend/dist/plugins/chartjs/chart.min.js')}}"></script> 
-<script src="{{asset('public/backend/dist/plugins/chartjs/chart-int.js')}}"></script> 
+<!-- CKeditor
 <script src="{{asset('public/ckeditor/ckeditor.js')}}"></script>
 <script type="text/javascript">
     CKEDITOR.replace('descTextarea',{
@@ -39,7 +37,7 @@
       filebrowserUploadUrl : 'filemanager/dialog.php?type=2&editor=ckeditor&fldr=',
       filebrowserImageBrowseUrl : 'filemanager/dialog.php?type=1&editor=ckeditor&fldr='  
       });
-</script>
+</script> -->
 
 <!-- for demo purposes --> 
 <script src="{{asset('public/backend/dist/js/demo.js')}}"></script>

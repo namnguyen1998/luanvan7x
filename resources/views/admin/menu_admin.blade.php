@@ -17,11 +17,11 @@
         <li class="header">PERSONAL</li>
         <li class="treeview"> <a href="#"> <i class="icon-home"></i> <span>Thống kê</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span> </a>
           <ul class="treeview-menu">
-            <li><a href="index.html"><i class="fa fa-angle-right"></i>Modern</a></li>
-            <li><a href="index-classic.html"><i class="fa fa-angle-right"></i> Classic</a></li>
-            <li class="active"><a href="index-agency.html"><i class="fa fa-angle-right"></i> Agency</a></li>
+            <li><a href="{{URL::to('/admin-doanh-thu-don-hang')}}"><i class="fa fa-angle-right"></i>Doanh thu theo đơn hàng</a></li>
+            <!-- <li><a href="{{URL::to('/admin-doanh-thu-shop')}}"><i class="fa fa-angle-right"></i> Doanh thu theo Shop</a></li> -->
+            <!-- <li class="active"><a href="index-agency.html"><i class="fa fa-angle-right"></i> Agency</a></li>
             <li><a href="index-analytics.html"><i class="fa fa-angle-right"></i> Analytics</a></li>
-            <li><a href="index-ecommerce.html"><i class="fa fa-angle-right"></i> Ecommerce</a></li>
+            <li><a href="index-ecommerce.html"><i class="fa fa-angle-right"></i> Ecommerce</a></li> -->
           </ul>
         </li>
         

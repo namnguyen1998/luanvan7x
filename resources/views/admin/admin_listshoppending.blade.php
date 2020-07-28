@@ -9,30 +9,27 @@
         <div class="col-md-12">
             <!-- DATA TABLE -->
             <div class="content-header sty-one">
-                <h1>Duyệt sản phẩm</h1>
+                <h1>Duyệt Shop</h1>
                     <ol class="breadcrumb">
                         <li><a href="{{URL::to('/admin-dashboard')}}">Admin</a></li>
-                        <li><i class="fa fa-angle-right"></i>Duyệt sản phẩm</li>
+                        <li><i class="fa fa-angle-right"></i>Duyệt Shop</li>
                     </ol>
             </div>
             <div class="table-responsive">
-                <table class="table table-striped" id="listPending">
+                <table class="table table-striped" id="listApproveShop">
                     <thead>
                         <tr>
-                            
                             <th>STT</th>
-                            <th>Ngày đăng</th>
+                            <th>Ngày đăng ký</th>
                             <th>Tên Shop</th>
-                            <th>Tên sản phẩm</th>
-                            <th>Xuất sứ</th>
-                            <th>Giá</th>
-                            <th id="status">Trạng thái</th>
-                            <th>Hãng</th>
+                            <th>Email</th>
+                            <th>SĐT</th>
+                            <th>Địa chỉ</th>
+                            <th id="statusShop">Trạng thái</th>
                             <th>Duyệt</th>
                         </tr>
                     </thead>
                     <tbody>
-                        
                     </tbody>
                 </table>
             </div>
@@ -42,11 +39,11 @@
 </div>
 
 <!-- DataTables -->
-@include('admin.admin_showlistproductpending')
+@include('admin.admin_showlistshoppending')
+
 
 <!-- template --> 
 <script src="{{asset('public/backend/dist/js/bizadmin.js')}}"></script> 
 <!-- Jquery Sparklines --> 
 <script src="{{asset('public/backend/dist/plugins/jquery-sparklines/jquery.sparkline.min.js')}}"></script> 
 <script src="{{asset('public/backend/dist/plugins/jquery-sparklines/sparkline-int.js')}}"></script> 
-
