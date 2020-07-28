@@ -24,7 +24,9 @@ Route::get('/chi-tiet-san-pham/{id_product}','PagesController@getPagesProductDet
 Route::get('/danh-muc-{id_category}/sub-{id_sub}','PagesController@getProductsSubCategory');
 Route::get('/shop-ban-hang/{id_shop}','SellerController@getShop');
 
-
+//Mail
+Route::get('/send-email','MailController@sendMailCustomer');
+Route::get('/send-email-shop','MailController@sendMailShop');
 
 
 	
