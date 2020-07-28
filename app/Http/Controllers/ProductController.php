@@ -146,7 +146,6 @@ class ProductController extends Controller
         $dataProduct['name_product'] = $req->nameProduct;
         $dataProduct['madeby'] = $req->madeby;
         $dataProduct['sub_category_id'] = $req->_id_sub_category;
-        $dataProduct['slug'] = $req->slug;
         $dataProduct['brand_id'] = $req->_id_brand;
         $dataProduct['shop_id'] = Session::get('id_shop');
         $dataProduct['img_product'] = $this->setNameImage($req->img_product);
@@ -212,7 +211,6 @@ class ProductController extends Controller
         $dataProduct['name_product'] = $req->nameProduct;
         $dataProduct['madeby'] = $req->madeby;
         $dataProduct['sub_category_id'] = $req->_id_sub_category;
-        $dataProduct['slug'] = $req->slug;
         $dataProduct['brand_id'] = $req->_id_brand;
         $dataProduct['shop_id'] = Session::get('id_shop');
         $dataProduct['img_product'] = $this->setNameImage($req->img_product);

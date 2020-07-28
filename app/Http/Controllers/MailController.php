@@ -19,15 +19,26 @@ session_start();
 
 class MailController extends Controller
 {
+	public function checkUser(){
+        if((Session::get('provider_id'))){
+            $customer = Customers::where('provider_id',  Session::get('provider_id'))->first();
+            return $customer->id_customer;
+        }
+        else
+            return Session::get('id_customer');
+    }
+
     public function sendMailCustomer(){
 
+    	$emailShopvsCustomer = DB::table('shop_oder_product')->where('customer_id','=',$this->checkUser())->get(); 
     	
 		$details = [
 			'title' => 'Mail from OGANI',
 			'body' => 'Cám ơn bạn đã đặt hàng shop bán hàng sẽ kiểm tra đơn hàng của đã đặt'
 		];
-		\Mail::to(Session::get('email_customer'))->send(new \App\Mail\Mail($details));
-		echo "Email sent";
+		// \Mail::to(Session::get('email_customer'))->send(new \App\Mail\Mail($details));
+		// echo "Email sent";
+		dd($emailShopvsCustomer);
 	}
 
 	public function sendMailShop(){
