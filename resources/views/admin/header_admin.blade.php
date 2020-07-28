@@ -29,9 +29,6 @@
 <link rel="stylesheet" href="{{asset('public/backend/dist/css/simple-lineicon/simple-line-icons.css')}}">
 <link rel="stylesheet" href="{{asset('public/backend/dist/css/skins/_all-skins.min.css')}}">
 
-<!-- Chartist CSS -->
-<link rel="stylesheet" href="{{asset('public/backend/dist/plugins/chartist-js/chartist.min.css')}}">
-<link rel="stylesheet" href="{{asset('public/backend/dist/plugins/chartist-js/chartist-plugin-tooltip.css')}}">
 
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->

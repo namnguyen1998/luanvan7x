@@ -4,15 +4,15 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Oders extends Model
+class Orders extends Model
 {
-    protected $table = "Oders";
+    protected $table = "Orders";
 
     public function Oder(){
-    	return $this->hasMany(Oder::class);
+    	return $this->hasMany(Orders::class);
     }
     public function Customer(){
-    	return $this->belongsTo(Customer::class);
+    	return $this->belongsTo(Customers::class);
     }
     public function Payment(){
     	return $this->belongsTo(Payment::class);

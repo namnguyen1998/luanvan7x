@@ -82,7 +82,7 @@ Route::post('/admin-post-login','AdminController@postLoginAdmin');
 Route::get('/admin-dashboard','AdminController@showDashboard');
 Route::get('/logout-admin','AdminController@logOutAdmin');
 Route::get('admin-danh-sach-san-pham', 'AdminController@listProduct');
-Route::get('admin-danh-sach-san-pham-cho-duyet','AdminController@listProductApprove');
+Route::get('admin-danh-sach-san-pham-cho-duyet','AdminController@listProductPending');
 Route::get('/admin-danh-sach-danh-muc', 'AdminController@listCategory');
 Route::get('/admin-them-danh-muc', 'AdminController@addCategory');
 Route::post('/admin-save-danh-muc', 'AdminController@saveCategory');
@@ -93,25 +93,33 @@ Route::get('/admin-them-danh-muc-con', 'AdminController@addSub');
 Route::post('/admin-save-danh-muc-con', 'AdminController@saveSub');
 Route::get('/admin-sua-danh-muc-con/{id_sub}', 'AdminController@editSub');
 Route::post('/admin-update-danh-muc-con/{id_sub}', 'AdminController@updateSub');
-Route::get('/admin-danh-sach-duyet-san-pham','AdminController@listProductApprove');
+Route::get('/admin-danh-sach-duyet-san-pham','AdminController@listProductPending');
 Route::post('/admin-duyet-san-pham/{id_product}', 'AdminController@editAgree');
 Route::post('/admin-tu-choi-duyet-san-pham/{id_product}', 'AdminController@editRefuse');
 Route::get('/admin-danh-sach-shop', 'AdminController@listShop');
-Route::get('/admin-danh-sach-shop-cho-phe-duyet', 'AdminController@listShopApprove');
+Route::get('/admin-danh-sach-shop-cho-phe-duyet', 'AdminController@listShopPending');
 Route::post('/admin-duyet-shop/{id_shop}', 'AdminController@editAgreeShop');
 Route::get('/admin-danh-sach-shop-tam-ngung-hoat-dong', 'AdminController@listShopBlock');
 
 Route::get('/admin-danh-sach-nhan-vien', 'AdminController@listUser');
 Route::get('/admin-them-nhan-vien', 'AdminController@addUser');
 Route::post('/admin-save-nhan-vien', 'AdminController@saveUser');
-Route::get('/admin-sua-quyen-nhan-vien/{id_users}', 'AdminController@editApproveUser');
-Route::post('/admin-update-nhan-vien/{id_users}', 'AdminController@updateApproveUser');
+Route::get('/admin-sua-quyen-nhan-vien/{id_users}', 'AdminController@editRoleUser');
+Route::post('/admin-update-nhan-vien/{id_users}', 'AdminController@updateRoleUser');
 Route::get('/admin-dat-lai-mat-khau/{id_users}', 'AdminController@loadPasswordUser');
 Route::post('/admin-update-password-nhan-vien/{id_users}', 'AdminController@updatePasswordUser');
 
+Route::get('/admin-chart-profit', 'AdminController@profitChartDashboard');
+Route::get('/admin-chart-revenue', 'AdminController@revenueChartDashboard');
+Route::get('/admin-profit', 'AdminController@profitDashboard');
+Route::get('/admin-revenue', 'AdminController@revenueDashboard');
+Route::get('/admin-doanh-thu-don-hang', 'AdminController@pageRevenue');
+Route::get('/admin-load-revenue/{val_revenue}', 'AdminController@Revenue');
+// Route::get('/admin-doanh-thu-shop', 'AdminController@pageRevenueShop');
+// Route::get('/admin-load-revenue-shop/{val_revenue}', 'AdminController@RevenueShop');
 
 
-Route::get('/{slug_id}','PagesController@getPagesProductDetailSlug');
+// Route::get('/{slug_id}','PagesController@getPagesProductDetailSlug');
 
 Route::get('/admin-doi-mat-khau', 'AdminController@changePasswordUser');
 Route::post('/admin-update-change-password-nhan-vien/{id_users}', 'AdminController@updateChangePasswordUser');

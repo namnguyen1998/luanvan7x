@@ -19,7 +19,7 @@
     <thead>
       <tr>
         <th>STT</th>
-      	<th>Ngày đăng</th>
+      	<th>Ngày duyệt</th>
         <th>Shop</th>
         <th>Name</th>
         <th>Xuất sứ</th>
@@ -29,12 +29,12 @@
        	<th>Hãng</th>
       </tr>
     </thead>
-    @foreach($listProductsApprove as $product)
+    @foreach($listProductsPending as $product)
     <tbody>
       <tr>
         <td><?php echo $number ++ ;?></td>
       	<td>{{$product->created_at}}</td>
-        <td>{{$product->email_customer}}</td>
+        <td>{{$product->name_shop}}</td>
         <td>{{$product->name_product}}</td>
         <td>{{$product->madeby}}</td>
         <td>{{number_format($product->price_product, 0, ',', '.') . " ₫"}}</td>

@@ -177,57 +177,30 @@
         document.getElementById("totalShip").value = document.getElementById("ship_50").value;
     }
 
-    function myFunction1() {
-        var ship, total, convert, subtotal;
-        ship = document.getElementById("ship_22").value;
-		total = document.getElementById("totalPrice").value;
-		convert  = parseInt(ship) + parseInt(total)
-		ship = Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(ship);
-        subtotal = Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(convert);
-        document.getElementById("ship").innerHTML = ship;
-		document.getElementById("total").innerHTML = subtotal;
-        document.getElementById("totalTotal").value = convert;
-        document.getElementById("totalShip").value = document.getElementById("ship_22").value;
-    }
+        function myFunction1() {
+            var ship, total, convert, subtotal;
+            ship = document.getElementById("ship_22").value;
+            total = document.getElementById("totalPrice").value;
+            convert  = parseInt(ship) + parseInt(total)
+            ship = Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(ship);
+            subtotal = Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(convert);
+            document.getElementById("ship").innerHTML = ship;
+            document.getElementById("total").innerHTML = subtotal;
+            document.getElementById("totalTotal").value = convert;
+            document.getElementById("totalShip").value = document.getElementById("ship_22").value;
+        }
 
-    function myFunction2() {
-        var ship, total, convert, subtotal;
-        ship = document.getElementById("ship_0").value;
-		total = document.getElementById("totalPrice").value;
-        convert  = parseInt(ship) + parseInt(total)
-		ship = Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(ship);
-        subtotal = Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(convert);
-        document.getElementById("ship").innerHTML = ship;
-		document.getElementById("total").innerHTML = subtotal;
-        document.getElementById("totalTotal").value = convert;
-        document.getElementById("totalShip").value = document.getElementById("ship_0").value;
-    }
-
-    // $(document).ready(function(){
-	// 	$("#save").click(function(){
-		
-	// 		subtotal = document.getElementById("aaa").value;
-	// 		city = document.getElementById("checkout_city").value;
-	// 		district = document.getElementById("checkout_district").value;
-	// 		ward = document.getElementById("checkout_word").value;
-
-	// 		// Ship
-	// 		$.ajax({
-	// 			url: '{{URL::to('/saveInvoice')}}',
-	// 			method: 'get',
-	// 			data:{
-	// 					'subtotal':subtotal,
-	// 					'city': city,
-	// 					'district': district,
-	// 					'ward': ward,
-
-	// 				}
-    //         	}).done(function(don_hang){
-    //                 console.log(don_hang);
-                    
-    //         	})
-				
-	// 	})
-	// })
+        function myFunction2() {
+            var ship, total, convert, subtotal;
+            ship = document.getElementById("ship_0").value;
+            total = document.getElementById("totalPrice").value;
+            convert  = parseInt(ship) + parseInt(total)
+            ship = Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(ship);
+            subtotal = Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(convert);
+            document.getElementById("ship").innerHTML = ship;
+            document.getElementById("total").innerHTML = subtotal;
+            document.getElementById("totalTotal").value = convert;
+            document.getElementById("totalShip").value = document.getElementById("ship_0").value;
+        }
     </script>
 @include('pages.footer')
