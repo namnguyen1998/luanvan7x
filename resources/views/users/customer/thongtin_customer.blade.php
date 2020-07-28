@@ -46,16 +46,25 @@
                                 <label for="text-input" class=" form-control-label">{{$email_customer}}******@gmail.com</label>
                             </div>
                         </div>
-                         <div class="row form-group">
-                            <div class="col col-md-3">
-                                <label for="text-input" class=" form-control-label">Số điện thoại</label>
-                            </div>
-                            <div class="col-12 col-md-9">
-                                <div class="col-12 col-md-9">
-                                <label for="text-input" class=" form-control-label">********{{$phone_customer}}</label>
-                            </div>
-                            </div>
+                        
+                    <div class="row form-group">
+                        <div class="col col-md-3">
+                            <label for="text-input" class=" form-control-label">Số điện thoại</label>
                         </div>
+                        
+                            <div class="col-12 col-md-9">
+                                @if($phone_customer!=null)
+                                    <label for="text-input" class=" form-control-label">******{{$phone_customer}}</label>
+                                @else
+                                <input id="_disabled" disabled type="text" id="text-input" name="phone_customer" class="form-control">
+                                <div class="col-12 col-md-3">
+                                    <label style="color: #A52652" id="click_disabled" for="text-input" class=" form-control-label fa fa-hand-o-right">Nhấn tại đây để điền SDT</label>
+                                </div>
+                                @endif
+                            </div>
+                    </div>
+                    
+
                         <div class="row form-group">
                             <div class="col col-md-3">
                                 <label for="file-input" class=" form-control-label">Chọn ảnh</label>
@@ -82,3 +91,17 @@
     </div>
 </div>
 @endsection
+<script src="{{asset('public/frontend/js/jquery-3.3.1.min.js')}}"></script>
+<script>
+    $(document).on('click', '#click_disabled', function() {
+        $("#_disabled").attr("disabled", false);
+        
+    });
+
+    $(document).ready(function(){
+        $("#phone_customer").change(function(){
+            $("#_disabled").val(null); 
+            $("#_disabled").attr("disabled", true);
+        })
+    })
+</script>

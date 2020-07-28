@@ -29,8 +29,8 @@
                             </h5>
                         </li>
                         <li><a href="#" class = "fa fa-shopping-basket">DANH MỤC SHOP</a></li>
-                        @foreach($subCateProductShop as $item)
-                        <li><a href="#">{{$item->name_sub}}</a></li>
+                        @foreach($categoryShop as $item)
+                        <li><a href="#">{{ $item->name_sub }}</a></li>
                         @endforeach
                         <!-- <li>
                             @if(Session::get('id_shop'))
