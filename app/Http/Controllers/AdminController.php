@@ -94,6 +94,7 @@ class AdminController extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
         }
+        
         return view('admin.admin_listproductpending');
     }
 
@@ -526,21 +527,30 @@ class AdminController extends Controller
     public function pageRevenue(){
         $dayNow = now()->setTimezone( new DateTimeZone('Asia/Ho_Chi_Minh'));
         $dayNow = date_format($dayNow, 'Y-m-d');
-        $loadOrderDay = Orders::whereDate('created_at', $dayNow)->where('status_order', '!=', -1)->get();
+        $loadOrderDay = Orders::whereDate('created_at', $dayNow)
+                                ->orderBy('created_at', 'DESC')
+                                ->where('status_order', '!=', -1)
+                                ->get();
         return view('admin.admin_revenueOrders', compact('loadOrderDay'));
     }
 
     public function Revenue($val_revenue){
         if ($val_revenue == -11){
-            $yesterday = date("Y-m-d", mktime(date("H") +7 , date("i"), date("s"), date("m"), date("m"), date("d") -1, date("Y")));
-            $loadOrder = Orders::whereDate('created_at', $yesterday)->where('status_order', '!=', -1)->get();
+            $yesterday = date("Y-m-d", mktime(date("H") +7 , date("i"), date("s"), date("m"), date("d") -1, date("Y")));
+            $loadOrder = Orders::whereDate('created_at', $yesterday)
+                                ->orderBy('created_at', 'DESC')
+                                ->where('status_order', '!=', -1)
+                                ->get();
             return view('admin.admin_revenueOrdersAjax', compact('loadOrder'));
         }
 
         elseif ($val_revenue == -10){
             $dayNow = now()->setTimezone( new DateTimeZone('Asia/Ho_Chi_Minh'));
             $dayNow = date_format($dayNow, 'Y-m-d');
-            $loadOrder = Orders::whereDate('created_at', $dayNow)->where('status_order', '!=', -1)->get();
+            $loadOrder = Orders::whereDate('created_at', $dayNow)
+                                ->orderBy('created_at', 'DESC')
+                                ->where('status_order', '!=', -1)
+                                ->get();
             return view('admin.admin_revenueOrdersAjax', compact('loadOrder'));
         }
 
@@ -550,16 +560,20 @@ class AdminController extends Controller
                 $lastMonth = date("m", mktime(date("H") +7 , date("i"), date("s"), date("m"), date("d") -31, date("Y")));
             else
                 $lastMonth = date("m", mktime(date("H") +7 , date("i"), date("s"), date("m"), date("d") -30, date("Y")));
-            $loadOrder = Orders::whereMonth('created_at', $lastMonth)->where('status_order', '!=', -1)->get();
+            $loadOrder = Orders::whereMonth('created_at', $lastMonth)
+                                ->orderBy('created_at', 'DESC')
+                                ->where('status_order', '!=', -1)
+                                ->get();
             return view('admin.admin_revenueOrdersAjax', compact('loadOrder'));
         }
 
         elseif ($val_revenue == 0){
             $dayNow = now()->setTimezone( new DateTimeZone('Asia/Ho_Chi_Minh'));
             $yearNow = date_format($dayNow, 'Y');
-            $lastMonth = date("m", mktime(date("H") +7 , date("i"), date("s"), date("m"), date("m"), date("d"), date("Y")));
+            $lastMonth = date("m", mktime(date("H") +7 , date("i"), date("s"), date("m"), date("d"), date("Y")));
             $loadOrder = Orders::whereMonth('created_at', '=', $lastMonth)
                                 ->whereYear('created_at', '=', $yearNow)
+                                ->orderBy('created_at', 'DESC')
                                 ->where('status_order', '!=', -1)
                                 ->get();
             return view('admin.admin_revenueOrdersAjax', compact('loadOrder'));
@@ -570,6 +584,7 @@ class AdminController extends Controller
             $yearNow = date_format($dayNow, 'Y');
             $loadOrder = Orders::whereMonth('created_at', '=', $val_revenue)
                                 ->whereYear('created_at', '=', $yearNow)
+                                ->orderBy('created_at', 'DESC')
                                 ->where('status_order', '!=', -1)
                                 ->get();
             return view('admin.admin_revenueOrdersAjax', compact('loadOrder'));

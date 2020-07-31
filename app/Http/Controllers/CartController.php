@@ -123,7 +123,6 @@ class CartController extends Controller
 
         if(Count($newCart->products) > 0){
             $request->Session()->put('Cart', $newCart);
-            echo Session::get('Cart')->totalQuantity;
             return view('pages.cart_ajax');
         }
         else{
@@ -137,7 +136,6 @@ class CartController extends Controller
         $newCart->updateCart($id_product,$quantity);
 
         $request->Session()->put('Cart', $newCart);
-        echo Session::get('Cart')->totalQuantity;
         return view('pages.cart_ajax');
     }
 
@@ -154,14 +152,18 @@ class CartController extends Controller
         // return view('pages.cart_ajax');
     }
     public function checkoutCart(){
-        if (!empty( Session::get('id_customer'))){
-            $loadShippingAddrees = DB::table('shipping_address')->where('customer_id', $this->checkUser())->where('status_default', '=', 1)->first();
-            return view('pages.checkout_cart', compact('loadShippingAddrees'));
+        if (!empty(Session::get('cart'))){
+            if (!empty( Session::get('id_customer'))){
+                $loadShippingAddrees = DB::table('shipping_address')->where('customer_id', $this->checkUser())->where('status_default', '=', 1)->first();
+                return view('pages.checkout_cart', compact('loadShippingAddrees'));
+            }
+            else {
+                Session::put('message', 'Bạn chưa đăng nhập. Vui lòng đăng nhập để tiến hành thanh toán.');
+                return redirect('/list-cart');
+            }
         }
-        else {
-            Session::put('message', 'Bạn chưa đăng nhập. Vui lòng đăng nhập để tiến hành thanh toán.');
-            return redirect('/list-cart');
-        }
+        else
+            return redirect::to('/list-cart');
     }
 
     public function checkUser(){

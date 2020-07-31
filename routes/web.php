@@ -59,6 +59,7 @@ Route::get('/profile','CustomerController@profile');
 Route::post('/updateProfile','CustomerController@updateProfile');
 Route::get('/profile/address','CustomerController@getAddressCustomer');
 Route::post('/updateAddress','CustomerController@updateAddressCustomer');
+Route::get('/load-name-phone/{val_address}','CustomerController@getNamePhoneCustomer');
 
 // Seller
 Route::get('/dang-ky-shop','CustomerController@getRegisterShop');
@@ -75,6 +76,9 @@ Route::get('/banhang','SellerController@sellerChannel');
 Route::post('/postSellerDashBoard','SellerController@postSellerDashBoard');
 Route::post('/updateProduct/{id_product}','ProductController@updateProduct');
 Route::get('/logout-shop','SellerController@logoutShop');
+
+Route::get('/danh-sach-don-hang', 'SellerController@loadOrderShop');
+Route::get('/chi-tiet-don-hang/{orders_id}', 'SellerController@loadOrderDetailShop');
 
 Route::get('/shop-chart-profit', 'SellerController@profitChartDashboard');
 Route::get('/shop-chart-revenue', 'SellerController@revenueChartDashboard');

@@ -26,6 +26,18 @@
         </li>
         <li class="treeview"> 
           <a href="#"> <i class="icon-grid"></i> 
+            <span>Quản lý đơn hàng</span> 
+              <span class="pull-right-container"> 
+                <i class="fa fa-angle-left pull-right"></i> 
+              </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="{{URL::to('/danh-sach-don-hang')}}"><i class="fa fa-angle-right"></i>Danh sách đơn hàng</a></li>
+            <li><a href="{{URL::to('/don-hang')}}"><i class="fa fa-angle-right"></i>Trạng thái đơn hàng</a></li>
+          </ul>
+        </li>
+        <li class="treeview"> 
+          <a href="#"> <i class="icon-grid"></i> 
             <span>Quản lý sản phẩm</span> 
               <span class="pull-right-container"> 
                 <i class="fa fa-angle-left pull-right"></i> 
