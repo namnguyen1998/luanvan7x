@@ -70,6 +70,7 @@
         url:'admin-chart-profit/',
         type:'GET',
     }).done(function(response){ 
+        console.log(response)
         dataProfit = []
         dataDate = []
         $.each(response, function(key, value){

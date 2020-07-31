@@ -18,7 +18,7 @@
       <div class="card">
         <div class="card-body box-rounded box-gradient"> <span class="info-box-icon bg-transparent"><i class="ti-stats-up text-white"></i></span>
           <div class="info-box-content">
-            <h6 class="info-box-text text-white">Đơn Hhàng</h6>
+            <h6 class="info-box-text text-white">Đơn Hàng</h6>
             <h1 id="profit" class="text-white"></h1>
             <span class="progress-description text-white"> Tổng đơn hàng trong 30 ngày gần nhất </span> </div>
         </div>

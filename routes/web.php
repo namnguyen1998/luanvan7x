@@ -63,7 +63,7 @@ Route::post('/updateAddress','CustomerController@updateAddressCustomer');
 // Seller
 Route::get('/dang-ky-shop','CustomerController@getRegisterShop');
 Route::post('/postRegisterShop','CustomerController@postRegisterShop');
-Route::get('/banhang/dashboard','SellerController@sellerDashBoard');
+Route::get('/dashboard','SellerController@sellerDashBoard');
 Route::get('/them-san-pham','ProductController@getAddProduct');
 Route::get('/danh-sach-sub','ProductController@getSubCategory');
 Route::post('/postThem','ProductController@saveProduct');
@@ -75,6 +75,13 @@ Route::get('/banhang','SellerController@sellerChannel');
 Route::post('/postSellerDashBoard','SellerController@postSellerDashBoard');
 Route::post('/updateProduct/{id_product}','ProductController@updateProduct');
 Route::get('/logout-shop','SellerController@logoutShop');
+
+Route::get('/shop-chart-profit', 'SellerController@profitChartDashboard');
+Route::get('/shop-chart-revenue', 'SellerController@revenueChartDashboard');
+Route::get('/shop-profit', 'SellerController@profitShopDashboard');
+Route::get('/shop-revenue', 'SellerController@revenueShopDashboard');
+Route::get('/danh-thu', 'SellerController@revenueShop');
+Route::get('/shop-danh-thu/{val_revenue}', 'SellerController@revenueShopAjax');
 
 
 // Api login Google

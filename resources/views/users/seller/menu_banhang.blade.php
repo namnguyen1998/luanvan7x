@@ -19,7 +19,8 @@
             </span> 
           </a>
           <ul class="treeview-menu">
-            <li><a href="{{URL::to('/banhang')}}"><i class="fa fa-angle-right"></i>Doanh thu</a></li>
+            <li><a href="{{URL::to('/banhang')}}"><i class="fa fa-angle-right"></i>Thống kê</a></li>
+            <li><a href="{{URL::to('/danh-thu')}}"><i class="fa fa-angle-right"></i>Doanh thu</a></li>
             <li><a href="index-classic.html"><i class="fa fa-angle-right"></i>Tài khoản ngân hàng</a></li>
           </ul>
         </li>
