@@ -54,10 +54,20 @@ class PagesController extends Controller
     public function getProductsSubCategory($id_category, $id_sub){
         $subCategorybyCategory = DB::table('sub_category')->join('category','id_category','=','category_id')
         ->where('category_id','=',$id_category)
-        ->paginate(10);
-        $products_sub = Products::where('sub_category_id','=',$id_sub)->where('is_deleted','=',0)->get();
+        ->get();
+        $products_sub = Products::where('sub_category_id','=',$id_sub)->where('is_deleted','=',0)->paginate(10);
 
         return view('pages.sanpham_sub',compact('subCategorybyCategory','products_sub'));
         
+    }
+    public function getSearch(Request $request){
+        $products = DB::table('products_category')
+        ->where('name_product','like','%'.$request->key.'%')
+        ->orWhere('price_product',$request->key)
+        // ->orWhere('name_shop',$request->key)
+        ->get();
+        $shop = DB::table('shop')->where('name_shop','like','%'.$request->key.'%')
+        ->get();
+        return view('pages.search', compact('products','shop'));
     }
 }

@@ -74,12 +74,12 @@ class SellerController extends Controller
         ->get();
         $categoryShop = DB::table('shop')->join('products_category','shop_id','=','id_shop')->where('id_shop','=',$id_shop)->get();
         
-        $countProductsByShop = DB::table('products')->join('sub_category','id_sub','=','sub_category_id')
-        ->where('shop_id','=',$id_shop)->count();
+        // $countProductsByShop = DB::table('products')->join('sub_category','id_sub','=','sub_category_id')
+        // ->where('shop_id','=',$id_shop)->count();
         if($dataShop != null){
             Session::put('dataShop',$dataShop);
         }
         //dd($subCateProductShop);
-        return view('pages.page_product_shop', compact('productShop','countProductsByShop','categoryShop'));
+        return view('pages.page_product_shop', compact('productShop','categoryShop'));
     }
 }
