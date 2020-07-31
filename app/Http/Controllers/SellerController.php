@@ -16,6 +16,7 @@ use App\Brands;
 use App\ShippingAddress;
 use App\Products;
 use App\Orders;
+use App\OrderDetail;
 session_start();
 
 class SellerController extends Controller
@@ -83,6 +84,45 @@ class SellerController extends Controller
         }
         //dd($subCateProductShop);
         return view('pages.page_product_shop', compact('productShop','countProductsByShop','categoryShop'));
+    }
+
+    // Order Shop
+    public function loadOrderShop(){
+        $loadOrderShop = DB::table('shop_oder_product')
+                            // ->whereBetween('created_at', [$lastMonth, $dayNow])
+                            ->where('id_shop', '=', Session::get('id_shop'))
+                            ->groupBy('orders_id')
+                            ->orderBy('created_at', 'DESC')
+                            ->get(array(
+                                DB::raw('Date(created_at) as created_at'),
+                                DB::raw('orders_id as orders_id'),
+                                DB::raw('name_shop as name_shop'),
+                                DB::raw('SUM(price_product * quantity) as "price_order"')
+                            ));
+                            // ->get();
+                            // dd($loadOrderShop);
+        return view('users.seller.banhang_listOrder', compact('loadOrderShop'));
+    }
+
+    public function loadOrderDetailShop($orders_id){
+        $loadOrderDetail = OrderDetail::select('products.name_product', 'products.price_product', 'shop.id_shop', 'shop.name_shop', 'order_detail.id_order_detail', 'order_detail.quantity')
+                                ->join('orders', 'orders.id_orders', '=', 'order_detail.orders_id')
+                                ->join('products', 'products.id_product', '=', 'order_detail.product_id')
+                                ->leftjoin('shop', 'shop.id_shop', '=', 'products.shop_id')
+                                ->where('id_shop', '=', Session::get('id_shop'))
+                                ->where( 'orders_id', '=', $orders_id)
+                                ->get();
+        if (!empty($loadOrderDetail->count())){
+            $loadShop = DB::table('shop')->where('id_shop','=', Session::get('id_shop'))->first();
+            $loadOrders = Orders::where('id_orders', $orders_id)
+                                    // ->select('')
+                                    ->join('customers', 'customers.id_customer', '=', 'orders.customer_id')
+                                    ->first();
+            $loadAddressCustomer = DB::table('shipping_address')->where('customer_id', '=', $loadOrders->customer_id)->where('status_default','=', 1)->first();
+            return view('users.seller.banhang_orderDetail', compact('loadOrderDetail', 'loadShop', 'loadOrders', 'loadAddressCustomer'));
+        }
+        else 
+            return redirect::to('/danh-sach-don-hang');
     }
 
     // Revenue Shop
@@ -153,7 +193,7 @@ class SellerController extends Controller
                             ->whereBetween('created_at', [$lastWeek, $dayNow])
                             ->where('id_shop', '=', Session::get('id_shop'))
                             ->groupBy('date')
-                            ->orderBy('date', 'ASC')
+                            ->orderBy('date', 'DESC')
                             ->get(array(
                                 DB::raw('Date(created_at) as date'),
                                 DB::raw('orders_id as orders_id'),
@@ -169,7 +209,7 @@ class SellerController extends Controller
                             ->whereDate('created_at', $dayNow)
                             ->where('id_shop', '=', Session::get('id_shop'))
                             ->groupBy('orders_id')
-                            ->orderBy('date', 'ASC')
+                            ->orderBy('date', 'DESC')
                             ->get(array(
                                 DB::raw('Date(created_at) as date'),
                                 DB::raw('orders_id as orders_id'),
@@ -187,7 +227,7 @@ class SellerController extends Controller
                             ->whereDate('created_at', $yesterday)
                             ->where('id_shop', '=', Session::get('id_shop'))
                             ->groupBy('orders_id')
-                            ->orderBy('date', 'ASC')
+                            ->orderBy('date', 'DESC')
                             ->get(array(
                                 DB::raw('Date(created_at) as date'),
                                 DB::raw('orders_id as orders_id'),
@@ -203,7 +243,7 @@ class SellerController extends Controller
                             ->whereDate('created_at', $dayNow)
                             ->where('id_shop', '=', Session::get('id_shop'))
                             ->groupBy('orders_id')
-                            ->orderBy('date', 'ASC')
+                            ->orderBy('date', 'DESC')
                             ->get(array(
                                 DB::raw('Date(created_at) as date'),
                                 DB::raw('orders_id as orders_id'),
@@ -225,7 +265,7 @@ class SellerController extends Controller
                             ->whereYear('created_at', '=', $yearNow)
                             ->where('id_shop', '=', Session::get('id_shop'))
                             ->groupBy('orders_id')
-                            ->orderBy('date', 'ASC')
+                            ->orderBy('date', 'DESC')
                             ->get(array(
                                 DB::raw('Date(created_at) as date'),
                                 DB::raw('orders_id as orders_id'),
@@ -244,7 +284,7 @@ class SellerController extends Controller
                             ->whereYear('created_at', '=', $yearNow)
                             ->where('id_shop', '=', Session::get('id_shop'))
                             ->groupBy('orders_id')
-                            ->orderBy('date', 'ASC')
+                            ->orderBy('date', 'DESC')
                             ->get(array(
                                 DB::raw('Date(created_at) as date'),
                                 DB::raw('orders_id as orders_id'),
@@ -262,7 +302,7 @@ class SellerController extends Controller
                             ->whereYear('created_at', '=', $yearNow)
                             ->where('id_shop', '=', Session::get('id_shop'))
                             ->groupBy('orders_id')
-                            ->orderBy('date', 'ASC')
+                            ->orderBy('date', 'DESC')
                             ->get(array(
                                 DB::raw('Date(created_at) as date'),
                                 DB::raw('orders_id as orders_id'),

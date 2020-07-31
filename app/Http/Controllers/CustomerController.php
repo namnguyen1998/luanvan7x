@@ -227,6 +227,11 @@ class CustomerController extends Controller
         return Redirect::to('/profile/address');
     }
 
+    public function getNamePhoneCustomer($val_address){
+        $loadNamePhone = DB::table('shipping_address')->where('id_address', '=', $val_address)->get();
+        return json_decode($loadNamePhone);
+    }
+
     public function getRegisterShop(){
         $this->AuthLogin();
         return view('users.seller.banhang_dangkyshop');

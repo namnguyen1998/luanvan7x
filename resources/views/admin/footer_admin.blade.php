@@ -20,7 +20,7 @@
 
 <!-- jQuery 3 --> 
 <script src="{{asset('public/backend/dist/js/jquery.min.js')}}"></script>  
-<script src="{{asset('public/backend/dist/bootstrap/js/bootstrap.min.js')}}"></script> 
+<script src="{{asset('public/backend/dist/bootstrap/js/bootstrap.min.js')}}"></script>
 
 <!-- template --> 
 <script src="{{asset('public/backend/dist/js/bizadmin.js')}}"></script> 

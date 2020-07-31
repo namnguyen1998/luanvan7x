@@ -1,8 +1,8 @@
 @extends('users.seller.banhang')
 @section('content')
 <!-- Chartist CSS -->
-<link rel="stylesheet" href="{{asset('public/backend/dist/plugins/chartist-js/chartist.min.css')}}">
-<link rel="stylesheet" href="{{asset('public/backend/dist/plugins/chartist-js/chartist-plugin-tooltip.css')}}">
+<link rel="stylesheet" href="{{asset('public/frontend/plugins/chartist-js/chartist.min.css')}}">
+<link rel="stylesheet" href="{{asset('public/frontend/plugins/chartist-js/chartist-plugin-tooltip.css')}}">
 <div class="content-header sty-one">
       <h1>Thống kê</h1>
 </div>

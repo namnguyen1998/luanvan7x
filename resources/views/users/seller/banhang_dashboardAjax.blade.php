@@ -1,8 +1,8 @@
-<script src="{{asset('public/backend/dist/plugins/chartjs/chart.min.js')}}"></script> 
-<script src="{{asset('public/backend/dist/plugins/chartjs/chart-int.js')}}"></script> 
+<script src="{{asset('public/frontend/plugins/chartjs/chart.min.js')}}"></script> 
+<script src="{{asset('public/frontend/plugins/chartjs/chart-int.js')}}"></script> 
 
-<script src="{{asset('public/backend/dist/js/moment.min.js')}}"></script>
-<script src="{{asset('public/backend/dist/js/jquery.min.js')}}"></script>  
+<script src="{{asset('public/frontend/js/moment.min.js')}}"></script>
+<script src="{{asset('public/frontend/js/jquery-3.3.1.min.js')}}"></script>  
 <script>
 // ======	
     // Profit
