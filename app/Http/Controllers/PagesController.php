@@ -22,15 +22,14 @@ class PagesController extends Controller
         $Category = Category::all();
         // $productCategory = DB::table('products_category')->where('category_id','=',1)
         // ->where('status_product','=',1)->where('is_deleted','=',0)->get();
-        $listProducts = Products::where('is_deleted','=',0)->get();
+        $listProducts = Products::where('is_deleted','=',0)->orderby('id_product','desc')->paginate(12);
         //var_dump(Session::get('id_shop'));
         //var_dump($productCategory);
     	return view('pages.home',compact('Category','listProducts'));
     }
     public function getPagesProductCategory($id_category){
     	$productCategory = DB::table('products_category')->where('category_id','=',$id_category)
-        ->where('is_deleted','=',0)
-        ->get();
+        ->where('is_deleted','=',0)->paginate(10);
         $subCategorybyCategory = DB::table('sub_category')->join('category','id_category','=','category_id')
         ->where('category_id','=',$id_category)
         ->get();
@@ -56,9 +55,19 @@ class PagesController extends Controller
         $subCategorybyCategory = DB::table('sub_category')->join('category','id_category','=','category_id')
         ->where('category_id','=',$id_category)
         ->get();
-        $products_sub = Products::where('sub_category_id','=',$id_sub)->where('is_deleted','=',0)->get();
+        $products_sub = Products::where('sub_category_id','=',$id_sub)->where('is_deleted','=',0)->paginate(10);
 
         return view('pages.sanpham_sub',compact('subCategorybyCategory','products_sub'));
         
+    }
+    public function getSearch(Request $request){
+        $products = DB::table('products_category')
+        ->where('name_product','like','%'.$request->key.'%')
+        ->orWhere('price_product',$request->key)
+        // ->orWhere('name_shop',$request->key)
+        ->get();
+        $shop = DB::table('shop')->where('name_shop','like','%'.$request->key.'%')
+        ->get();
+        return view('pages.search', compact('products','shop'));
     }
 }
