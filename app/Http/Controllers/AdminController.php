@@ -474,83 +474,93 @@ class AdminController extends Controller
     }
 
     // Revenue
-    public function profitDashboard(){
+    public function statisticsDashboard($date){
         $dayNow = now()->setTimezone( new DateTimeZone('Asia/Ho_Chi_Minh'));
         $dayNow = date_format($dayNow, 'Y-m-d 23:59:59');
+        $loadOrder = Orders::whereBetween('created_at', [$date, $dayNow])->where('status_order', '!=', -1)->get();
+        return $loadOrder;
+    }
+
+    public function chartDashboard($date){
+        $dayNow = now()->setTimezone( new DateTimeZone('Asia/Ho_Chi_Minh'));
+        $dayNow = date_format($dayNow, 'Y-m-d 23:59:59');
+        $loadOrder = Orders::whereBetween('created_at', [$date, $dayNow])
+                            ->where('status_order', '!=', -1)
+                            ->groupBy('date')
+                            ->orderBy('date', 'ASC')
+                            ->get(array(
+                                Orders::raw('Date(created_at) as date'),
+                                Orders::raw('COUNT(*) as "profit"'),
+                                Orders::raw('SUM(price_orders) as "revenue"')
+                            ));
+        return $loadOrder;
+    }
+
+    public function revenueFilterDate($date){
+        $loadOrderDate = Orders::whereDate('created_at', $date)
+                                ->orderBy('created_at', 'DESC')
+                                ->where('status_order', '!=', -1)
+                                ->get();
+        return $loadOrderDate;
+    }
+
+    public function revenueFilterMonth($date){
+        $dayNow = now()->setTimezone( new DateTimeZone('Asia/Ho_Chi_Minh'));
+        $yearNow = date_format($dayNow, 'Y');
+        $loadOrder = Orders::whereMonth('created_at', '=', $date)
+                            ->whereYear('created_at', '=', $yearNow)
+                            ->orderBy('created_at', 'DESC')
+                            ->where('status_order', '!=', -1)
+                            ->get();
+        return $loadOrder;
+    }
+
+    public function profitDashboard(){
         $lastMonth = date("Y-m-d H:i:s", mktime(date("H") +7 , date("i"), date("s"), date("m"), date("d") -30, date("Y")));
         $lastMonth = date('Y-m-d H:i:s', strtotime($lastMonth));
-        $loadOrder = Orders::whereBetween('created_at', [$lastMonth, $dayNow])->where('status_order', '!=', -1)->get();
-        return $loadOrder->count();
+        $getDataLastMonth = $this->statisticsDashboard($lastMonth);
+        return $getDataLastMonth->count();
     }
 
     public function revenueDashboard(){
-        $dayNow = now()->setTimezone( new DateTimeZone('Asia/Ho_Chi_Minh'));
-        $dayNow = date_format($dayNow, 'Y-m-d 23:59:59');
         $lastMonth = date("Y-m-d", mktime(date("H") +7 , date("i"), date("s"), date("m"), date("d") -30, date("Y")));
         $lastMonth = date('Y-m-d H:i:s', strtotime($lastMonth));
-        $loadOrder = Orders::whereBetween('created_at', [$lastMonth, $dayNow])->where('status_order', '!=', -1)->get();
-        return $loadOrder->sum('price_orders');
+        $getDataLastMonth = $this->statisticsDashboard($lastMonth);
+        return $getDataLastMonth->sum('price_orders');
     }
 
     public function profitChartDashboard(){
-        $dayNow = now()->setTimezone( new DateTimeZone('Asia/Ho_Chi_Minh'));
-        $dayNow = date_format($dayNow, 'Y-m-d 23:59:59');
         $lastWeek = date("Y-m-d", mktime(date("H") +7 , date("i"), date("s"), date("m"), date("d") -7, date("Y")));
         $lastWeek = date('Y-m-d H:i:s', strtotime($lastWeek));
-        $loadOrder = Orders::whereBetween('created_at', [$lastWeek, $dayNow])
-                            ->where('status_order', '!=', -1)
-                            ->groupBy('date')
-                            ->orderBy('date', 'ASC')
-                            ->get(array(
-                                Orders::raw('Date(created_at) as date'),
-                                Orders::raw('COUNT(*) as "profit"')
-                            ));
-        return json_decode($loadOrder);
+        $getDataLastWeek = $this->chartDashboard($lastWeek);
+        return json_decode($getDataLastWeek);
     }
     
-   public function revenueChartDashboard(){
-        $dayNow = now()->setTimezone( new DateTimeZone('Asia/Ho_Chi_Minh'));
-        $dayNow = date_format($dayNow, 'Y-m-d 23:59:59');
+    public function revenueChartDashboard(){
         $lastWeek = date("Y-m-d", mktime(date("H") +7 , date("i"), date("s"), date("m"), date("d") -7, date("Y")));
         $lastWeek = date('Y-m-d H:i:s', strtotime($lastWeek));
-        $loadOrder = Orders::whereBetween('created_at', [$lastWeek, $dayNow])
-                            ->where('status_order', '!=', -1)
-                            ->groupBy('date')
-                            ->orderBy('date', 'ASC')
-                            ->get(array(
-                                Orders::raw('Date(created_at) as date'),
-                                Orders::raw('SUM(price_orders) as "revenue"')
-                            ));
-        return json_decode($loadOrder);
+        $getDataLastWeek = $this->chartDashboard($lastWeek);
+        return json_decode($getDataLastWeek);
     }
 
     public function pageRevenue(){
         $dayNow = now()->setTimezone( new DateTimeZone('Asia/Ho_Chi_Minh'));
         $dayNow = date_format($dayNow, 'Y-m-d');
-        $loadOrderDay = Orders::whereDate('created_at', $dayNow)
-                                ->orderBy('created_at', 'DESC')
-                                ->where('status_order', '!=', -1)
-                                ->get();
+        $loadOrderDay = $this->revenueFilterDate($dayNow);
         return view('admin.admin_revenueOrders', compact('loadOrderDay'));
     }
 
     public function Revenue($val_revenue){
         if ($val_revenue == -11){
             $yesterday = date("Y-m-d", mktime(date("H") +7 , date("i"), date("s"), date("m"), date("d") -1, date("Y")));
-            $loadOrder = Orders::whereDate('created_at', $yesterday)
-                                ->orderBy('created_at', 'DESC')
-                                ->where('status_order', '!=', -1)
-                                ->get();
+            $loadOrder = $this->revenueFilterDate($yesterday);
             return view('admin.admin_revenueOrdersAjax', compact('loadOrder'));
         }
 
         elseif ($val_revenue == -10){
             $dayNow = now()->setTimezone( new DateTimeZone('Asia/Ho_Chi_Minh'));
             $dayNow = date_format($dayNow, 'Y-m-d');
-            $loadOrder = Orders::whereDate('created_at', $dayNow)
-                                ->orderBy('created_at', 'DESC')
-                                ->where('status_order', '!=', -1)
-                                ->get();
+            $loadOrder = $this->revenueFilterDate($dayNow);
             return view('admin.admin_revenueOrdersAjax', compact('loadOrder'));
         }
 
@@ -560,33 +570,18 @@ class AdminController extends Controller
                 $lastMonth = date("m", mktime(date("H") +7 , date("i"), date("s"), date("m"), date("d") -31, date("Y")));
             else
                 $lastMonth = date("m", mktime(date("H") +7 , date("i"), date("s"), date("m"), date("d") -30, date("Y")));
-            $loadOrder = Orders::whereMonth('created_at', $lastMonth)
-                                ->orderBy('created_at', 'DESC')
-                                ->where('status_order', '!=', -1)
-                                ->get();
+            $loadOrder = $this->revenueFilterMonth($lastMonth);
             return view('admin.admin_revenueOrdersAjax', compact('loadOrder'));
         }
 
         elseif ($val_revenue == 0){
-            $dayNow = now()->setTimezone( new DateTimeZone('Asia/Ho_Chi_Minh'));
-            $yearNow = date_format($dayNow, 'Y');
             $lastMonth = date("m", mktime(date("H") +7 , date("i"), date("s"), date("m"), date("d"), date("Y")));
-            $loadOrder = Orders::whereMonth('created_at', '=', $lastMonth)
-                                ->whereYear('created_at', '=', $yearNow)
-                                ->orderBy('created_at', 'DESC')
-                                ->where('status_order', '!=', -1)
-                                ->get();
+            $loadOrder = $this->revenueFilterMonth($lastMonth);
             return view('admin.admin_revenueOrdersAjax', compact('loadOrder'));
         }
         
         else {
-            $dayNow = now()->setTimezone( new DateTimeZone('Asia/Ho_Chi_Minh'));
-            $yearNow = date_format($dayNow, 'Y');
-            $loadOrder = Orders::whereMonth('created_at', '=', $val_revenue)
-                                ->whereYear('created_at', '=', $yearNow)
-                                ->orderBy('created_at', 'DESC')
-                                ->where('status_order', '!=', -1)
-                                ->get();
+            $loadOrder = $this->revenueFilterMonth($val_revenue);
             return view('admin.admin_revenueOrdersAjax', compact('loadOrder'));
         }
     }

@@ -182,7 +182,7 @@ class ProductController extends Controller
         $listBrand = Brands::all();
         $productEdit = Products::where('id_product','=',$id_product)->
         join('sub_category','id_sub','=','sub_category_id')->get();
-        //dd($productEdit);
+        // dd($productEdit);
         return view('users.seller.banhang_editsanpham', compact('productEdit','listCategory','listBrand'));
     }
 
