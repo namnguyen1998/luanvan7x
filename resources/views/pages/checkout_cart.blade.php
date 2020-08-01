@@ -41,12 +41,12 @@
                             @if ($loadShippingAddrees)
                             <div class="checkout__input">
                                 <p>Tên người nhận<span>*</span></p>
-                                <input value="{{$loadShippingAddrees->name_recipient}}" placeholder="Tên người nhận hàng."  type="text">
+                                <input value="{{$loadShippingAddrees->name_recipient}}" placeholder="Tên người nhận hàng." disabled type="text">
                             </div>
                                 
                             <div class="checkout__input">
                                 <p>Số điện thoại nhận hàng<span>*</span></p>
-                                <input type="text" value="{{$loadShippingAddrees->phone_recipient}}" placeholder="Số điện thoại liên hệ nhận hàng."  class="checkout__input__add">
+                                <input type="text" value="{{$loadShippingAddrees->phone_recipient}}" placeholder="Số điện thoại liên hệ nhận hàng." disabled class="checkout__input__add">
                             </div>
 
                             <div class="checkout__input">

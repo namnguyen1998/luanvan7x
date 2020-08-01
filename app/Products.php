@@ -19,7 +19,7 @@ class Products extends Model
     	return $this->belongsTo(Brand::class);
     }
     public function OderDetail(){
-    	return $this->hasMany(OderDetail::class);
+    	return $this->hasMany(OrderDetail::class);
     }
     public function Users(){
         return $this->hasMany(Products::class);

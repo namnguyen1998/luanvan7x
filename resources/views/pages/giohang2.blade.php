@@ -29,6 +29,14 @@
                             Session::put('message', null);
                         }
                     ?>
+                        @if(Session::get('Cart')==null)
+                            <div style="text-align: center">
+                                <img src="public/frontend/img/cart/empty-cart.png">
+                            </div>
+                            <div style="text-align: center; font-size: 100px; background-color: lightblack">
+                                <a style="color:#A8AFB1;"  href="{{URL::to('/')}}">Quay về trang chủ.</a>
+                            </div>
+                        @else
                         <table>
                             <thead>
                                 <tr>
@@ -41,7 +49,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @if(Session::get('Cart')!=null)
+                                
                                 @foreach(Session::get('Cart')->products as $item)
                                 <tr>
                                     <td class="shoping__cart__item">
@@ -69,7 +77,7 @@
                                     </td>
                                 </tr>
                                 @endforeach
-                                @endif
+                                
                             </tbody>
                         </table>
                     </div>
@@ -108,6 +116,7 @@
                     </div>
                 </div>
             </div>
+            @endif
         </div>
     </section>
     
@@ -120,7 +129,6 @@
             }).done(function(response){               
                $("#list-cart").empty();
                $("#list-cart").html(response);
-               document.getElementById("total-quantity-show").innerHTML = parseInt(response)
             });
             alertify.success('Xóa sản phẩm thành công');
             // window.location.reload(true);
@@ -135,7 +143,6 @@
                $("#list-cart").empty();
                $("#list-cart").html(response);
             //    console.log($("#list-cart").html(response))
-               document.getElementById("total-quantity-show").innerHTML = parseInt(response)
             });
             alertify.success('Cập nhật sản phẩm thành công');
                     
