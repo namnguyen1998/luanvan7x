@@ -77,13 +77,13 @@ class SellerController extends Controller
         ->get();
         $categoryShop = DB::table('shop')->join('products_category','shop_id','=','id_shop')->where('id_shop','=',$id_shop)->get();
         
-        $countProductsByShop = DB::table('products')->join('sub_category','id_sub','=','sub_category_id')
-        ->where('shop_id','=',$id_shop)->count();
+        // $countProductsByShop = DB::table('products')->join('sub_category','id_sub','=','sub_category_id')
+        // ->where('shop_id','=',$id_shop)->count();
         if($dataShop != null){
             Session::put('dataShop',$dataShop);
         }
         //dd($subCateProductShop);
-        return view('pages.page_product_shop', compact('productShop','countProductsByShop','categoryShop'));
+        return view('pages.page_product_shop', compact('productShop','categoryShop'));
     }
 
     // Order Shop
@@ -115,9 +115,8 @@ class SellerController extends Controller
         if (!empty($loadOrderDetail->count())){
             $loadShop = DB::table('shop')->where('id_shop','=', Session::get('id_shop'))->first();
             $loadOrders = Orders::where('id_orders', $orders_id)
-                                    // ->select('')
-                                    ->join('customers', 'customers.id_customer', '=', 'orders.customer_id')
-                                    ->first();
+                                ->join('customers', 'customers.id_customer', '=', 'orders.customer_id')
+                                ->first();
             $loadAddressCustomer = DB::table('shipping_address')->where('customer_id', '=', $loadOrders->customer_id)->where('status_default','=', 1)->first();
             return view('users.seller.banhang_orderDetail', compact('loadOrderDetail', 'loadShop', 'loadOrders', 'loadAddressCustomer'));
         }
@@ -126,14 +125,13 @@ class SellerController extends Controller
     }
 
     // Revenue Shop
-    public function profitShopDashboard(){
+    public function profitShop($date){
         $dayNow = now()->setTimezone( new DateTimeZone('Asia/Ho_Chi_Minh'));
         $dayNow = date_format($dayNow, 'Y-m-d 23:59:59');
-        $lastMonth = date("Y-m-d", mktime(date("H") +7 , date("i"), date("s"), date("m"), date("d") -30, date("Y")));
-        $lastMonth = date('Y-m-d H:i:s', strtotime($lastMonth));
         $loadOrderShop = DB::table('shop_oder_product')
-                            ->whereBetween('created_at', [$lastMonth, $dayNow])
+                            ->whereBetween('created_at', [$date, $dayNow])
                             ->where('id_shop', '=', Session::get('id_shop'))
+                            ->where('status_order', '!=', -1)
                             ->groupBy('orders_id')
                             ->orderBy('date', 'ASC')
                             ->get(array(
@@ -141,43 +139,81 @@ class SellerController extends Controller
                                 DB::raw('orders_id as orders_id'),
                                 DB::raw('COUNT(orders_id) as "profit"')
                             ));
-        return $loadOrderShop->count();
+        return $loadOrderShop;
     }
 
-    public function revenueShopDashboard(){
+    public function revenueShop($date){
         $dayNow = now()->setTimezone( new DateTimeZone('Asia/Ho_Chi_Minh'));
         $dayNow = date_format($dayNow, 'Y-m-d 23:59:59');
-        $lastMonth = date("Y-m-d", mktime(date("H") +7 , date("i"), date("s"), date("m"), date("d") -30, date("Y")));
-        $lastMonth = date('Y-m-d H:i:s', strtotime($lastMonth));
         $loadOrderShop = DB::table('shop_oder_product')
-                            ->whereBetween('created_at', [$lastMonth, $dayNow])
+                            ->whereBetween('created_at', [$date, $dayNow])
                             ->where('id_shop', '=', Session::get('id_shop'))
+                            ->where('status_order', '!=', -1)
                             ->groupBy('date')
                             ->orderBy('date', 'ASC')
                             ->get(array(
                                 DB::raw('Date(created_at) as date'),
+                                DB::raw('orders_id as orders_id'),
                                 DB::raw('SUM(price_product * quantity) as "revenue"')
                             ));
-        return $loadOrderShop->sum('revenue');
+        return $loadOrderShop;
     }
 
-    public function profitChartDashboard(){
-        $dayNow = now()->setTimezone( new DateTimeZone('Asia/Ho_Chi_Minh'));
-        $dayNow = date_format($dayNow, 'Y-m-d 23:59:59');
-        $lastWeek = date("Y-m-d", mktime(date("H") +7 , date("i"), date("s"), date("m"), date("d") -7, date("Y")));
-        $lastWeek = date('Y-m-d H:i:s', strtotime($lastWeek));
+    public function revenueShopFilterDate($date){
         $loadOrderShop = DB::table('shop_oder_product')
-                            ->whereBetween('created_at', [$lastWeek, $dayNow])
+                            ->whereDate('created_at', $date)
                             ->where('id_shop', '=', Session::get('id_shop'))
+                            ->where('status_order', '!=', -1)
                             ->groupBy('orders_id')
-                            ->orderBy('date', 'ASC')
+                            ->orderBy('date', 'DESC')
                             ->get(array(
                                 DB::raw('Date(created_at) as date'),
                                 DB::raw('orders_id as orders_id'),
-                                DB::raw('COUNT(orders_id) as "profit"')
+                                DB::raw('COUNT(orders_id) as "profit"'),
+                                DB::raw('SUM(price_product * quantity) as "price_order"')
                             ));
+        return $loadOrderShop;
+    }
 
-        foreach (json_decode($loadOrderShop) as $order=>$orderDate){
+    public function revenueShopFilterMonth($date){
+        $dayNow = now()->setTimezone( new DateTimeZone('Asia/Ho_Chi_Minh'));
+        $yearNow = date_format($dayNow, 'Y');
+        $loadOrderShop = DB::table('shop_oder_product')
+                        ->whereMonth('created_at', $date)
+                        ->whereYear('created_at', '=', $yearNow)
+                        ->where('id_shop', '=', Session::get('id_shop'))
+                        ->where('status_order', '!=', -1)
+                        ->groupBy('orders_id')
+                        ->orderBy('date', 'DESC')
+                        ->get(array(
+                            DB::raw('Date(created_at) as date'),
+                            DB::raw('orders_id as orders_id'),
+                            DB::raw('COUNT(orders_id) as "profit"'),
+                            DB::raw('SUM(price_product * quantity) as "price_order"')
+                        ));
+        return $loadOrderShop;
+    }
+
+    public function profitShopDashboard(){
+        $lastMonth = date("Y-m-d", mktime(date("H") +7 , date("i"), date("s"), date("m"), date("d") -30, date("Y")));
+        $lastMonth = date('Y-m-d H:i:s', strtotime($lastMonth));
+        $getDataLastMonth = $this->profitShop($lastMonth);
+        return $getDataLastMonth->count();
+    }
+
+    public function revenueShopDashboard(){
+        $lastMonth = date("Y-m-d", mktime(date("H") +7 , date("i"), date("s"), date("m"), date("d") -30, date("Y")));
+        $lastMonth = date('Y-m-d H:i:s', strtotime($lastMonth));
+        $getDataLastMonth = $this->revenueShop($lastMonth);
+        return $getDataLastMonth->sum('revenue');
+    }
+
+    public function profitChartDashboard(){
+        $lastWeek = date("Y-m-d", mktime(date("H") +7 , date("i"), date("s"), date("m"), date("d") -7, date("Y")));
+        $lastWeek = date('Y-m-d H:i:s', strtotime($lastWeek));
+
+        $getDataLastWeek = $this->profitShop($lastWeek);
+        foreach (json_decode($getDataLastWeek) as $order=>$orderDate){
             $countDate[$order] = $orderDate->date;
         }
         
@@ -185,71 +221,30 @@ class SellerController extends Controller
     }
     
     public function revenueChartDashboard(){
-        $dayNow = now()->setTimezone( new DateTimeZone('Asia/Ho_Chi_Minh'));
-        $dayNow = date_format($dayNow, 'Y-m-d 23:59:59');
         $lastWeek = date("Y-m-d", mktime(date("H") +7 , date("i"), date("s"), date("m"), date("d") -7, date("Y")));
         $lastWeek = date('Y-m-d H:i:s', strtotime($lastWeek));
-        $loadOrderShop = DB::table('shop_oder_product')
-                            ->whereBetween('created_at', [$lastWeek, $dayNow])
-                            ->where('id_shop', '=', Session::get('id_shop'))
-                            ->groupBy('date')
-                            ->orderBy('date', 'DESC')
-                            ->get(array(
-                                DB::raw('Date(created_at) as date'),
-                                DB::raw('orders_id as orders_id'),
-                                DB::raw('SUM(price_product * quantity) as "revenue"')
-                            ));
-        return json_decode($loadOrderShop);
+        $getDataLastWeek = $this->revenueShop($lastWeek);
+        return json_decode($getDataLastWeek);
     }
 
-    public function revenueShop(){
+    public function revenueShopDate(){
         $dayNow = now()->setTimezone( new DateTimeZone('Asia/Ho_Chi_Minh'));
         $dayNow = date_format($dayNow, 'Y-m-d');
-        $loadOrderShop = DB::table('shop_oder_product')
-                            ->whereDate('created_at', $dayNow)
-                            ->where('id_shop', '=', Session::get('id_shop'))
-                            ->groupBy('orders_id')
-                            ->orderBy('date', 'DESC')
-                            ->get(array(
-                                DB::raw('Date(created_at) as date'),
-                                DB::raw('orders_id as orders_id'),
-                                DB::raw('COUNT(orders_id) as "profit"'),
-                                DB::raw('SUM(price_product * quantity) as "price_order"')
-                            ));
+        $loadOrderShop = $this->revenueShopFilterDate($dayNow);
         return view('users.seller.banhang_revenue', compact('loadOrderShop'));
     }
 
     public function revenueShopAjax($val_revenue){
         if ($val_revenue == -11){
-            $dayNow = now()->setTimezone( new DateTimeZone('Asia/Ho_Chi_Minh'));
             $yesterday = date("Y-m-d", mktime(date("H") +7 , date("i"), date("s"), date("m"), date("d") -1, date("Y")));
-            $loadOrderShop = DB::table('shop_oder_product')
-                            ->whereDate('created_at', $yesterday)
-                            ->where('id_shop', '=', Session::get('id_shop'))
-                            ->groupBy('orders_id')
-                            ->orderBy('date', 'DESC')
-                            ->get(array(
-                                DB::raw('Date(created_at) as date'),
-                                DB::raw('orders_id as orders_id'),
-                                DB::raw('COUNT(orders_id) as "profit"'),
-                                DB::raw('SUM(price_product * quantity) as "price_order"')
-                            ));
+            $loadOrderShop = $this->revenueShopFilterDate($yesterday);
             return view('users.seller.banhang_revenueAjax', compact('loadOrderShop'));
         }
 
         elseif ($val_revenue == -10){
             $dayNow = now()->setTimezone(new DateTimeZone("Asia/Ho_Chi_Minh"));
-            $loadOrderShop = DB::table('shop_oder_product')
-                            ->whereDate('created_at', $dayNow)
-                            ->where('id_shop', '=', Session::get('id_shop'))
-                            ->groupBy('orders_id')
-                            ->orderBy('date', 'DESC')
-                            ->get(array(
-                                DB::raw('Date(created_at) as date'),
-                                DB::raw('orders_id as orders_id'),
-                                DB::raw('COUNT(orders_id) as "profit"'),
-                                DB::raw('SUM(price_product * quantity) as "price_order"')
-                            ));
+            $dayNow = date_format($dayNow, 'Y-m-d');
+            $loadOrderShop = $this->revenueShopFilterDate($dayNow);
             return view('users.seller.banhang_revenueAjax', compact('loadOrderShop'));
         }
 
@@ -259,56 +254,21 @@ class SellerController extends Controller
                 $lastMonth = date("m", mktime(date("H") +7 , date("i"), date("s"), date("m"), date("d") -31, date("Y")));
             else
                 $lastMonth = date("m", mktime(date("H") +7 , date("i"), date("s"), date("m"), date("d") -30, date("Y")));
-            $yearNow = date_format($dayNow, 'Y');
-            $loadOrderShop = DB::table('shop_oder_product')
-                            ->whereMonth('created_at', $lastMonth)
-                            ->whereYear('created_at', '=', $yearNow)
-                            ->where('id_shop', '=', Session::get('id_shop'))
-                            ->groupBy('orders_id')
-                            ->orderBy('date', 'DESC')
-                            ->get(array(
-                                DB::raw('Date(created_at) as date'),
-                                DB::raw('orders_id as orders_id'),
-                                DB::raw('COUNT(orders_id) as "profit"'),
-                                DB::raw('SUM(price_product * quantity) as "price_order"')
-                            ));
+
+            $loadOrderShop = $this->revenueShopFilterMonth($lastMonth);
             return view('users.seller.banhang_revenueAjax', compact('loadOrderShop'));
         }
 
         elseif ($val_revenue == 0){
             $dayNow = now()->setTimezone( new DateTimeZone('Asia/Ho_Chi_Minh'));
             $lastMonth = date("m", mktime(date("H") +7 , date("i"), date("s"), date("m"), date("d"), date("Y")));
-            $yearNow = date_format($dayNow, 'Y');
-            $loadOrderShop = DB::table('shop_oder_product')
-                            ->whereMonth('created_at', $lastMonth)
-                            ->whereYear('created_at', '=', $yearNow)
-                            ->where('id_shop', '=', Session::get('id_shop'))
-                            ->groupBy('orders_id')
-                            ->orderBy('date', 'DESC')
-                            ->get(array(
-                                DB::raw('Date(created_at) as date'),
-                                DB::raw('orders_id as orders_id'),
-                                DB::raw('COUNT(orders_id) as "profit"'),
-                                DB::raw('SUM(price_product * quantity) as "price_order"')
-                            ));
+
+            $loadOrderShop = $this->revenueShopFilterMonth($lastMonth);
             return view('users.seller.banhang_revenueAjax', compact('loadOrderShop'));
         }
         
         else {
-            $dayNow = now()->setTimezone( new DateTimeZone('Asia/Ho_Chi_Minh'));
-            $yearNow = date_format($dayNow, 'Y');
-            $loadOrderShop = DB::table('shop_oder_product')
-                            ->whereMonth('created_at', '=', $val_revenue)
-                            ->whereYear('created_at', '=', $yearNow)
-                            ->where('id_shop', '=', Session::get('id_shop'))
-                            ->groupBy('orders_id')
-                            ->orderBy('date', 'DESC')
-                            ->get(array(
-                                DB::raw('Date(created_at) as date'),
-                                DB::raw('orders_id as orders_id'),
-                                DB::raw('COUNT(orders_id) as "profit"'),
-                                DB::raw('SUM(price_product * quantity) as "price_order"')
-                            ));
+            $loadOrderShop = $this->revenueShopFilterMonth($val_revenue);
             return view('users.seller.banhang_revenueAjax', compact('loadOrderShop'));
         }
     }

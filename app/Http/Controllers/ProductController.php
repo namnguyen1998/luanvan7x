@@ -146,7 +146,6 @@ class ProductController extends Controller
         $dataProduct['name_product'] = $req->nameProduct;
         $dataProduct['madeby'] = $req->madeby;
         $dataProduct['sub_category_id'] = $req->_id_sub_category;
-        $dataProduct['slug'] = $req->slug;
         $dataProduct['brand_id'] = $req->_id_brand;
         $dataProduct['shop_id'] = Session::get('id_shop');
         $dataProduct['img_product'] = $this->setNameImage($req->img_product);
@@ -182,7 +181,7 @@ class ProductController extends Controller
         $listBrand = Brands::all();
         $productEdit = Products::where('id_product','=',$id_product)->
         join('sub_category','id_sub','=','sub_category_id')->get();
-        //dd($productEdit);
+        // dd($productEdit);
         return view('users.seller.banhang_editsanpham', compact('productEdit','listCategory','listBrand'));
     }
 
@@ -212,7 +211,6 @@ class ProductController extends Controller
         $dataProduct['name_product'] = $req->nameProduct;
         $dataProduct['madeby'] = $req->madeby;
         $dataProduct['sub_category_id'] = $req->_id_sub_category;
-        $dataProduct['slug'] = $req->slug;
         $dataProduct['brand_id'] = $req->_id_brand;
         $dataProduct['shop_id'] = Session::get('id_shop');
         $dataProduct['img_product'] = $this->setNameImage($req->img_product);
