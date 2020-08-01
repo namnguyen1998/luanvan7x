@@ -23,6 +23,7 @@ Route::get('/danh-muc-{id_category}','PagesController@getPagesProductCategory');
 Route::get('/chi-tiet-san-pham/{id_product}','PagesController@getPagesProductDetail');
 Route::get('/danh-muc-{id_category}/sub-{id_sub}','PagesController@getProductsSubCategory');
 Route::get('/shop-ban-hang/{id_shop}','SellerController@getShop');
+Route::get('/search','PagesController@getSearch');
 
 //Mail
 Route::get('/send-email','MailController@sendMailCustomer');
@@ -43,7 +44,7 @@ Route::post('/tien-hanh-thanh-toan','CartController@saveCheckoutCart');
 
 //Ajax
 Route::get('/add-cart/{id_product}','CartController@addCart');
-Route::get('/add-cart-quantity/{id_product}/{quantity}','CartController@addCartQuantity');
+Route::get('/chi-tiet-san-pham/add-cart-quantity/{id_product}/{quantity}','CartController@addCartQuantity');
 //Route::get('/delete-cart1/{id_product}', 'CartController@deleteCart1');
 Route::get('/delete-cart/{id_product}', 'CartController@deleteItemsCart');
 Route::get('/save-item-cart/{id_product}/{quantity}','CartController@saveItemsCart');
@@ -84,7 +85,7 @@ Route::get('/shop-chart-profit', 'SellerController@profitChartDashboard');
 Route::get('/shop-chart-revenue', 'SellerController@revenueChartDashboard');
 Route::get('/shop-profit', 'SellerController@profitShopDashboard');
 Route::get('/shop-revenue', 'SellerController@revenueShopDashboard');
-Route::get('/danh-thu', 'SellerController@revenueShop');
+Route::get('/danh-thu', 'SellerController@revenueShopDate');
 Route::get('/shop-danh-thu/{val_revenue}', 'SellerController@revenueShopAjax');
 
 

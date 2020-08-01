@@ -311,7 +311,7 @@
                             </div>
                             <div class="col-lg-4 col-md-4">
                                 <div class="filter__found">
-                                    <h6><span>16</span> Products found</h6>
+                                    <h6><span>{{count($productCategory)}}</span> Products found</h6>
                                 </div>
                             </div>
                             <div class="col-lg-4 col-mproductCategoryd-3">
@@ -334,19 +334,16 @@
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
-                                    <h6><a href="{{URL::to($pro->slug)}}">{{$pro->name_product}}</a></h6>
+                                    <h6><a href="{{URL::to('/chi-tiet-san-pham/'.$pro->id_product)}}">{{$pro->name_product}}</a></h6>
                                     <h5>{{number_format($pro->price_product)}} VNĐ</h5>
                                 </div>
                             </div>
                         </div>
                         @endforeach
                     </div>
-                    <div class="product__pagination">
-                        <a href="#">1</a>
-                        <a href="#">2</a>
-                        <a href="#">3</a>
-                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
-                    </div>
+                    <span>
+                       {!!$productCategory->render()!!}
+                    </span>
                 </div>
             </div>
         </div>

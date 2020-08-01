@@ -131,7 +131,7 @@
             </div>
             <div class="col-lg-4 col-md-4">
                 <div class="filter__found">
-                    <h6>Có tất cả <span> {{$countProductsByShop}}</span>sản phẩm trong shop</h6>
+                    <h6>Có tất cả <span> {{count($productShop)}}</span>sản phẩm trong shop</h6>
                 </div>
             </div>
             <div class="col-lg-4 col-mproductCategoryd-3">
@@ -154,7 +154,7 @@
                     </ul>
                 </div>
                 <div class="product__item__text">
-                    <h6><a href="{{URL::to($pro->slug)}}">{{$pro->name_product}}</a></h6>
+                    <h6><a href="{{URL::to('/chi-tiet-san-pham/'.$pro->id_product)}}">{{$pro->name_product}}</a></h6>
                     <h5>{{number_format($pro->price_product)}} VNĐ</h5>
                 </div>
             </div>
