@@ -7,18 +7,18 @@
   ?>
   <table class="table table-striped">
     <thead>
-      <tr>
+      <tr style="text-align: center">
         <th scope="col"># STT</th>
         <th scope="col"># Mã đơn hàng</th>
         <th scope="col"># Ngày</th>
         <th scope="col"># Giá trị đơn hàng</th>
-        <th scope="col"># Thành tiền (5% GTĐH)</th>
+        <th scope="col"># Thành tiền (2% GTĐH)</th>
         
       </tr>
     </thead>
     @foreach ($loadOrder as $order)
     <tbody>
-     <tr>
+     <tr style="text-align: center">
         <th><?php echo $number ++ ;?></th>
         <td>#{{$order->id_orders}}</td>
         <td>{{$order->created_at}}</td>

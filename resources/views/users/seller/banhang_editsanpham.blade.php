@@ -71,12 +71,12 @@
                                 <input name="nameProduct" id="name" value="{{$pro->name_product}}" class="form-control" type="text">
                                 </div>
                             </div>
-                            <div class="form-group row">
+                            <!-- <div class="form-group row">
                                 <label class="control-label text-right col-md-3">Slug</label>
                                 <div class="col-md-9">
                                 <input name="slug" id="slug" readonly class="form-control" type="text">
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="form-group row">
                                 <label class="control-label text-right col-md-3">Nơi sản xuất *</label>
                                 <div class="col-md-9">
@@ -118,8 +118,7 @@
                     <div class="card-body">
                     <h4 class="card-title">Hình 1</h4>
                     <label for="input-file-now-custom-1">Chọn hình</label>
-                    <img src="{{URL::to('public/frontend/img/product/'.$pro->img_product)}}" alt="" height="200" width="200">
-                    <input  type="file" id="input-file-now-custom-1" class="dropify" name="img_product"/>
+                    <input data-default-file="{{asset('public/frontend/img/product/'.$pro->img_product)}}" name="img_product" type="file" id="input-file-now-custom-1" class="dropify" />
                     </div>
                 </div>
             </div>
@@ -130,9 +129,9 @@
                     <div class="card-body">
                     <h4 class="card-title">Hình 2</h4>
                     <label for="input-file-now-custom-1">Chọn hình</label>
-                     <img src="{{URL::to('public/frontend/img/product/'.$pro->img1_product)}}" alt="" height="200" width="200">
-                    <input type="file" id="input-file-now-custom-1" class="dropify" name="img1_product" />
-                    </div>
+                    <input data-default-file='{{asset("public/frontend/img/product/$pro->img1_product")}}' name="img1_product" type="file" id="input-file-now-custom-1" class="dropify"/>
+    
+                </div>
                 </div>
             </div>
 
@@ -142,8 +141,7 @@
                     <div class="card-body">
                     <h4 class="card-title">Hình 3</h4>
                     <label for="input-file-now-custom-1">Chọn hình</label>
-                     <img src="{{URL::to('public/frontend/img/product/'.$pro->img2_product)}}" alt="" height="200" width="200">
-                    <input type="file" id="input-file-now-custom-1" class="dropify" name="img2_product" />
+                    <input data-default-file='{{asset("public/frontend/img/product/$pro->img2_product")}}' name="img2_product" type="file" id="input-file-now-custom-1" class="dropify"/>
                     </div>
                 </div>
             </div>
@@ -154,16 +152,17 @@
                     <div class="card-body">
                     <h4 class="card-title">Hình 4</h4>
                     <label for="input-file-now-custom-1">Chọn hình</label>
-                     <img src="{{URL::to('public/frontend/img/product/'.$pro->img3_product)}}" alt="" height="200" width="200">
-                    <input type="file" id="input-file-now-custom-1" class="dropify" name="img3_product"/>
+                    <input data-default-file='{{asset("public/frontend/img/product/.$pro->img3_product")}}' name="img3_product" type="file" id="input-file-now-custom-1" class="dropify" />
                     </div>
                 </div>
             </div>
             <div class="card m-t-3">
             <div style="text-align: center;" class="card-body">
             <div class="click2edit m-b-3"></div>
-            <button id="save" class="btn btn-success" onclick="save()" type="submit">Cập nhật</button>
-            <button id="cancel" class="btn btn-info"  type="button">Huỷ</button>
+                <button id="save" class="btn btn-success" onclick="save()" type="submit">Cập nhật</button>
+            <a href="{{URL::to('/list-san-pham')}}">
+                <button id="cancel" class="btn btn-info"  type="button">Huỷ</button>
+            </a>
             </div>
         </div>
         </div>

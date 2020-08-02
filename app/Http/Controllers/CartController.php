@@ -66,7 +66,7 @@ class CartController extends Controller
         $product_Info = Products::where('id_product',$id_product)->first();
         //$shop_customer_product = DB::table('shop_customer')->where('id_product','=',$id_product)->first();
 
-        if($product_Info !== null){
+        if ($product_Info !== null){
             $oldCart = Session::get('Cart') ? Session::get('Cart') : null;
             $newCart = new Cart($oldCart);
             $newCart->addCart($product_Info, $id_product);
@@ -85,7 +85,7 @@ class CartController extends Controller
     }
     public function addCartQuantity(Request $request, $id_product, $quantity){
         $product_Info = Products::where('id_product',$id_product)->first();
-        if($product_Info !== null){
+        if ($product_Info !== null){
             $oldCart = Session::get('Cart') ? Session::get('Cart') : null;
             $newCart = new Cart($oldCart);
             $newCart->addCartQuantity($product_Info, $id_product, $quantity);
@@ -121,11 +121,11 @@ class CartController extends Controller
         $newCart = new Cart($oldCart);
         $newCart->deleteCart($id_product);
 
-        if(Count($newCart->products) > 0){
+        if (Count($newCart->products) > 0){
             $request->Session()->put('Cart', $newCart);
             return view('pages.cart_ajax');
         }
-        else{
+        else {
             $request->Session()->forget('Cart');
         }
     }   
@@ -140,8 +140,6 @@ class CartController extends Controller
     }
 
     public function saveAllCart(Request $request){
-
-        $data = $request->data;
         foreach ($request->data as $item){
             $oldCart = Session::get('Cart') ? Session::get('Cart') : null;
             $newCart = new Cart($oldCart);
@@ -167,7 +165,7 @@ class CartController extends Controller
     }
 
     public function checkUser(){
-        if((Session::get('provider_id'))){
+        if (Session::get('provider_id')){
             $customer = Customers::where('provider_id',  Session::get('provider_id'))->pluck('id_customer')->first();
             return $customer;
         }
@@ -184,7 +182,7 @@ class CartController extends Controller
                 Session::put('message', 'Bạn chưa chọn hình thức bạn chuyển. Vui lòng chọn để tiến hành thanh toán.');
                 return redirect('/thanh-toan');
             }
-            else{
+            else {
                 if (empty($req->_address)){
                     $dataShipping['customer_id'] = $this->checkUser();
                     $dataShipping['name_recipient'] = $req->_name;
