@@ -202,5 +202,15 @@
             document.getElementById("totalTotal").value = convert;
             document.getElementById("totalShip").value = document.getElementById("ship_0").value;
         }
+        function sendMail(){
+            $.ajax({
+                url:'/send-mail',
+                type:'GET',
+            }).done(function(response){
+               alertify.success('Thanh toán thành công');
+            });
+            
+            
+        }
     </script>
 @include('pages.footer')

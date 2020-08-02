@@ -28,7 +28,7 @@ class MailController extends Controller
             return Session::get('id_customer');
     }
 
-    public function sendMailCustomer(){
+    public function sendMail(){
 
     	$emailShopvsCustomer = DB::table('shop_oder_product')->where('id_customer','=',$this->checkUser())
     	->join('shop','shop.id_shop','=','shop_oder_product.id_shop')
@@ -46,15 +46,27 @@ class MailController extends Controller
             DB::raw('shop.updated_at')      
     	))
     	->get(); 
-    	
-		$details = [
+			$details = [
 			'title' => 'Mail from OGANI',
-			'body' => 'Shop bán hàng sẽ kiểm tra đơn hàng của đã đặt'
-		];
-		for($i = 0; $i<=count($emailShopvsCustomer);$i++){
-		\Mail::to($emailShopvsCustomer[$i]->email_shop)->send(new \App\Mail\Mail($details));
+			'body' => "Bạn vừa có đơn đặt hàng vui lòng đăng nhập để kiểm tra!",
+			'url' => \URL::to("/banhang"),
+			];
+		for($i = 0; $i<count($emailShopvsCustomer);$i++){
+			//echo($emailShopvsCustomer[$i]->email_shop);
+			\Mail::to($emailShopvsCustomer[$i]->email_shop)->send(new \App\Mail\Mail($details));
 		}
-		\Mail::to(Session::get('email_customer'))->send(new \App\Mail\Mail($details));
+
+		$this->sendMailCustomer();
+		
+	}
+
+	public function sendMailCustomer(){
+			$details = [
+			'title' => 'Mail from OGANI',
+			'body' =>"Cám ơn bạn đã mua hàng! Shop bán hàng sẽ kiểm tra đơn hàng và liên hệ với bạn sau!!",
+			
+		];
+		\Mail::to(Session::get("email_customer"))->send(new \App\Mail\Mail($details));
 		echo "Email sent";
 		//dd($emailShopvsCustomer);
 	}

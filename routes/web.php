@@ -26,7 +26,7 @@ Route::get('/shop-ban-hang/{id_shop}','SellerController@getShop');
 Route::get('/search','PagesController@getSearch');
 
 //Mail
-Route::get('/send-email','MailController@sendMailCustomer');
+Route::get('/send-email','MailController@sendMail');
 Route::get('/send-email-shop','MailController@sendMailShop');
 
 
