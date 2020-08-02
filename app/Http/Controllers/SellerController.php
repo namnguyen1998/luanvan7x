@@ -34,7 +34,7 @@ class SellerController extends Controller
 		if(!empty(Session::get('id_shop')))
 			return Redirect::to('/dashboard');
 		else
-			if(!empty(Session::get('id_customer')))
+			if(!empty(Session::get('id_customer')) || empty(Session::get('id_customer')))
 				return view('users.seller.banhang_login');
 			else
 				return Redirect::to('/');
@@ -69,13 +69,29 @@ class SellerController extends Controller
     	return Redirect::to('/');
     }
     public function getShop($id_shop){
-        $dataShop = DB::table('shop')->where('id_shop','=',$id_shop)->first();
+        $dataShop = DB::table('shop')->where('id_shop','=',$id_shop)->where('status_shop','=',1)->first();
         
         $productShop = DB::table('sub_category')->join('products','sub_category_id','=','id_sub')
         ->where('shop_id','=',$id_shop)
         ->where('is_deleted','=','0')
+        ->paginate(9);
+        $categoryShop = DB::table('shop')->join('products_category','shop_id','=','id_shop')
+        ->where('id_shop','=',$id_shop)
+        ->groupBy(array(
+            DB::raw('sub_category_id'),
+            DB::raw('shop.id_shop '),
+            DB::raw('shop.email_shop'),
+            DB::raw('shop.password_shop'),
+            DB::raw('shop.name_shop'),
+            DB::raw('shop.phone_shop'),
+            DB::raw('shop.customer_id'),
+            DB::raw('shop.img_shop'),
+            DB::raw('shop.address_shop'),
+            DB::raw('shop.status_shop'),
+            DB::raw('shop.created_at'),
+            DB::raw('shop.updated_at')            
+            ))
         ->get();
-        $categoryShop = DB::table('shop')->join('products_category','shop_id','=','id_shop')->where('id_shop','=',$id_shop)->get();
         
         // $countProductsByShop = DB::table('products')->join('sub_category','id_sub','=','sub_category_id')
         // ->where('shop_id','=',$id_shop)->count();

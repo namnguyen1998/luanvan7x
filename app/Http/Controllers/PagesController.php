@@ -64,10 +64,10 @@ class PagesController extends Controller
         $products = DB::table('products_category')
         ->where('name_product','like','%'.$request->key.'%')
         ->orWhere('price_product',$request->key)
-        // ->orWhere('name_shop',$request->key)
+        ->orWhere('name_shop',$request->key)
         ->get();
-        $shop = DB::table('shop')->where('name_shop','like','%'.$request->key.'%')
-        ->get();
-        return view('pages.search', compact('products','shop'));
+        // $shop = DB::table('shop')->where('name_shop','like','%'.$request->key.'%')
+        // ->get();
+        return view('pages.search', compact('products'));
     }
 }

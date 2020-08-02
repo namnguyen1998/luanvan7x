@@ -152,7 +152,7 @@ class CartController extends Controller
         // return view('pages.cart_ajax');
     }
     public function checkoutCart(){
-        if (!empty(Session::get('cart'))){
+        if (!empty(Session::get('Cart'))){
             if (!empty( Session::get('id_customer'))){
                 $loadShippingAddrees = DB::table('shipping_address')->where('customer_id', $this->checkUser())->where('status_default', '=', 1)->first();
                 return view('pages.checkout_cart', compact('loadShippingAddrees'));

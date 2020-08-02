@@ -37,7 +37,7 @@
                             <ul>
                               @if(Session::get('id_customer')!=null)
                                 <li>
-                                <a href="{{URL::to('/banhang')}}">
+                                <a href="{{URL::to('/banhang')}}" target="_blank">
                                     <i class="fa fa-hand-o-right"></i>Kênh bán hàng</li>
                                 </a>
                                 @endif

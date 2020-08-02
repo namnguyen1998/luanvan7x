@@ -61,6 +61,7 @@ Route::post('/updateProfile','CustomerController@updateProfile');
 Route::get('/profile/address','CustomerController@getAddressCustomer');
 Route::post('/updateAddress','CustomerController@updateAddressCustomer');
 Route::get('/load-name-phone/{val_address}','CustomerController@getNamePhoneCustomer');
+Route::get('/don-hang','CustomerController@getBillCustomer');
 
 // Seller
 Route::get('/dang-ky-shop','CustomerController@getRegisterShop');

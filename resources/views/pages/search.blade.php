@@ -26,7 +26,7 @@
                             <h4>CATEGORY</h4>
                             <ul>
                                 @foreach($products as $pro)
-                                <li><a href="{{URL::to('/danh-muc-'.$pro->category_id.'/sub-'.$pro->id_sub)}}">{{$pro->name_sub}}</a></li>
+                                <li><a href="{{URL::to('/danh-muc-'.$pro->category_id.'/sub-'.$pro->sub_category_id)}}">{{$pro->name_sub}}</a></li>
                                 @endforeach
                             </ul>
                         </div>
@@ -181,21 +181,21 @@
                     </div>
                 </div>
                 <div class="col-lg-9 col-md-7">
-                    <!-- <div class="product__discount">
+                    <div class="product__discount">
                         <div class="section-title product__discount__title">
-                            <h2>Sale Off</h2>
+                            <h2>SHOP</h2>
                         </div>
                         <div class="row">
                             
-                            	@foreach($shop as $s)
+                            <!-- 	@foreach($products as $pro)
                                 <div class="col-lg-12">
-                                	<img src="{{asset('public/frontend/img/shop/'.$s->img_shop)}}" style="width:150px;height:150px;">
-                                	<span>{{$s->name_shop}}</span>
+                                	<img src="{{asset('public/frontend/img/shop/')}}" style="width:150px;height:150px;">
+                                	<span></span>
                                 </div>
                                 @endforeach
-                            
+                             -->
                         </div>
-                    </div> -->
+                    </div>
                     <div class="filter__item">
                         <div class="row">
                             <div class="col-lg-4 col-md-5">
