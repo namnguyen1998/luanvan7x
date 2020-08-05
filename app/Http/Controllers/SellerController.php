@@ -17,6 +17,7 @@ use App\ShippingAddress;
 use App\Products;
 use App\Orders;
 use App\OrderDetail;
+use Illuminate\Support\Facades\Input;
 session_start();
 
 class SellerController extends Controller
@@ -270,6 +271,33 @@ class SellerController extends Controller
         else {
             $loadOrderShop = $this->revenueShopFilterMonth($val_revenue);
             return view('users.seller.banhang_revenueAjax', compact('loadOrderShop'));
+        }
+    }
+
+    public function revenueShopDateStartEnd(Request $req){
+        $date_start = date('Y-m-d 00:00:00', strtotime($req->start));
+        $date_end = date('Y-m-d 23:59:59', strtotime($req->end));
+        if (empty($req->start) || empty($req->end)){
+            return '<div class = "alert alert-dark alert-dismissible fade show" role="alert">Xin vui lòng chọn <strong>"Thời gian bắt đầu"</strong> và <strong>"Thời gian kết thúc"</strong> trước khi chọn <strong>"Lọc"</strong>.</div>';
+        }
+        elseif (date('Y-m-d', strtotime($req->end)) < date('Y-m-d', strtotime($req->start))){
+            return '<div class = "alert alert-dark alert-dismissible fade show" role="alert"><strong>"Thời gian bắt đầu"</strong> không thể lớn hơn <strong>"Thời gian kết thúc"</strong>. Xin vui lòng chọn lại.</div>';
+        }
+        else {
+            $loadOrderShop = DB::table('shop_oder_product')
+                        ->whereBetween('created_at', [$date_start, $date_end])
+                        ->where('id_shop', '=', Session::get('id_shop'))
+                        ->where('status_order', '!=', -1)
+                        ->groupBy('orders_id')
+                        ->orderBy('date', 'DESC')
+                        ->get(array(
+                            DB::raw('Date(created_at) as date'),
+                            DB::raw('orders_id as orders_id'),
+                            DB::raw('COUNT(orders_id) as "profit"'),
+                            DB::raw('SUM(price_product * quantity) as "price_order"')
+                        ));
+                        
+        return view('users.seller.banhang_revenueAjax', compact('loadOrderShop'));
         }
     }
 }

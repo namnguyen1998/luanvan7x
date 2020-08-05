@@ -87,6 +87,8 @@ Route::get('/shop-profit', 'SellerController@profitShopDashboard');
 Route::get('/shop-revenue', 'SellerController@revenueShopDashboard');
 Route::get('/danh-thu', 'SellerController@revenueShopDate');
 Route::get('/shop-danh-thu/{val_revenue}', 'SellerController@revenueShopAjax');
+Route::get('/shop-danh-thu', 'SellerController@revenueShopDateStartEnd');
+
 
 
 // Api login Google
