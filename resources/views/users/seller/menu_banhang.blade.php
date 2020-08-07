@@ -33,7 +33,7 @@
           </a>
           <ul class="treeview-menu">
             <li><a href="{{URL::to('/danh-sach-don-hang')}}"><i class="fa fa-angle-right"></i>Danh sách đơn hàng</a></li>
-            <li><a href="{{URL::to('/don-hang')}}"><i class="fa fa-angle-right"></i>Trạng thái đơn hàng</a></li>
+            <li><a href="{{URL::to('/shop-cap-nhat-trang-thai-van-chuyen')}}"><i class="fa fa-angle-right"></i>Cập nhật trạng thái vận chuyển</a></li>
           </ul>
         </li>
         <li class="treeview"> 

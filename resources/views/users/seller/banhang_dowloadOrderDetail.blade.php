@@ -218,7 +218,7 @@
                             <!-- Date Now -->
                             <div style="height: 22%"> 
                                 <address>
-                                    In ngày: <?php echo  date_format(now()->setTimezone( new DateTimeZone('Asia/Ho_Chi_Minh')), 'd-m-Y H:i:s'); ?>
+                                    Ngày in: <?php echo  date_format(now()->setTimezone( new DateTimeZone('Asia/Ho_Chi_Minh')), 'd-m-Y H:i:s'); ?>
                                 </address>
                             </div>
                             <!-- /. Date Now -->

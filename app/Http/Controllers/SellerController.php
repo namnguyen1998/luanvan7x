@@ -115,11 +115,37 @@ class SellerController extends Controller
                                 DB::raw('Date(created_at) as created_at'),
                                 DB::raw('orders_id as orders_id'),
                                 DB::raw('name_shop as name_shop'),
-                                DB::raw('SUM(price_product * quantity) as "price_order"')
+                                DB::raw('SUM(price_product * quantity) as "price_order"'),
+                                DB::raw('status_order as "status_order"')
                             ));
                             // ->get();
                             // dd($loadOrderShop);
         return view('users.seller.banhang_listOrder', compact('loadOrderShop'));
+    }
+    
+    public function loadStatusShip(){
+        $loadOrderShop = DB::table('shop_oder_product')
+                            ->where('status_order', '>=', 1)
+                            ->where('id_shop', '=', Session::get('id_shop'))
+                            ->groupBy('orders_id')
+                            ->orderBy('created_at', 'DESC')
+                            ->get(array(
+                                DB::raw('Date(created_at) as created_at'),
+                                DB::raw('orders_id as orders_id'),
+                                DB::raw('name_shop as name_shop'),
+                                DB::raw('SUM(price_product * quantity) as "price_order"'),
+                                DB::raw('status_order as "status_order"')
+                            ));
+        return view('users.seller.banhang_updateStatusShip', compact('loadOrderShop'));
+    }
+
+    public function updateStatusShip(Request $req){
+        $updateStatusShip['status_order'] = $req->status_order;
+        // $updateStatusShip['id_orders'] = $req->id_orders;
+        // dd($updateStatusShip);
+        Orders::where('id_orders', $req->id_orders)->update($updateStatusShip);
+        Session::put('message','Cập nhật trạng thái thành công.');
+        return redirect::to('/shop-cap-nhat-trang-thai-van-chuyen');
     }
 
     public function loadOrderDetailShop($orders_id){
@@ -141,7 +167,11 @@ class SellerController extends Controller
         else 
             return redirect::to('/danh-sach-don-hang');
     }
-
+    
+    public function confirmOrderShop(Request $req){
+        $confirmOrder['status_order'] = 1;
+        Orders::where('id_orders', $req->id_orders)->update($confirmOrder);
+    }
 
     public function downloadPDF(Request $req){
         $loadOrderDetail = OrderDetail::select('products.name_product', 'products.price_product', 'shop.id_shop', 'shop.name_shop', 'order_detail.id_order_detail', 'order_detail.quantity')

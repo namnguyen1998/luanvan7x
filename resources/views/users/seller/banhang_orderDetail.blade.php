@@ -138,10 +138,35 @@
                 <input name="id_orders" hidden value="{{$loadOrders->id_orders}}"> 
                     <button type="submit" class="btn btn-primary pull-right" style="margin-right: 5px;"> <i class="fa fa-download"></i> In Đơn Hàng </button>
                 </form>
+                @if ($loadOrders->status_order == 0)
+                    <button id="confirm_order" type="submit" class="btn btn-success pull-right" style="margin-right: 5px;"> <i class="fa fa-check"></i> Xác nhận dơn hàng </button>
+                @endif
             </div>
+            
         </div>
         </div>
         <!-- /.content --> 
     </div>
 </div>
+<script src="{{asset('public/backend/dist/js/jquery.min.js')}}"></script>  
+<script>
+    $(document).ready(function(){
+        $('#confirm_order').on('click', function(){
+        id_orders = document.getElementById("id_orders").value
+        // console.log(id_orders)
+        $.ajax({
+            url:"{{URL::to('/shop-confirm-order')}}",
+            data: {id_orders: id_orders},
+            type:'GET',
+            success: function(){
+                $("#confirm_order").attr("hidden", true)
+                alert('Xác nhận thành công.');
+            },
+            error: function(){
+                alert('Error');
+            }
+        })
+        })
+    })
+</script>
 @endsection
