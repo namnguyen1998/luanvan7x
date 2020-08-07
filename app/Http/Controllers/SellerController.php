@@ -36,7 +36,7 @@ class SellerController extends Controller
 		if(!empty(Session::get('id_shop')))
 			return Redirect::to('/dashboard');
 		else
-			if(!empty(Session::get('id_customer')))
+			if(!empty(Session::get('id_customer')) || empty(Session::get('id_customer')))
 				return view('users.seller.banhang_login');
 			else
 				return Redirect::to('/');
@@ -71,13 +71,29 @@ class SellerController extends Controller
     	return Redirect::to('/');
     }
     public function getShop($id_shop){
-        $dataShop = DB::table('shop')->where('id_shop','=',$id_shop)->first();
+        $dataShop = DB::table('shop')->where('id_shop','=',$id_shop)->where('status_shop','=',1)->first();
         
         $productShop = DB::table('sub_category')->join('products','sub_category_id','=','id_sub')
         ->where('shop_id','=',$id_shop)
         ->where('is_deleted','=','0')
+        ->paginate(9);
+        $categoryShop = DB::table('shop')->join('products_category','shop_id','=','id_shop')
+        ->where('id_shop','=',$id_shop)
+        ->groupBy(array(
+            DB::raw('sub_category_id'),
+            DB::raw('shop.id_shop '),
+            DB::raw('shop.email_shop'),
+            DB::raw('shop.password_shop'),
+            DB::raw('shop.name_shop'),
+            DB::raw('shop.phone_shop'),
+            DB::raw('shop.customer_id'),
+            DB::raw('shop.img_shop'),
+            DB::raw('shop.address_shop'),
+            DB::raw('shop.status_shop'),
+            DB::raw('shop.created_at'),
+            DB::raw('shop.updated_at')            
+            ))
         ->get();
-        $categoryShop = DB::table('shop')->join('products_category','shop_id','=','id_shop')->where('id_shop','=',$id_shop)->get();
         
         // $countProductsByShop = DB::table('products')->join('sub_category','id_sub','=','sub_category_id')
         // ->where('shop_id','=',$id_shop)->count();
@@ -99,11 +115,37 @@ class SellerController extends Controller
                                 DB::raw('Date(created_at) as created_at'),
                                 DB::raw('orders_id as orders_id'),
                                 DB::raw('name_shop as name_shop'),
-                                DB::raw('SUM(price_product * quantity) as "price_order"')
+                                DB::raw('SUM(price_product * quantity) as "price_order"'),
+                                DB::raw('status_order as "status_order"')
                             ));
                             // ->get();
                             // dd($loadOrderShop);
         return view('users.seller.banhang_listOrder', compact('loadOrderShop'));
+    }
+    
+    public function loadStatusShip(){
+        $loadOrderShop = DB::table('shop_oder_product')
+                            ->where('status_order', '>=', 1)
+                            ->where('id_shop', '=', Session::get('id_shop'))
+                            ->groupBy('orders_id')
+                            ->orderBy('created_at', 'DESC')
+                            ->get(array(
+                                DB::raw('Date(created_at) as created_at'),
+                                DB::raw('orders_id as orders_id'),
+                                DB::raw('name_shop as name_shop'),
+                                DB::raw('SUM(price_product * quantity) as "price_order"'),
+                                DB::raw('status_order as "status_order"')
+                            ));
+        return view('users.seller.banhang_updateStatusShip', compact('loadOrderShop'));
+    }
+
+    public function updateStatusShip(Request $req){
+        $updateStatusShip['status_order'] = $req->status_order;
+        // $updateStatusShip['id_orders'] = $req->id_orders;
+        // dd($updateStatusShip);
+        Orders::where('id_orders', $req->id_orders)->update($updateStatusShip);
+        Session::put('message','Cập nhật trạng thái thành công.');
+        return redirect::to('/shop-cap-nhat-trang-thai-van-chuyen');
     }
 
     public function loadOrderDetailShop($orders_id){
@@ -125,7 +167,11 @@ class SellerController extends Controller
         else 
             return redirect::to('/danh-sach-don-hang');
     }
-
+    
+    public function confirmOrderShop(Request $req){
+        $confirmOrder['status_order'] = 1;
+        Orders::where('id_orders', $req->id_orders)->update($confirmOrder);
+    }
 
     public function downloadPDF(Request $req){
         $loadOrderDetail = OrderDetail::select('products.name_product', 'products.price_product', 'shop.id_shop', 'shop.name_shop', 'order_detail.id_order_detail', 'order_detail.quantity')

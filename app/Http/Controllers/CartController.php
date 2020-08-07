@@ -194,7 +194,7 @@ class CartController extends Controller
                     $addressShipping_id = DB::select("SHOW TABLE STATUS LIKE 'shipping_address'");
                     $dataOrder['address_order'] = $addressShipping_id[0]->Auto_increment -1;
                     $dataOrder['note'] = $req->_note;
-                    $dataOrder['shipping cost'] = $req->totalShip;
+                    $dataOrder['shipping_cost'] = $req->totalShip;
                     $dataOrder['price_orders'] = $req->totalTotal;
                     $dataOrder['customer_id'] = $this->checkUser();
                     DB::table('orders')->insert($dataOrder);

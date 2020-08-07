@@ -30,7 +30,7 @@
                             </h5>
                         </li>
                         <li><a href="{{URL::to('/profile')}}" class = "fa fa-user">Hồ sơ của tôi</a></li>
-                        <li><a href="#" class = "fa fa-shopping-cart">Đơn mua</a></li>
+                        <li><a href="{{URL::to('/profile/don-hang-cua-ban')}}" class = "fa fa-shopping-cart">Đơn mua hàng</a></li>
                         <li><a href="{{URL::to('/profile/address')}}" class = "fa fa-truck">Địa chỉ</a></li>
                         <li><a href="{{URL::to('/dang-ky-shop')}}" class = "fa fa-slideshare">Đăng ký shop bán hàng</a></li>
                         <!-- <li>

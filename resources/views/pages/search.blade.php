@@ -23,12 +23,6 @@
                 <div class="col-lg-3 col-md-5">
                     <div class="sidebar">
                         <div class="sidebar__item">
-                            <h4>CATEGORY</h4>
-                            <ul>
-                                @foreach($products as $pro)
-                                <li><a href="{{URL::to('/danh-muc-'.$pro->category_id.'/sub-'.$pro->id_sub)}}">{{$pro->name_sub}}</a></li>
-                                @endforeach
-                            </ul>
                         </div>
                         <div class="sidebar__item">
                             <h4>Price</h4>
@@ -117,85 +111,41 @@
                             <div class="latest-product__text">
                                 <h4>Latest Products</h4>
                                 <div class="latest-product__slider owl-carousel">
+                                    @foreach($productsRalated as $product)
                                     <div class="latest-prdouct__slider__item">
-                                        <a href="#" class="latest-product__item">
+                                        <a href="{{URL::to('/chi-tiet-san-pham/'.$product->id_product)}}" class="latest-product__item">
                                             <div class="latest-product__item__pic">
-                                                <img src="{{asset('public/frontend/img/latest-product/lp-1.jpg')}}" alt="">
+                                                <img src="{{asset('public/frontend/img/product/'.$product->img_product)}}" alt="">
                                             </div>
                                             <div class="latest-product__item__text">
-                                                <h6>Crab Pool Security</h6>
-                                                <span>$30.00</span>
+                                                <h6>{{$product->name_product}}</h6>
+                                                <span>{{number_format($product->price_product)}}</span>
                                             </div>
                                         </a>
-                                        <a href="#" class="latest-product__item">
-                                            <div class="latest-product__item__pic">
-                                                <img src="{{asset('public/frontend/img/latest-product/lp-2.jpg')}}" alt="">
-                                            </div>
-                                            <div class="latest-product__item__text">
-                                                <h6>Crab Pool Security</h6>
-                                                <span>$30.00</span>
-                                            </div>
-                                        </a>
-                                        <a href="#" class="latest-product__item">
-                                            <div class="latest-product__item__pic">
-                                                <img src="{{asset('public/frontend/img/latest-product/lp-3.jpg')}}" alt="">
-                                            </div>
-                                            <div class="latest-product__item__text">
-                                                <h6>Crab Pool Security</h6>
-                                                <span>$30.00</span>
-                                            </div>
-                                        </a>
+                                        
                                     </div>
-                                    <div class="latest-prdouct__slider__item">
-                                        <a href="#" class="latest-product__item">
-                                            <div class="latest-product__item__pic">
-                                                <img src="{{asset('public/frontend/img/latest-product/lp-1.jpg')}}" alt="">
-                                            </div>
-                                            <div class="latest-product__item__text">
-                                                <h6>Crab Pool Security</h6>
-                                                <span>$30.00</span>
-                                            </div>
-                                        </a>
-                                        <a href="#" class="latest-product__item">
-                                            <div class="latest-product__item__pic">
-                                                <img src="{{asset('public/frontend/img/latest-product/lp-2.jpg')}}" alt="">
-                                            </div>
-                                            <div class="latest-product__item__text">
-                                                <h6>Crab Pool Security</h6>
-                                                <span>$30.00</span>
-                                            </div>
-                                        </a>
-                                        <a href="#" class="latest-product__item">
-                                            <div class="latest-product__item__pic">
-                                                <img src="{{asset('public/frontend/img/latest-product/lp-3.jpg')}}" alt="">
-                                            </div>
-                                            <div class="latest-product__item__text">
-                                                <h6>Crab Pool Security</h6>
-                                                <span>$30.00</span>
-                                            </div>
-                                        </a>
-                                    </div>
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-9 col-md-7">
-                    <!-- <div class="product__discount">
+                    <div class="product__discount">
                         <div class="section-title product__discount__title">
-                            <h2>Sale Off</h2>
+                            <h2>SHOP</h2>
                         </div>
                         <div class="row">
                             
-                            	@foreach($shop as $s)
+                            <!-- 	@foreach($products as $pro)
                                 <div class="col-lg-12">
-                                	<img src="{{asset('public/frontend/img/shop/'.$s->img_shop)}}" style="width:150px;height:150px;">
-                                	<span>{{$s->name_shop}}</span>
+                                	<img src="{{asset('public/frontend/img/shop/')}}" style="width:150px;height:150px;">
+                                	<span></span>
                                 </div>
                                 @endforeach
-                            
+                             -->
                         </div>
-                    </div> -->
+                    </div>
                     <div class="filter__item">
                         <div class="row">
                             <div class="col-lg-4 col-md-5">

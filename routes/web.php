@@ -26,7 +26,7 @@ Route::get('/shop-ban-hang/{id_shop}','SellerController@getShop');
 Route::get('/search','PagesController@getSearch');
 
 //Mail
-Route::get('/send-email','MailController@sendMailCustomer');
+Route::get('/send-email','MailController@sendMail');
 Route::get('/send-email-shop','MailController@sendMailShop');
 
 
@@ -61,6 +61,12 @@ Route::post('/updateProfile','CustomerController@updateProfile');
 Route::get('/profile/address','CustomerController@getAddressCustomer');
 Route::post('/updateAddress','CustomerController@updateAddressCustomer');
 Route::get('/load-name-phone/{val_address}','CustomerController@getNamePhoneCustomer');
+Route::get('/profile/don-hang-cua-ban','CustomerController@getBillCustomer');
+Route::get('/profile/chi-tiet-don-hang/{id_orders}','CustomerController@getOrdersCustomer');
+Route::get('/profile/huy-don-hang/{id_orders}','CustomerController@loadCancelOrdersCustomer');
+Route::post('/profile/huy','CustomerController@cancelOrdersCustomer');
+
+
 
 // Seller
 Route::get('/dang-ky-shop','CustomerController@getRegisterShop');
@@ -90,6 +96,9 @@ Route::get('/shop-revenue', 'SellerController@revenueShopDashboard');
 Route::get('/danh-thu', 'SellerController@revenueShopDate');
 Route::get('/shop-danh-thu/{val_revenue}', 'SellerController@revenueShopAjax');
 Route::get('/shop-danh-thu', 'SellerController@revenueShopDateStartEnd');
+Route::get('/shop-confirm-order', 'SellerController@confirmOrderShop');
+Route::get('/shop-cap-nhat-trang-thai-van-chuyen', 'SellerController@loadStatusShip');
+Route::get('/shop-update-status-ship', 'SellerController@updateStatusShip');
 
 
 

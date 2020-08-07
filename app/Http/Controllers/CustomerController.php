@@ -13,6 +13,8 @@ use DB;
 use App\Customers;
 use App\Category;
 use App\Brands;
+use App\OrderDetail;
+use App\Orders;
 use App\ShippingAddress;
 use Hash;
 session_start();
@@ -284,9 +286,47 @@ class CustomerController extends Controller
         return Redirect::to('/profile');
     }
 
-
+    public function getBillCustomer(){
+        $billCustomer = Orders::where('customer_id', $this->checkUser())->get();
+        $orderDetail = OrderDetail::join('products', 'products.id_product', '=', 'order_detail.product_id')->get();
+        return view('users.customer.donhang_customer', compact('billCustomer', 'orderDetail'));
+    }
     
-    
+    public function getOrdersCustomer($id_orders){
+        $orderDetail = OrderDetail::where('orders_id', $id_orders)
+                                    ->where('customer_id', $this->checkUser())
+                                    ->join('products', 'products.id_product', '=', 'order_detail.product_id')
+                                    ->join('orders', 'orders.id_orders', '=', 'order_detail.orders_id')
+                                    ->get();
+        // dd($orderDetail);
+        if (empty($orderDetail->count()))
+            return redirect::to('/profile/don-hang-cua-ban');
+        else
+            return view('users.customer.chitietdonhang_customer', compact('orderDetail'));
+    }
 
+    public function loadCancelOrdersCustomer($id_orders){
+        $loadCancelOrder = Orders::where('id_orders', $id_orders)
+                                ->where('customer_id', $this->checkUser())
+                                ->get();
+        if (empty($loadCancelOrder->count()))
+            return redirect::to('/profile/don-hang-cua-ban');
+        else
+            return view('users.customer.huydonhang_customer', compact('loadCancelOrder'));
+    }
+
+    public function cancelOrdersCustomer(Request $req){
+        if (empty($req->noteCancel)){
+            Session::put('message','Xin vui lòng nhập nội dung trước khi <strong>"Xác nhận"</strong>. Cảm ơn.');
+            return redirect::to('/profile/huy-don-hang/'.$req->id_orders);
+        }
+        else {
+            $cancelOrder['status_order'] = -1;
+            $cancelOrder['note'] = $req->noteCancel;
+            Orders::where('id_orders', $req->id_orders)->update($cancelOrder);
+            Session::put('message','Đơn hàng đã được <strong>"Huỷ"</strong>. Chúng tôi sẽ ghi nhận phản hồi của bạn. Xin cảm ơn.');
+            return redirect::to('/profile/don-hang-cua-ban');
+        }       
+    }
 
 }
