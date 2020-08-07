@@ -81,12 +81,16 @@ Route::get('/logout-shop','SellerController@logoutShop');
 Route::get('/danh-sach-don-hang', 'SellerController@loadOrderShop');
 Route::get('/chi-tiet-don-hang/{orders_id}', 'SellerController@loadOrderDetailShop');
 
+Route::get('/in-don-hang', 'SellerController@downloadPDF');
+
 Route::get('/shop-chart-profit', 'SellerController@profitChartDashboard');
 Route::get('/shop-chart-revenue', 'SellerController@revenueChartDashboard');
 Route::get('/shop-profit', 'SellerController@profitShopDashboard');
 Route::get('/shop-revenue', 'SellerController@revenueShopDashboard');
 Route::get('/danh-thu', 'SellerController@revenueShopDate');
 Route::get('/shop-danh-thu/{val_revenue}', 'SellerController@revenueShopAjax');
+Route::get('/shop-danh-thu', 'SellerController@revenueShopDateStartEnd');
+
 
 
 // Api login Google

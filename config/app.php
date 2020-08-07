@@ -167,6 +167,8 @@ return [
          */
         Laravel\Socialite\SocialiteServiceProvider::class,
         Yajra\Datatables\DatatablesServiceProvider::class,
+        // PDF
+        Barryvdh\DomPDF\ServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -231,10 +233,14 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
+
         // Login API
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
 
         'Datatables' => Yajra\Datatables\Facades\Datatables::class,
+
+        // PDF
+        'PDF' => Barryvdh\DomPDF\Facade::class,
 
     ],
 

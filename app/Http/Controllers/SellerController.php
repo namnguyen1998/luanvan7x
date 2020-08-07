@@ -7,6 +7,7 @@ use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
 use Session;
 use Socialite;
+use PDF;
 use Illuminate\Support\Facades\Redirect;
 use DateTimeZone;
 use DB;
@@ -17,6 +18,7 @@ use App\ShippingAddress;
 use App\Products;
 use App\Orders;
 use App\OrderDetail;
+use Illuminate\Support\Facades\Input;
 session_start();
 
 class SellerController extends Controller
@@ -123,6 +125,28 @@ class SellerController extends Controller
         else 
             return redirect::to('/danh-sach-don-hang');
     }
+
+
+    public function downloadPDF(Request $req){
+        $loadOrderDetail = OrderDetail::select('products.name_product', 'products.price_product', 'shop.id_shop', 'shop.name_shop', 'order_detail.id_order_detail', 'order_detail.quantity')
+                                ->join('orders', 'orders.id_orders', '=', 'order_detail.orders_id')
+                                ->join('products', 'products.id_product', '=', 'order_detail.product_id')
+                                ->leftjoin('shop', 'shop.id_shop', '=', 'products.shop_id')
+                                ->where('id_shop', '=', Session::get('id_shop'))
+                                ->where( 'orders_id', '=', $req->id_orders)
+                                ->get();
+        $loadShop = DB::table('shop')->where('id_shop','=', Session::get('id_shop'))->first();
+        $loadOrders = Orders::where('id_orders', $req->id_orders)
+                            ->join('customers', 'customers.id_customer', '=', 'orders.customer_id')
+                            ->first();
+        $loadAddressCustomer = DB::table('shipping_address')->where('customer_id', '=', $loadOrders->customer_id)->where('status_default','=', 1)->first();
+        view()->share('loadOrderDetail',$loadOrderDetail);
+        view()->share('loadShop',$loadShop);
+        view()->share('loadOrders',$loadOrders);
+        view()->share('loadAddressCustomer',$loadAddressCustomer);
+        $pdf = PDF::loadView('users.seller.banhang_dowloadOrderDetail', [$loadAddressCustomer, $loadOrderDetail, $loadShop, $loadOrders, $loadAddressCustomer]);
+        return $pdf->download('in-don-hang.pdf');
+    } 
 
     // Revenue Shop
     public function profitShop($date){
@@ -272,4 +296,32 @@ class SellerController extends Controller
             return view('users.seller.banhang_revenueAjax', compact('loadOrderShop'));
         }
     }
+
+    public function revenueShopDateStartEnd(Request $req){
+        $date_start = date('Y-m-d 00:00:00', strtotime($req->start));
+        $date_end = date('Y-m-d 23:59:59', strtotime($req->end));
+        if (empty($req->start) || empty($req->end)){
+            return '<div class = "alert alert-dark alert-dismissible fade show" role="alert">Xin vui lòng chọn <strong>"Thời gian bắt đầu"</strong> và <strong>"Thời gian kết thúc"</strong> trước khi chọn <strong>"Lọc"</strong>.</div>';
+        }
+        elseif (date('Y-m-d', strtotime($req->end)) < date('Y-m-d', strtotime($req->start))){
+            return '<div class = "alert alert-dark alert-dismissible fade show" role="alert"><strong>"Thời gian bắt đầu"</strong> không thể lớn hơn <strong>"Thời gian kết thúc"</strong>. Xin vui lòng chọn lại.</div>';
+        }
+        else {
+            $loadOrderShop = DB::table('shop_oder_product')
+                        ->whereBetween('created_at', [$date_start, $date_end])
+                        ->where('id_shop', '=', Session::get('id_shop'))
+                        ->where('status_order', '!=', -1)
+                        ->groupBy('orders_id')
+                        ->orderBy('date', 'DESC')
+                        ->get(array(
+                            DB::raw('Date(created_at) as date'),
+                            DB::raw('orders_id as orders_id'),
+                            DB::raw('COUNT(orders_id) as "profit"'),
+                            DB::raw('SUM(price_product * quantity) as "price_order"')
+                        ));
+                        
+        return view('users.seller.banhang_revenueAjax', compact('loadOrderShop'));
+        }
+    }
+    
 }
