@@ -26,7 +26,7 @@ Route::get('/shop-ban-hang/{id_shop}','SellerController@getShop');
 Route::get('/search','PagesController@getSearch');
 
 //Mail
-Route::get('/send-email','MailController@sendMailCustomer');
+Route::get('/send-email','MailController@sendMail');
 Route::get('/send-email-shop','MailController@sendMailShop');
 
 
@@ -61,6 +61,7 @@ Route::post('/updateProfile','CustomerController@updateProfile');
 Route::get('/profile/address','CustomerController@getAddressCustomer');
 Route::post('/updateAddress','CustomerController@updateAddressCustomer');
 Route::get('/load-name-phone/{val_address}','CustomerController@getNamePhoneCustomer');
+Route::get('/don-hang','CustomerController@getBillCustomer');
 
 // Seller
 Route::get('/dang-ky-shop','CustomerController@getRegisterShop');

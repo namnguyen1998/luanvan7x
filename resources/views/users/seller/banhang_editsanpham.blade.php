@@ -34,7 +34,10 @@
             <h4 class="text-black">Chọn Loại Danh Mục</h4>
             <div class="row">
                 <div class="col-lg-12">
-                    <select name="_id_sub_category" id="_id_sub_category" class="form-control">
+                    <select name="_id_sub_category" class="form-control">
+                        @foreach ($listSub as $sub)
+                            <option value="{{$sub->id_sub}}">{{$sub->name_sub}}</option>
+                            @endforeach
                     </select>
                 </div>
             </div>

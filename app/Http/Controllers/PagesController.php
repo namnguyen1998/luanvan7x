@@ -40,8 +40,15 @@ class PagesController extends Controller
         join('shop','id_shop','=','shop_id')
         ->where('is_deleted','=',0)
         ->where('id_product','=',$id_product)->get();
-        //var_dump($productByID);
-        return view('pages.chitietsanpham',compact('productByID'));
+
+        foreach ($productByID as $key => $value){
+            $sub_category = $value->sub_category_id;
+        }
+        
+        $productsRalated = DB::table('products')->where('sub_category_id','=',$sub_category)
+        ->where('is_deleted','=',0)->inRandomOrder()->get();
+        //dd($productsRalated);
+        return view('pages.chitietsanpham',compact('productByID','productsRalated'));
     }
     public function getPagesProductDetailSlug($slug_product){
         $productByID = DB::table('products')->
@@ -63,11 +70,17 @@ class PagesController extends Controller
     public function getSearch(Request $request){
         $products = DB::table('products_category')
         ->where('name_product','like','%'.$request->key.'%')
+        ->where('is_deleted','=',0)
         ->orWhere('price_product',$request->key)
-        // ->orWhere('name_shop',$request->key)
+        ->orWhere('name_shop',$request->key)
         ->get();
-        $shop = DB::table('shop')->where('name_shop','like','%'.$request->key.'%')
-        ->get();
-        return view('pages.search', compact('products','shop'));
+        foreach ($products as $key => $value){
+            $sub_category = $value->sub_category_id;
+        }
+        
+        $productsRalated = DB::table('products')->where('sub_category_id','=',$sub_category)
+        ->where('is_deleted','=',0)->inRandomOrder()->limit(12)->get();
+        
+        return view('pages.search', compact('products','productsRalated'));
     }
 }

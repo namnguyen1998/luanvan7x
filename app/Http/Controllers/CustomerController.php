@@ -284,7 +284,9 @@ class CustomerController extends Controller
         return Redirect::to('/profile');
     }
 
-
+    public function getBillCustomer(){
+        return view('users.customer.donhang_customer');
+    }
     
     
 
