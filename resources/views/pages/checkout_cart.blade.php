@@ -138,21 +138,7 @@
 
                                 </div>
                                 
-                                <!-- <div class="checkout__input__checkbox">
-                                    <label for="payment">
-                                        Check Payment
-                                        <input type="checkbox" id="payment">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>
-                                <div class="checkout__input__checkbox">
-                                    <label for="paypal">
-                                        Paypal
-                                        <input type="checkbox" id="paypal">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div> -->
-                                <button id="save" type="submit" class="site-btn">THANH TOÁN</button>
+                                <button  id="save" type="submit" class="site-btn">THANH TOÁN</button>
                             </div>
                         </div>
                     </div>
@@ -163,6 +149,7 @@
     <!-- Checkout Section End -->
 
     <!-- Script -->
+    <script src="{{asset('public/frontend/js/jquery-3.3.1.min.js')}}"></script>
     <script>
         function myFunction() {
         var ship, total, convert, subtotal;
@@ -202,15 +189,14 @@
             document.getElementById("totalTotal").value = convert;
             document.getElementById("totalShip").value = document.getElementById("ship_0").value;
         }
-        function sendMail(){
+        
+        $("#save").on("click", function(){
             $.ajax({
-                url:'/send-mail',
+                url:'send-email',
                 type:'GET',
-            }).done(function(response){
-               alertify.success('Thanh toán thành công');
+            }).done(function(response){           
+                alertify.success('thành công');
             });
-            
-            
-        }
+        });
     </script>
 @include('pages.footer')

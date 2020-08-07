@@ -13,6 +13,7 @@ use App\Customers;
 use App\Category;
 use App\Brands;
 use App\Products;
+use App\SubCategory;
 use Hash;
 session_start();
     
@@ -179,23 +180,24 @@ class ProductController extends Controller
         $this->AuthLogin();
         $listCategory = Category::all();
         $listBrand = Brands::all();
-        $productEdit = Products::where('id_product','=',$id_product)->
-        join('sub_category','id_sub','=','sub_category_id')->get();
+        $productEdit = Products::where('id_product','=',$id_product)
+                                ->join('sub_category','id_sub','=','sub_category_id')
+                                ->get();
+        $listSub = SubCategory::where('category_id', $productEdit[0]->sub_category_id )->get();
         // dd($productEdit);
-        return view('users.seller.banhang_editsanpham', compact('productEdit','listCategory','listBrand'));
+        return view('users.seller.banhang_editsanpham', compact('productEdit','listCategory','listBrand', 'listSub'));
     }
 
     public function updateProduct(Request $req,$id_product){
         $this->validate($req, 
         [
-            'nameProduct' => 'required|unique:products,name_product',
             //Kiểm tra đúng file đuôi .jpg,.jpeg,.png.gif và dung lượng không quá 2M
             'img_product' => 'mimes:jpg,jpeg,png,gif|max:2048',
             'img1_product' => 'mimes:jpg,jpeg,png,gif|max:2048',
             'img2_product' => 'mimes:jpg,jpeg,png,gif|max:2048',
             'img3_product' => 'mimes:jpg,jpeg,png,gif|max:2048',
         ], [
-            'nameProduct.required' => 'Tên sản phẩm đã tồn tại. Vui lòng chọn tên khác',
+            
             //Tùy chỉnh hiển thị thông báo không thõa điều kiện
             'img_product.mimes' => 'Chỉ chấp nhận với đuôi .jpg .jpeg .png .gif',
             'img_product.max' => 'Hình ảnh giới hạn dung lượng không quá 2M',
@@ -221,7 +223,7 @@ class ProductController extends Controller
         $dataProduct['description_product'] = $req->description;
         $dataProduct['price_product'] = $this->stringToNumber($req->price);
         
-        // dd($dataProduct);
+        //dd($dataProduct);
         DB::table('products')->where('id_product','=', $id_product)->update($dataProduct);
 
         return Redirect::to('/san-pham-cho-duyet');
