@@ -2,7 +2,7 @@
 @section('content')
 <link rel="stylesheet" href="{{asset('public/backend/dist/bootstrap/css/bootstrap.min.css')}}">
 
-<div class="content-header sty-one">
+<div id="downloadPDF" class="content-header sty-one">
     <h1>Chi tiết đơn hàng</h1>
     <ol class="breadcrumb">
         <li><a href="{{URL::to('/dashboard')}}">Bán hàng</a></li>
@@ -105,7 +105,7 @@
             </div>
             <!-- /.col -->
             <div class="col-lg-6">
-                <p class="lead"># THÀNH TIỀN</p>
+                <p class="lead"><strong style="font-size: 200%; "># THÀNH TIỀN</strong></p>
                 <div class="table-responsive">
                     <table class="table">
                         <tbody>
@@ -116,6 +116,7 @@
                             <tr>
                                 <th >Phí vận chuyển:</th>
                                 <td>{{ number_format($loadOrders->shipping_cost , 0, ',', '.') . " ₫" }} <?php $shipping_cost = $loadOrders->shipping_cost; ?></td>
+                                <input id="id_orders" value="{{$loadOrders->id_orders}}" hidden>
                             </tr>
                             <tr>
                                 <th>Tổng:</th>
@@ -132,13 +133,15 @@
         <!-- this row will not appear when printing -->
         <div class="row no-print">
             <div class="col-lg-12">
-                <!-- <button type="button" class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Submit Payment </button> -->
-                <button type="button" class="btn btn-primary pull-right" style="margin-right: 5px;"> <i class="fa fa-download"></i> In Hoá Đơn </button>
+                <form action="{{URL::to('/in-don-hang')}}" method="get">
+                @csrf
+                <input name="id_orders" hidden value="{{$loadOrders->id_orders}}"> 
+                    <button type="submit" class="btn btn-primary pull-right" style="margin-right: 5px;"> <i class="fa fa-download"></i> In Đơn Hàng </button>
+                </form>
             </div>
         </div>
         </div>
         <!-- /.content --> 
     </div>
 </div>
-    
 @endsection

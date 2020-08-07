@@ -7,6 +7,7 @@ use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
 use Session;
 use Socialite;
+use PDF;
 use Illuminate\Support\Facades\Redirect;
 use DateTimeZone;
 use DB;
@@ -124,6 +125,28 @@ class SellerController extends Controller
         else 
             return redirect::to('/danh-sach-don-hang');
     }
+
+
+    public function downloadPDF(Request $req){
+        $loadOrderDetail = OrderDetail::select('products.name_product', 'products.price_product', 'shop.id_shop', 'shop.name_shop', 'order_detail.id_order_detail', 'order_detail.quantity')
+                                ->join('orders', 'orders.id_orders', '=', 'order_detail.orders_id')
+                                ->join('products', 'products.id_product', '=', 'order_detail.product_id')
+                                ->leftjoin('shop', 'shop.id_shop', '=', 'products.shop_id')
+                                ->where('id_shop', '=', Session::get('id_shop'))
+                                ->where( 'orders_id', '=', $req->id_orders)
+                                ->get();
+        $loadShop = DB::table('shop')->where('id_shop','=', Session::get('id_shop'))->first();
+        $loadOrders = Orders::where('id_orders', $req->id_orders)
+                            ->join('customers', 'customers.id_customer', '=', 'orders.customer_id')
+                            ->first();
+        $loadAddressCustomer = DB::table('shipping_address')->where('customer_id', '=', $loadOrders->customer_id)->where('status_default','=', 1)->first();
+        view()->share('loadOrderDetail',$loadOrderDetail);
+        view()->share('loadShop',$loadShop);
+        view()->share('loadOrders',$loadOrders);
+        view()->share('loadAddressCustomer',$loadAddressCustomer);
+        $pdf = PDF::loadView('users.seller.banhang_dowloadOrderDetail', [$loadAddressCustomer, $loadOrderDetail, $loadShop, $loadOrders, $loadAddressCustomer]);
+        return $pdf->download('in-don-hang.pdf');
+    } 
 
     // Revenue Shop
     public function profitShop($date){
@@ -300,4 +323,5 @@ class SellerController extends Controller
         return view('users.seller.banhang_revenueAjax', compact('loadOrderShop'));
         }
     }
+    
 }
