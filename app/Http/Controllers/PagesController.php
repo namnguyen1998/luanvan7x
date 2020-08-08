@@ -47,8 +47,10 @@ class PagesController extends Controller
         
         $productsRalated = DB::table('products')->where('sub_category_id','=',$sub_category)
         ->where('is_deleted','=',0)->inRandomOrder()->get();
+        $listComments = DB::table('comment')->join('customers','id_customer','=','customer_id')
+        ->where('product_id','=',$id_product)->get();
         //dd($productsRalated);
-        return view('pages.chitietsanpham',compact('productByID','productsRalated'));
+        return view('pages.chitietsanpham',compact('productByID','productsRalated','listComments'));
     }
     public function getPagesProductDetailSlug($slug_product){
         $productByID = DB::table('products')->

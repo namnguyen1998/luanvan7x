@@ -328,5 +328,13 @@ class CustomerController extends Controller
             return redirect::to('/profile/don-hang-cua-ban');
         }       
     }
+    public function postComment(Request $req){
+        $data = array();
+        $data['customer_id'] = $this->checkUser();
+        $data['product_id'] = $req->id_product;
+        $data['content'] = $req->content;
+        DB::table('comment')->insert($data);
+        return Redirect::to('/chi-tiet-san-pham/'.$req->id_product);
+    }   
 
 }

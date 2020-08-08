@@ -65,7 +65,7 @@ Route::get('/profile/don-hang-cua-ban','CustomerController@getBillCustomer');
 Route::get('/profile/chi-tiet-don-hang/{id_orders}','CustomerController@getOrdersCustomer');
 Route::get('/profile/huy-don-hang/{id_orders}','CustomerController@loadCancelOrdersCustomer');
 Route::post('/profile/huy','CustomerController@cancelOrdersCustomer');
-
+Route::post('/postComment','CustomerController@postComment');
 
 
 // Seller
