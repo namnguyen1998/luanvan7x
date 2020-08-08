@@ -29,31 +29,25 @@ class MailController extends Controller
     }
 
     public function sendMail(){
-
-    	$emailShopvsCustomer = DB::table('shop_oder_product')->where('id_customer','=',$this->checkUser())
-    	->join('shop','shop.id_shop','=','shop_oder_product.id_shop')
-    	->groupBy(array(
-    		DB::raw('shop.id_shop '),
-            DB::raw('shop.email_shop'),
-            DB::raw('shop.password_shop'),
-            DB::raw('shop.name_shop'),
-            DB::raw('shop.phone_shop'),
-            DB::raw('shop.customer_id'),
-            DB::raw('shop.img_shop'),
-            DB::raw('shop.address_shop'),
-            DB::raw('shop.status_shop'),
-            DB::raw('shop.created_at'),
-            DB::raw('shop.updated_at')      
-    	))
-    	->get(); 
-			$details = [
-			'title' => 'Mail from OGANI',
-			'body' => "Bạn vừa có đơn đặt hàng vui lòng đăng nhập để kiểm tra!",
-			'url' => \URL::to("/banhang"),
-			];
-		for($i = 0; $i<count($emailShopvsCustomer);$i++){
-			//echo($emailShopvsCustomer[$i]->email_shop);
-			\Mail::to($emailShopvsCustomer[$i]->email_shop)->send(new \App\Mail\Mail($details));
+		$id_orders = DB::table('shop_oder_product')->orderBy('orders_id', 'DESC')->pluck('orders_id')->first();
+		$emailShopvsCustomer = DB::table('shop_oder_product')
+								->join('shop', 'shop.id_shop', 'shop_oder_product.id_shop')
+								->where('orders_id', $id_orders)
+								->groupBy('email_shop')
+								->get(array(
+									DB::raw('shop.id_shop as id_shop'),
+									DB::raw('shop.email_shop as email_shop'),
+									DB::raw('shop_oder_product.orders_id as orders_id'),
+								)); 
+		$details = [
+		'title' => 'Mail from OGANI',
+		'body' => "Bạn vừa có đơn đặt hàng vui lòng đăng nhập để kiểm tra!",
+		'url' => \URL::to("/banhang"),
+		];
+		
+		foreach($emailShopvsCustomer as $email){
+			// echo($email->email_shop);
+			\Mail::to($email->email_shop)->send(new \App\Mail\Mail($details));
 		}
 
 		$this->sendMailCustomer();

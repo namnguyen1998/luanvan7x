@@ -190,13 +190,13 @@
             document.getElementById("totalShip").value = document.getElementById("ship_0").value;
         }
         
-        $("#save").on("click", function(){
-            $.ajax({
-                url:'send-email',
-                type:'GET',
-            }).done(function(response){           
-                alertify.success('thành công');
-            });
-        });
+        // $("#save").on("click", function(){
+        //     $.ajax({
+        //         url:'send-email',
+        //         type:'GET',
+        //     }).done(function(response){           
+        //         alertify.success('thành công');
+        //     });
+        // });
     </script>
 @include('pages.footer')

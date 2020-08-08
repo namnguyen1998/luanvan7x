@@ -157,7 +157,7 @@ class CartController extends Controller
             }
             else {
                 Session::put('message', 'Bạn chưa đăng nhập. Vui lòng đăng nhập để tiến hành thanh toán.');
-                return redirect('/list-cart');
+                return redirect::to('/list-cart');
             }
         }
         else
@@ -175,12 +175,12 @@ class CartController extends Controller
 
     public function saveCheckoutCart(Request $req){
         if (empty( Session::get('id_customer'))){
-            return redirect('/list-cart');
+            return redirect::to('/list-cart');
         }
         else {
             if ($req->totalShip == null){
                 Session::put('message', 'Bạn chưa chọn hình thức bạn chuyển. Vui lòng chọn để tiến hành thanh toán.');
-                return redirect('/thanh-toan');
+                return redirect::to('/thanh-toan');
             }
             else {
                 if (empty($req->_address)){
@@ -209,19 +209,23 @@ class CartController extends Controller
                 }
 
                 else {
-                    $order_id = DB::select("SHOW TABLE STATUS LIKE 'orders'");
-                    $dataOrder['address_order'] = $req->_address;
-                    $dataOrder['note'] = $req->_note;
-                    $dataOrder['shipping_cost'] = $req->totalShip;
-                    $dataOrder['price_orders'] = $req->totalTotal;
-                    $dataOrder['customer_id'] = $this->checkUser();
-                    DB::table('orders')->insert($dataOrder);
+                    if (empty(Session::get('Cart')))
+                        return redirect::to('/list-cart');
+                    else {
+                        $order_id = DB::select("SHOW TABLE STATUS LIKE 'orders'");
+                        $dataOrder['address_order'] = $req->_address;
+                        $dataOrder['note'] = $req->_note;
+                        $dataOrder['shipping_cost'] = $req->totalShip;
+                        $dataOrder['price_orders'] = $req->totalTotal;
+                        $dataOrder['customer_id'] = $this->checkUser();
+                        DB::table('orders')->insert($dataOrder);
 
-                    foreach (Session::get('Cart')->products as $product){
-                        $dataOrderDetail['orders_id'] = $order_id[0]->Auto_increment;
-                        $dataOrderDetail['product_id'] = $product['productInfo']->id_product;
-                        $dataOrderDetail['quantity'] = $product['quantity'];
-                        DB::table('order_detail')->insert($dataOrderDetail);
+                        foreach (Session::get('Cart')->products as $product){
+                            $dataOrderDetail['orders_id'] = $order_id[0]->Auto_increment;
+                            $dataOrderDetail['product_id'] = $product['productInfo']->id_product;
+                            $dataOrderDetail['quantity'] = $product['quantity'];
+                            DB::table('order_detail')->insert($dataOrderDetail);
+                        }
                     }
                 }
                 Session::forget('Cart');
