@@ -30,8 +30,20 @@
         <div style="text-align: center; font-size: 50px; background-color: lightblack">
             <a style="color:#A8AFB1;"  href="{{URL::to('/')}}"> Quay về trang chủ</a>
         </div>
+
     </section>
 
+    <script src="{{asset('public/frontend/js/jquery-3.3.1.min.js')}}"></script>
+    <script>
+        $(document).ready( function(){
+            $.ajax({
+                url:'send-email',
+                type:'GET',
+            }).done(function(response){    
+                alertify.success('thành công');
+            });
+        });
+    </script>
 
     <!-- Shoping Cart Section End -->
 @include('pages.footer')
