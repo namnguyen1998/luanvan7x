@@ -40,27 +40,29 @@
 <body class="login-page">
 <div class="login-box">
   <div class="login-box-body">
-    <h3 class="login-box-msg">Sign In</h3>
+    <h3 class="login-box-msg">ĐĂNG NHẬP</h3>
     
     <form action="{{URL::to('/admin-post-login')}}" method="post">
     {{ csrf_field() }}
       <div class="form-group has-feedback">
-        <input type="" class="form-control sty1" name="_username_user" placeholder="Email or User">
+        <input type="" class="form-control sty1" name="_username_user" placeholder="Tài khoản hoặc Email">
       </div>
       <div class="form-group has-feedback">
-        <input type="password" class="form-control sty1" name="_password_user" placeholder="Password">
+        <input type="password" class="form-control sty1" name="_password_user" placeholder="Mật khẩu">
       </div>
       <div>
         <div class="col-xs-8">
           <div class="checkbox icheck">
-            <label>
-              <input type="checkbox">
-              Remember Me </label>
-            <a href="pages-recover-password.html" class="pull-right"><i class="fa fa-lock"></i> Forgot password?</a> </div>
+          <?php
+              if (!empty(Session::get('message'))){
+                  echo'<span class = "label alert-danger">'.Session::get('message').'</span></br>';
+                  Session::put('message', null);
+              }
+          ?>
         </div>
         <!-- /.col -->
         <div class="col-xs-4 m-t-1">
-          <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+          <button type="submit" class="btn btn-primary btn-block btn-flat">ĐĂNG NHẬP</button>
         </div>
         <!-- /.col --> 
       </div>
@@ -69,7 +71,7 @@
       
     <!-- /.social-auth-links -->
     
-    <div class="m-t-2">Don't have an account? <a href="pages-register.html" class="text-center">Sign Up</a></div>
+    <!-- <div class="m-t-2">Don't have an account? <a href="pages-register.html" class="text-center">Sign Up</a></div> -->
   </div>
   <!-- /.login-box-body --> 
 </div>

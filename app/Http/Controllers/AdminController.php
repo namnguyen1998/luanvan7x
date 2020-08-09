@@ -47,18 +47,27 @@ class AdminController extends Controller
 
     public function postLoginAdmin(Request $request){
         $result = Users::where('email_user', $request->_username_user)
-                        ->orWhere('username_user', $request->_username_user)
                         ->where('password_user', md5(sha1($request->_password_user)))
                         ->first();
-        if($result){
+        
+        if (empty($result)){
+            $result = Users::where('username_user', $request->_username_user)
+                        ->where('password_user', md5(sha1($request->_password_user)))
+                        ->first();
+        }
+
+        if(!empty($result)){
             Session::put('id_users',$result->id_users);
             Session::put('username_user',$result->username_user);
             Session::put('email_user',$result->email_user);
             Session::put('role_id', $result->role_id);
             return redirect::to('/admin-dashboard');
         }
-        else
+        else{
+            Session::put('message', 'Tài khoản hoặc mật khẩu không đúng. Vui lòng kiểm tra lại.');
             return redirect::to('/admin');
+        }
+            
     }
 
     public function showDashboard(){
