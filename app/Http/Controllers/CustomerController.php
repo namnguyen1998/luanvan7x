@@ -287,7 +287,7 @@ class CustomerController extends Controller
     }
 
     public function getBillCustomer(){
-        $billCustomer = Orders::where('customer_id', $this->checkUser())->get();
+        $billCustomer = Orders::where('customer_id', $this->checkUser())->paginate(5);
         $orderDetail = OrderDetail::join('products', 'products.id_product', '=', 'order_detail.product_id')->get();
         return view('users.customer.donhang_customer', compact('billCustomer', 'orderDetail'));
     }

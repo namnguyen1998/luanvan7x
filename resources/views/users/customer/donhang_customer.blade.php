@@ -55,5 +55,6 @@
 		@endforeach
 	  </table>
 	</div>
+	<span>{!! $billCustomer->render() !!}</span>
 </div>
 @endsection

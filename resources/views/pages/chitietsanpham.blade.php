@@ -30,7 +30,7 @@
                             <i class="fa fa-star"></i>
                             <i class="fa fa-star"></i>
                             <i class="fa fa-star-half-o"></i>
-                            <span>(18 reviews)</span>
+                            <span>({{count($listComments)}} reviews)</span>
                         </div>
                         <div class="product__details__price">{{number_format($product->price_product)}} VNĐ</div>
                         <p>{{$product->note_product}}</p>
@@ -71,7 +71,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab"
-                                    aria-selected="false">Reviews <span>(1)</span></a>
+                                    aria-selected="false">Reviews <span>({{count($listComments)}})</span></a>
                             </li>
                         </ul>
                         <div class="tab-content">
@@ -84,7 +84,10 @@
                             <div class="tab-pane" id="tabs-3" role="tabpanel">
                                 @foreach($listComments as $comment)
                                 <div class="product__details__tab__desc">
-                                    <h6>{{$comment->name_customer}}<h6>
+                                    <div class="row">
+                                        <img class="w-100" src="">
+                                        <h6>{{$comment->name_customer}}<h6>
+                                    </div>
                                     <p>{{$comment->created_at}}</p>
                                     <span>{!!$comment->content!!}</span>
                                 </div>

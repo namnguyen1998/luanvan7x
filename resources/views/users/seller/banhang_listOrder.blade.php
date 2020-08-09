@@ -58,6 +58,7 @@
         </tbody>
        @endforeach
     </table>
+    <div>{!! $loadOrderShop->render() !!}</div>
     
 </div>
 @endsection
