@@ -72,6 +72,6 @@
         </tbody>
        @endforeach
     </table>
-    
+    <span>{!! $loadOrderShop->render() !!}</span>
 </div>
 @endsection

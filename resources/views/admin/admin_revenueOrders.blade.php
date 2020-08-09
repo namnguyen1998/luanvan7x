@@ -72,9 +72,11 @@
     </tbody>
     @endforeach
   </table>
+  
   <div class="col-12 text-right font-weight-bold" style="font-size:180%">
         TỔNG:  <?php echo number_format($total_revenue, 0, ',', '.') . " ₫" ?>
   </div>
+
 </div>
 
 <script src="{{asset('public/backend/dist/js/jquery.min.js')}}"></script>  

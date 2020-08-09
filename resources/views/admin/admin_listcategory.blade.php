@@ -53,6 +53,7 @@
       @endforeach
     </tbody>
   </table>
+  <span>{!! $listCategory->render() !!}</span>
 </div>
   
 @endsection

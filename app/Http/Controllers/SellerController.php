@@ -126,17 +126,18 @@ class SellerController extends Controller
     
     public function loadStatusShip(){
         $loadOrderShop = DB::table('shop_oder_product')
-                            ->where('status_order', '>=', 1)
-                            ->where('id_shop', '=', Session::get('id_shop'))
-                            ->groupBy('orders_id')
-                            ->orderBy('created_at', 'DESC')
-                            ->get(array(
+                            ->select(
                                 DB::raw('Date(created_at) as created_at'),
                                 DB::raw('orders_id as orders_id'),
                                 DB::raw('name_shop as name_shop'),
                                 DB::raw('SUM(price_product * quantity) as "price_order"'),
                                 DB::raw('status_order as "status_order"')
-                            ));
+                            )
+                            ->where('status_order', '>=', 1)
+                            ->where('id_shop', '=', Session::get('id_shop'))
+                            ->groupBy('orders_id')
+                            ->orderBy('created_at', 'DESC')
+                            ->paginate(6);
         return view('users.seller.banhang_updateStatusShip', compact('loadOrderShop'));
     }
 

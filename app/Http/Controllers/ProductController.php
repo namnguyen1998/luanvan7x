@@ -165,14 +165,14 @@ class ProductController extends Controller
     public function getProductPending(){
         $this->AuthLogin();
         $listProductsPending = DB::table('products_category')->where('shop_id','=',Session::get('id_shop'))
-        ->where('is_deleted','=',0)->get();
+        ->where('is_deleted','=',0)->paginate(6);
         return view('users.seller.banhang_sanphamchoduyet',compact('listProductsPending'));
     }
 
     public function getListProduct(){
         $this->AuthLogin();
         $listProducts = DB::table('products_category')->where('shop_id','=',Session::get('id_shop'))
-        ->where('is_deleted','=',0)->get();
+        ->where('is_deleted','=',0)->paginate(6);
         return view('users.seller.banhang_danhsachsanpham',compact('listProducts'));
     }
 

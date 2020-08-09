@@ -133,7 +133,7 @@ class AdminController extends Controller
     public function listCategory(){
         $this->AuthAdmin();
         $this->checkUrlRoleUser(Session::get('role_id'));
-        $listCategory = Category::all();
+        $listCategory = Category::paginate(4);
         return view('admin.admin_listcategory', compact('listCategory'));
     }
 
@@ -209,7 +209,7 @@ class AdminController extends Controller
         $listSub = DB::table('sub_category')
                     ->select('sub_category.id_sub', 'sub_category.name_sub', 'category.name_category')
                     ->join('category', 'category.id_category', '=', 'sub_category.category_id')
-                    ->get();
+                    ->paginate(6);
         return view('admin.admin_listsub', compact('listSub'));
     }
 

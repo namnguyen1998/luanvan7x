@@ -50,6 +50,7 @@
       @endforeach
     </tbody>
   </table>
+<span>{!! $listSub->render() !!}</span>
 </div>
   
 @endsection

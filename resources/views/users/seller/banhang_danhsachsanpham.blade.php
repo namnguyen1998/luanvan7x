@@ -82,6 +82,7 @@
      @endforeach
   </table>
   </div>
+  <span>{!! $listProducts->render() !!}</span>
 </div></div>
 </div>
 @endsection
