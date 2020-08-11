@@ -112,7 +112,8 @@ class CartController extends Controller
     // }   
 
     public function listItemsCart(){
-        // dd(Session::get('Cart'));
+        if (empty(Session::get('Cart')->totalPrice) && empty(Session::get('Cart')->totalQuantity))
+            Session::forget('Cart');
         return view ('pages.giohang2');
     }
 
@@ -133,18 +134,35 @@ class CartController extends Controller
     public function saveItemsCart(Request $request, $id_product, $quantity){
         $oldCart = Session::get('Cart') ? Session::get('Cart') : null;
         $newCart = new Cart($oldCart);
-        $newCart->updateCart($id_product,$quantity);
+        if (empty($quantity)){
+            $newCart->deleteCart($id_product);
+            $request->Session()->put('Cart', $newCart);
 
-        $request->Session()->put('Cart', $newCart);
-        return view('pages.cart_ajax');
+            if (empty(Session::get('Cart')->totalQuantity) && empty(Session::get('Cart')->totalPrice)){
+                Session::forget('Cart');
+            }
+            return 1;
+        }
+        else {
+            $newCart->updateCart($id_product,$quantity);
+            $request->Session()->put('Cart', $newCart);
+            return view('pages.cart_ajax');
+        }
     }
 
     public function saveAllCart(Request $request){
+        var_dump($request->data);
         foreach ($request->data as $item){
             $oldCart = Session::get('Cart') ? Session::get('Cart') : null;
             $newCart = new Cart($oldCart);
-            $newCart->updateCart($item["key"], $item["value"]);
-            $request->Session()->put('Cart', $newCart);
+            if (empty($item["value"])){
+                $newCart->deleteCart($item["key"]);
+                $request->Session()->put('Cart', $newCart);
+            }
+            else {
+                $newCart->updateCart($item["key"], $item["value"]);
+                $request->Session()->put('Cart', $newCart);
+            }
         }
        
         // return view('pages.cart_ajax');

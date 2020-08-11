@@ -139,14 +139,18 @@
             $.ajax({
                 url:'save-item-cart/'+id+'/'+$("#quantity-item-"+id).val(),
                 type:'GET',
-            }).done(function(response){               
-               $("#list-cart").empty();
-               $("#list-cart").html(response);
-            //    console.log($("#list-cart").html(response))
+            }).done(function(response){
+                if (response == 1)
+                    window.location.reload(true);
+                else {
+                    $("#list-cart").empty();
+                    $("#list-cart").html(response);
+                //    console.log($("#list-cart").html(response))
+                }
             });
             alertify.success('Cập nhật sản phẩm thành công');
-                    
         }
+        
         $("#edit-all").on("click", function(){
             var list = [];
             $("table tbody tr td").each(function(){
