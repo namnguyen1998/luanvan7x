@@ -27,14 +27,18 @@ class PagesController extends Controller
         //var_dump($productCategory);
     	return view('pages.home',compact('Category','listProducts'));
     }
+    
     public function getPagesProductCategory($id_category){
     	$productCategory = DB::table('products_category')->where('category_id','=',$id_category)
         ->where('is_deleted','=',0)->paginate(10);
         $subCategorybyCategory = DB::table('sub_category')->join('category','id_category','=','category_id')
         ->where('category_id','=',$id_category)
         ->get();
-    	return view('pages.trangsanpham',compact('productCategory','subCategorybyCategory'));
+        $loadBrand = Brands::where('category_id', $id_category)->get();
+        // dd($loadBrand);
+    	return view('pages.trangsanpham',compact('productCategory','subCategorybyCategory', 'loadBrand'));
     }
+
     public function getPagesProductDetail($id_product){
         $productByID = DB::table('products')->
         join('shop','id_shop','=','shop_id')

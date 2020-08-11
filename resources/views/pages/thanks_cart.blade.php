@@ -39,9 +39,10 @@
             $.ajax({
                 url:'send-email',
                 type:'GET',
-            }).done(function(response){    
-                alertify.success('thành công');
-            });
+                success: function(){
+                    alert('Xoá thành công.');
+                },
+            })
         });
     </script>
 

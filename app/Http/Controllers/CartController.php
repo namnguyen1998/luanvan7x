@@ -112,7 +112,7 @@ class CartController extends Controller
     // }   
 
     public function listItemsCart(){
-        //dd(Session::get('Cart'));
+        // dd(Session::get('Cart'));
         return view ('pages.giohang2');
     }
 

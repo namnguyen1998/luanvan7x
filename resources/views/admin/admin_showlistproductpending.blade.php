@@ -27,10 +27,10 @@
                 { data: 'price_product', name: 'price_product' },
                 { data: 'status_product', 
                     "render": function (data, type, row) {
-                    if (row.status_product === 0) 
+                    if (row.status_product == 0) 
                         return '<span class="label label-warning">Đang chờ duyệt</span>';
                     else {
-                        if (row.status_product === 1)
+                        if (row.status_product == 1)
                             return '<span class="label label-success">Đã phê duyệt</span>';
                         else
                             return '<span class="label label-danger">Từ chối duyệt</span>';

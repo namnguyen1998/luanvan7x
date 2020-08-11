@@ -17,6 +17,8 @@ use App\OrderDetail;
 use App\Orders;
 use App\ShippingAddress;
 use Hash;
+use PharIo\Manifest\Email;
+
 session_start();
 
 class CustomerController extends Controller
@@ -201,37 +203,83 @@ class CustomerController extends Controller
     }
     public function getAddressCustomer(){
         $this->AuthLogin();
-        $addressCustomer = ShippingAddress::where('customer_id','=',$this->checkUser())->get();
-        $addressDefault = ShippingAddress::where('customer_id','=',$this->checkUser())->where('status_default', '=', 1)->pluck('address_customer');
-        // dd($addressDefault);
-        return view('users.customer.address_customer',compact('addressCustomer', 'addressDefault'));
+        $addressCustomer = ShippingAddress::where('customer_id','=',$this->checkUser())
+                                        ->where('id_deleted', '=', 0)
+                                        ->orderBy('status_default', 'DESC')
+                                        ->get();
+        if (empty($addressCustomer->count()))
+            Session::put('message1','Hiện bạn chưa có địa chỉ nào. Xin vui lòng bấm chọn <strong> Thêm thông tin chỉ </strong> để thêm địa chỉ mới.');
+        return view('users.customer.address_customer',compact('addressCustomer'));
     }
 
-    public function updateAddressCustomer(Request $request){
+    public function defaultAddressCustomer(Request $request){
         $this->AuthLogin();
-        if (!empty($request->new_address_default)){
-            $status_default['status_default'] = 0;
-            DB::table('shipping_address')->where('status_default', '=', 1)->where('customer_id',$this->checkUser())->update($status_default);
+        $status_default['status_default'] = 0;
 
-            $dataAddress['address_customer'] = $request->new_address_default;
-            $dataAddress['customer_id'] = $this->checkUser();
-            $dataAddress['status_default'] = 1;
-            DB::table('shipping_address')->where('customer_id',$this->checkUser())->insert($dataAddress);
-        }
-        else {
-            $status_default['status_default'] = 0;
-            DB::table('shipping_address')->where('status_default', '=', 1)->where('customer_id',$this->checkUser())->update($status_default);
+        // Update All
+        DB::table('shipping_address')->where('status_default', '=', 1)->where('customer_id',$this->checkUser())->update($status_default);
 
-            $addressCustomer['status_default']  = 1;
-            $addressCustomer['customer_id'] = $this->checkUser();
-            DB::table('shipping_address')->where('id_address', '=', $request->address_default)->update($addressCustomer);
-        }
+        // Update One
+        $addressCustomer['status_default']  = 1;
+        $addressCustomer['customer_id'] = $this->checkUser();
+        DB::table('shipping_address')->where('id_address', '=', $request->address_default)->update($addressCustomer);
+        Session::put('message','Cập nhật <strong> Địa chỉ mặc định </strong> thành công');
         return Redirect::to('/profile/address');
     }
 
     public function getNamePhoneCustomer($val_address){
-        $loadNamePhone = DB::table('shipping_address')->where('id_address', '=', $val_address)->get();
+        $this->AuthLogin();
+        $loadNamePhone = DB::table('shipping_address')->where('id_address', '=', $val_address)->where('id_deleted', '=', 0)->get();
         return json_decode($loadNamePhone);
+    }
+
+    public function delteAdressCustomer($val_address){
+        $this->AuthLogin();
+        $is_deleted_address['id_deleted'] = -1;
+        $is_deleted_address['status_default'] = 0;
+        DB::table('shipping_address')->where('id_address', '=', $val_address)->update($is_deleted_address);
+        // Session::put('message','Xoá thành công. Xin vui lòng chọn lại <strong> Địa chỉ mặc định</strong>.');
+        return Redirect::to('/profile/address');
+    }
+
+    public function editAddressCustomer(Request $request){
+        $this->AuthLogin();
+        if ( empty($request->edit_address) || empty($request->edit_address_name) || empty($request->edit_address_phone)){
+            Session::put('message1','Vui lòng điền đầy đủ thông tin <strong> Tên, SĐT, Địa chỉ </strong> trước khi <strong> Xác nhận </strong>');
+            return Redirect::to('/profile/address');
+        }
+        else {
+            $editAddressCustomer['status_default']  = 0;
+            $editAddressCustomer['address_customer']  = $request->edit_address;
+            $editAddressCustomer['name_recipient']  = $request->edit_address_name;
+            $editAddressCustomer['phone_recipient']  = $request->edit_address_phone;
+            $editAddressCustomer['customer_id'] = $this->checkUser();
+
+            DB::table('shipping_address')->where('id_address', '=', $request->change_edit_address)->update($editAddressCustomer);
+            Session::put('message','Sửa thành công. Xin vui lòng chọn lại <strong> Địa chỉ mặc định</strong>.');
+            return Redirect::to('/profile/address');
+        }
+        
+    }
+
+    public function createAddressCustomer(Request $request){
+        $this->AuthLogin();
+        if ( empty($request->new_address) || empty($request->new_address_name) || empty($request->new_address_phone)){
+            Session::put('message1','Vui lòng điền đầy đủ thông tin <strong> Tên, SĐT, Địa chỉ </strong> trước khi <strong> Xác nhận </strong>');
+            return Redirect::to('/profile/address');
+        }
+        else {
+            $createAddressCustomer['status_default']  = 0;
+            $createAddressCustomer['address_customer']  = $request->new_address;
+            $createAddressCustomer['name_recipient']  = $request->new_address_name;
+            $createAddressCustomer['phone_recipient']  = $request->new_address_phone;
+            $createAddressCustomer['customer_id'] = $this->checkUser();
+
+            DB::table('shipping_address')->insert($createAddressCustomer);
+            Session::put('message','Thêm thành công. Xin vui lòng chọn lại <strong> Địa chỉ mặc định</strong>.');
+            return Redirect::to('/profile/address');
+        }
+        
     }
 
     public function getRegisterShop(){

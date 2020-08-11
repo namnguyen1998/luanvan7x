@@ -15,6 +15,8 @@ use App\Brands;
 use App\Products;
 use App\SubCategory;
 use Hash;
+use Illuminate\Contracts\Session\Session as SessionSession;
+
 session_start();
     
 class ProductController extends Controller
@@ -41,19 +43,34 @@ class ProductController extends Controller
         return view('users.seller.banhang_themsanpham')->with('listCategory',$listCategory)->with('listBrand',$listBrand);
     }
     
-     public function getSubCategory(){
+    public function getSubCategory(){
         if(isset($_GET['val_id_category'])){
             if($_GET['val_id_category'] == -1)
                 echo ' ';
             else{
                 $data = $_GET['val_id_category'];
                 $listSub = DB::table('sub_category')
-                ->where('category_id','like','%'.$data.'%')
-                ->get();
+                    ->where('category_id','like','%'.$data.'%')
+                    ->get();
                 echo $listSub;
             }
         }
     }
+
+    public function getBrandCategory(){
+        if(isset($_GET['val_id_category'])){
+            if($_GET['val_id_category'] == -1)
+                echo ' ';
+            else{
+                $data = $_GET['val_id_category'];
+                $listBrand = DB::table('brands')
+                    ->where('category_id','like','%'.$data.'%')
+                    ->get();
+                echo $listBrand;
+            }
+        }
+    }
+
     public function setNameImage($data){
         if(empty($data)){
             return null;
@@ -124,14 +141,14 @@ class ProductController extends Controller
     public function saveProduct(Request $req){
         $this->validate($req, 
         [
-            'nameProduct' => 'required|unique:products,name_product',
+            // 'nameProduct' => 'required|unique:products,name_product',
             //Kiểm tra đúng file đuôi .jpg,.jpeg,.png.gif và dung lượng không quá 2M
             'img_product' => 'mimes:jpg,jpeg,png,gif|max:2048',
             'img1_product' => 'mimes:jpg,jpeg,png,gif|max:2048',
             'img2_product' => 'mimes:jpg,jpeg,png,gif|max:2048',
             'img3_product' => 'mimes:jpg,jpeg,png,gif|max:2048',
         ], [
-            'nameProduct.required' => 'Tên sản phẩm đã tồn tại. Vui lòng chọn tên khác',
+            // 'nameProduct.required' => 'Tên sản phẩm đã tồn tại. Vui lòng chọn tên khác',
             //Tùy chỉnh hiển thị thông báo không thõa điều kiện
             'img_product.mimes' => 'Chỉ chấp nhận với đuôi .jpg .jpeg .png .gif',
             'img_product.max' => 'Hình ảnh giới hạn dung lượng không quá 2M',
@@ -143,24 +160,30 @@ class ProductController extends Controller
             'img3_product.max' => 'Hình ảnh giới hạn dung lượng không quá 2M',
         ]);
 
-        $dataProduct = array();
-        $dataProduct['name_product'] = $req->nameProduct;
-        $dataProduct['madeby'] = $req->madeby;
-        $dataProduct['sub_category_id'] = $req->_id_sub_category;
-        $dataProduct['brand_id'] = $req->_id_brand;
-        $dataProduct['shop_id'] = Session::get('id_shop');
-        $dataProduct['img_product'] = $this->setNameImage($req->img_product);
-        $dataProduct['img1_product'] = $this->setNameImage($req->img1_product);
-        $dataProduct['img2_product'] = $this->setNameImage($req->img2_product);
-        $dataProduct['img3_product'] = $this->setNameImage($req->img3_product);
-        $dataProduct['note_product'] = $req->note;
-        $dataProduct['description_product'] = $req->description;
-        $dataProduct['price_product'] = $this->stringToNumber($req->price);
-        
-        // dd($dataProduct);
-        DB::table('products')->insert($dataProduct);
+        if (empty($req->nameProduct) || empty($req->madeby) || empty($req->price) || empty($req->description)){
+            Session::put('message', 'Bạn chưa điền đầy đủ thông tin. Vui lòng kiểm tra lại <strong> "Danh mục", "Thương hiệu", "Tên SP", "Nơi SX", "Giá", "Mô tả", "Hình 1".</strong>');
+            return Redirect::to('/them-san-pham');
+        }
+        else {
+            $dataProduct = array();
+            $dataProduct['name_product'] = $req->nameProduct;
+            $dataProduct['madeby'] = $req->madeby;
+            $dataProduct['sub_category_id'] = $req->_id_sub_category;
+            $dataProduct['brand_id'] = $req->_id_brand;
+            $dataProduct['shop_id'] = Session::get('id_shop');
+            $dataProduct['img_product'] = $this->setNameImage($req->img_product);
+            $dataProduct['img1_product'] = $this->setNameImage($req->img1_product);
+            $dataProduct['img2_product'] = $this->setNameImage($req->img2_product);
+            $dataProduct['img3_product'] = $this->setNameImage($req->img3_product);
+            $dataProduct['note_product'] = $req->note;
+            $dataProduct['description_product'] = $req->description;
+            $dataProduct['price_product'] = $this->stringToNumber($req->price);
+            
+            // dd($dataProduct);
+            DB::table('products')->insert($dataProduct);
 
-        return Redirect::to('/san-pham-cho-duyet');
+            return Redirect::to('/san-pham-cho-duyet');
+        }
     }
     public function getProductPending(){
         $this->AuthLogin();
@@ -208,25 +231,30 @@ class ProductController extends Controller
             'img3_product.mimes' => 'Chỉ chấp nhận với đuôi .jpg .jpeg .png .gif',
             'img3_product.max' => 'Hình ảnh giới hạn dung lượng không quá 2M',
         ]);
+        if (empty($req->nameProduct) || empty($req->madeby) || empty($req->price) || empty($req->description)){
+            Session::put('message', 'Bạn chưa điền đầy đủ thông tin. Vui lòng kiểm tra lại <strong> "Danh mục", "Thương hiệu", "Tên SP", "Nơi SX", "Giá", "Mô tả", "Hình 1".</strong>');
+            return Redirect::to('/them-san-pham');
+        }
+        else {
+            $dataProduct = array();
+            $dataProduct['name_product'] = $req->nameProduct;
+            $dataProduct['madeby'] = $req->madeby;
+            $dataProduct['sub_category_id'] = $req->_id_sub_category;
+            $dataProduct['brand_id'] = $req->_id_brand;
+            $dataProduct['shop_id'] = Session::get('id_shop');
+            $dataProduct['img_product'] = $this->setNameImage($req->img_product);
+            $dataProduct['img1_product'] = $this->setNameImage($req->img1_product);
+            $dataProduct['img2_product'] = $this->setNameImage($req->img2_product);
+            $dataProduct['img3_product'] = $this->setNameImage($req->img3_product);
+            $dataProduct['note_product'] = $req->note;
+            $dataProduct['description_product'] = $req->description;
+            $dataProduct['price_product'] = $this->stringToNumber($req->price);
+            
+            dd($dataProduct);
+            DB::table('products')->where('id_product','=', $id_product)->update($dataProduct);
 
-        $dataProduct = array();
-        $dataProduct['name_product'] = $req->nameProduct;
-        $dataProduct['madeby'] = $req->madeby;
-        $dataProduct['sub_category_id'] = $req->_id_sub_category;
-        $dataProduct['brand_id'] = $req->_id_brand;
-        $dataProduct['shop_id'] = Session::get('id_shop');
-        $dataProduct['img_product'] = $this->setNameImage($req->img_product);
-        $dataProduct['img1_product'] = $this->setNameImage($req->img1_product);
-        $dataProduct['img2_product'] = $this->setNameImage($req->img2_product);
-        $dataProduct['img3_product'] = $this->setNameImage($req->img3_product);
-        $dataProduct['note_product'] = $req->note;
-        $dataProduct['description_product'] = $req->description;
-        $dataProduct['price_product'] = $this->stringToNumber($req->price);
-        
-        //dd($dataProduct);
-        DB::table('products')->where('id_product','=', $id_product)->update($dataProduct);
-
-        return Redirect::to('/san-pham-cho-duyet');
+            return Redirect::to('/san-pham-cho-duyet');
+        }
     }
     public function deleteProduct(Request $request,$id_product){
         $dataProduct = array();

@@ -9,6 +9,13 @@
         @foreach($errors->all() as $err)
             <div class="alert alert-danger" role="alert">{{$err}}</div>
         @endforeach
+        <?php
+            if (!empty(Session::get('message'))){
+                echo'<div class = " alert alert-danger">'.Session::get('message').'</div></br>';
+                Session::put('message', null);
+            }
+            $number = 1;
+        ?>
         <form action="{{URL::to('/postThem')}}" class="form-horizontal form-bordered" enctype="multipart/form-data" method="POST" >
         <input type="hidden" name="_token" value="{{csrf_token()}}" >
         <!-- Main content -->
@@ -40,10 +47,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <select name="_id_brand" id="_id_brand" class="form-control">
-                    <option value="-1">Chọn</option>
-                        @foreach($listBrand as $brand)
-                            <option value="{{$brand->id_brand}}">{{$brand->name_brand}}</option>
-                        @endforeach
+                    
                     </select>
                 </div>
             </div>
@@ -237,12 +241,23 @@
                     method: 'get',
                     data: 'val_id_category=' + val,
                 }).done(function(data_sub_category){
-                    // console.log(data_sub_category)
                     data_sub_category = JSON.parse(data_sub_category)
-                    // console.log(data_sub_category)
                     $('#_id_sub_category').empty();
                     $.each(data_sub_category, function(key, value){
                         $('#_id_sub_category').append("<option value='" + value.id_sub + "'>" + value.name_sub + "</option>")
+                    })
+                })
+
+                $.ajax({
+                    url: '{{URL::to('/danh-sach-brand')}}',
+                    method: 'get',
+                    data: 'val_id_category=' + val,
+                }).done(function(data_brand_category){
+                    data_brand_category = JSON.parse(data_brand_category)
+                    console.log(data_brand_category)
+                    $('#_id_brand').empty();
+                    $.each(data_brand_category, function(key, value){
+                        $('#_id_brand').append("<option value='" + value.id_brand + "'>" + value.name_brand + "</option>")
                     })
                 })
             })
