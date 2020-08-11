@@ -41,8 +41,6 @@
                                     <i class="fa fa-hand-o-right"></i>Kênh bán hàng</li>
                                 </a>
                                 @endif
-                
-                                
                                 <li>Free Shipping for all Order of $99</li>
                             </ul>
                         </div>

@@ -96,19 +96,7 @@ class CustomerController extends Controller
     }
     public function logout(){
         $this->AuthLogin();
-        Session::forget('customer');
-        Session::forget('id_customer');
-        Session::forget('name_customer');
-        Session::forget('provider_id');
-        Session::forget('sex_customer');
-        Session::forget('img_customer');
-        Session::forget('phone_customer');
-        Session::forget('address_customer');
-        Session::forget('email_customer');
-        Session::forget('email_shop');
-        Session::forget('img_shop');
-        Session::forget('id_shop');
-        Session::forget('Cart');
+        Session::flush();
         return Redirect::to('/');
     }
     // Login Google Api

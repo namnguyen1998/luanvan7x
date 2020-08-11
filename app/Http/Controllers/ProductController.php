@@ -81,7 +81,6 @@ class ProductController extends Controller
         if (!is_string($string) || !preg_match('/\d/', $string)) {
             return 0;
         } 
-    
         // Replace all ',' with '.':
         $workingString = str_replace(',', '.', $string);
     
@@ -172,7 +171,7 @@ class ProductController extends Controller
     public function getListProduct(){
         $this->AuthLogin();
         $listProducts = DB::table('products_category')->where('shop_id','=',Session::get('id_shop'))
-        ->where('is_deleted','=',0)->paginate(6);
+        ->where('is_deleted','=',0)->orderBy('id_product','DESC')->paginate(6);
         return view('users.seller.banhang_danhsachsanpham',compact('listProducts'));
     }
 
@@ -181,10 +180,11 @@ class ProductController extends Controller
         $listCategory = Category::all();
         $listBrand = Brands::all();
         $productEdit = Products::where('id_product','=',$id_product)
+                                ->where('shop_id','=',Session::get('id_shop'))
                                 ->join('sub_category','id_sub','=','sub_category_id')
                                 ->get();
-        $listSub = SubCategory::where('category_id', $productEdit[0]->sub_category_id )->get();
-        // dd($productEdit);
+        $listSub = SubCategory::where('category_id', $productEdit[0]->category_id )->get();
+        //dd($listSub);
         return view('users.seller.banhang_editsanpham', compact('productEdit','listCategory','listBrand', 'listSub'));
     }
 
