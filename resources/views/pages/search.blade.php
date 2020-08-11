@@ -132,9 +132,6 @@
                 </div>
                 <div class="col-lg-9 col-md-7">
                     <div class="product__discount">
-                        <div class="section-title product__discount__title">
-                            <h2>SHOP</h2>
-                        </div>
                         <div class="row">
                             
                             <!-- 	@foreach($products as $pro)
