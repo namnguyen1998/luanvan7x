@@ -5,7 +5,7 @@
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <div class="breadcrumb__text">
-                        <h2>Giỏ hàng của bạn</h2>
+                        <h2>OGANI</h2>
                         <div class="breadcrumb__option">
                             <a href="{{URL::to('/')}}">Trang chủ</a>
                             <span>Giỏ hàng của bạn</span>
@@ -57,7 +57,7 @@
                                         <h5>{{$item['productInfo']->name_product}}</h5>
                                     </td>
                                     <td class="shoping__cart__price">
-                                         {{number_format($item['productInfo']->price_product)}}
+                                         {{number_format($item['productInfo']->price_product, 0, ',', '.') . " ₫"}}
                                     </td>
                                     <td class="shoping__cart__quantity">
                                         <div class="quantity">
@@ -67,7 +67,7 @@
                                         </div>
                                     </td>
                                     <td class="shoping__cart__total">
-                                        {{number_format($item['price'])}}VNĐ
+                                        {{number_format($item['price'], 0, ',', '.') . " ₫"}}
                                     </td>
                                     <td class="shoping__cart__item__save" >
                                         <span class="fa fa-floppy-o" style="margin-left:40px;margin-right:40px"onclick="saveItemsCart({{$item['productInfo']->id_product}});"></span>
@@ -94,7 +94,7 @@
                         <ul>
                             @if(Session::get('Cart')!=null)
                             <li>Tổng số lượng<span>{{Session::get('Cart')->totalQuantity}}</span></li>
-                             <li>TỔNG TIỀN<span>{{number_format(Session::get('Cart')->totalPrice)}} VNĐ</span></li>
+                             <li>TỔNG TIỀN<span>{{number_format(Session::get('Cart')->totalPrice, 0, ',', '.') . " ₫"}}</span></li>
                             @endif
                             
                         </ul>

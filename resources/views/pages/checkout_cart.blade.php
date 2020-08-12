@@ -5,7 +5,7 @@
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <div class="breadcrumb__text">
-                        <h2>Organi</h2>
+                        <h2>OGANI</h2>
                         <div class="breadcrumb__option">
                             <a href="{{URL::to('/')}}">Trang chủ</a>
                             <span>Thanh toán</span>

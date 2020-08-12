@@ -32,7 +32,7 @@
                             <i class="fa fa-star-half-o"></i> -->
                             <span>({{count($listComments)}} bình luận)</span>
                         </div>
-                        <div class="product__details__price">{{number_format($product->price_product)}} VNĐ</div>
+                        <div class="product__details__price">{{number_format($product->price_product, 0, ',', '.') . " ₫"}}</div>
                         <p>{{$product->note_product}}</p>
                         <input type="hidden" value="{{$product->id_product}}" name="id_product">
                             <div class="product__details__quantity">

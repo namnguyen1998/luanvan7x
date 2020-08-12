@@ -4,10 +4,10 @@
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <div class="breadcrumb__text">
-                        <h2>Organi</h2>
+                        <h2>OGANI</h2>
                         <div class="breadcrumb__option">
-                            <a href="./index.html">Home</a>
-                            <span>Shop</span>
+                            <a href="{{URL::to('/')}}">Trang chủ</a>
+                            <span>Tìm kiếm</span>
                         </div>
                     </div>
                 </div>
@@ -21,7 +21,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-3 col-md-5">
-                    <div class="sidebar">
+                    <!-- <div class="sidebar">
                         <div class="sidebar__item">
                         </div>
                         <div class="sidebar__item">
@@ -114,9 +114,12 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="col-lg-9 col-md-7">
+                    <div class="section-title product__discount__title">
+                        <h2>Kết quả tìm kiếm</h2>
+                    </div>
                     <div class="product__discount">
                         <div class="row">
                             
@@ -133,22 +136,22 @@
                         <div class="row">
                             <div class="col-lg-4 col-md-5">
                                 <div class="filter__sort">
-                                    <span>Sort By</span>
+                                    <!-- <span>Sort By</span>
                                     <select>
                                         <option value="0">Default</option>
                                         <option value="0">Default</option>
-                                    </select>
+                                    </select> -->
                                 </div>
                             </div>
                             <div class="col-lg-4 col-md-4">
                                 <div class="filter__found">
-                                    <h6><span>{{count($products)}}</span> Products found</h6>
+                                    <h6>Tìm thấy <span> {{count($products)}}</span> sản phẩm</h6>
                                 </div>
                             </div>
                             <div class="col-lg-4 col-mproductCategoryd-3">
                                 <div class="filter__option">
-                                    <span class="icon_grid-2x2"></span>
-                                    <span class="icon_ul"></span>
+                                    <!-- <span class="icon_grid-2x2"></span>
+                                    <span class="icon_ul"></span> -->
                                 </div>
                             </div>
                         </div>
@@ -166,7 +169,7 @@
                                 </div>
                                 <div class="product__item__text">
                                     <h6><a href="{{URL::to('/chi-tiet-san-pham/'.$pro->id_product)}}">{{$pro->name_product}}</a></h6>
-                                    <h5>{{number_format($pro->price_product)}} VNĐ</h5>
+                                    <h5>{{number_format($pro->price_product, 0, ',', '.') . " ₫"}}</h5>
                                 </div>
                             </div>
                         </div>

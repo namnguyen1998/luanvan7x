@@ -88,8 +88,8 @@ class PagesController extends Controller
         $subCategorybyCategory = DB::table('sub_category')->join('category','id_category','=','category_id')
         ->where('category_id','=',$id_category)
         ->get();
+        
         $products_sub = Products::where('sub_category_id','=',$id_sub)->where('is_deleted','=',0)->paginate(9);
-
         return view('pages.sanpham_sub',compact('subCategorybyCategory','products_sub'));
         
     }
@@ -106,19 +106,49 @@ class PagesController extends Controller
         return view('pages.search', compact('products','keySearch'));
     }
 
-    public function sortByProduct(Request $req){
+    public function sortByProductCategories(Request $req){
+        // Get the full URL for the previous request
+        $id = explode('-', url()->previous());
+        $id_category = array_pop($id);
+
+        $explode = explode(' ', $req->sortBy);
         if (empty($req->sortBy)) {
-            $productCategory = DB::table('products_category')->where('category_id','=',$req->id_category)
+            $sortByProduct = DB::table('products_category')->where('category_id','=',$id_category)
                                 ->where('is_deleted','=',0)
-                                ->paginate(9);
+                                ->get();
         }
         else {
-            $productCategory = DB::table('products_category')->where('category_id','=',$req->id_category)
+            $sortByProduct = DB::table('products_category')->where('category_id','=',$id_category)
                                 ->where('is_deleted','=',0)
-                                ->orderBy('price_product', $req->sortBy)
-                                ->paginate(9);
+                                ->orderBy(array_shift($explode), array_pop($explode))
+                                ->get();
         }
+        if (empty($sortByProduct))
+            return 1;
+        else
+            return view('pages.trangsanpham_sortByProductAjax', compact('sortByProduct'));
+    }
 
-        return view('pages.trangsanpham_sortByProductAjax', compact('productCategory'));
+    public function sortByProductSub(Request $req){
+        // Get the full URL for the previous request
+        $id = explode('-', url()->previous());
+        $id_sub = array_pop($id);
+
+        $explode = explode(' ', $req->sortBySub);
+        if (empty($req->sortBySub)) {
+            $sortByProduct = DB::table('products_category')->where('sub_category_id','=', $id_sub)
+                                ->where('is_deleted','=',0)
+                                ->get();
+        }
+        else {
+            $sortByProduct = DB::table('products_category')->where('sub_category_id','=', $id_sub)
+                                ->where('is_deleted','=',0)
+                                ->orderBy(array_shift($explode), array_pop($explode))
+                                ->get();
+        }
+        if (empty($sortByProduct))
+            return 1;
+        else
+            return view('pages.trangsanpham_sortByProductAjax', compact('sortByProduct'));
     }
 }

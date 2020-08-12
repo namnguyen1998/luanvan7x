@@ -4,10 +4,10 @@
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <div class="breadcrumb__text">
-                        <h2>Organi</h2>
+                        <h2>OGANI</h2>
                         <div class="breadcrumb__option">
                             <a href="{{URL::to('/')}}">Trang chủ</a>
-                            <span>Shop</span>
+                            <span>Danh mục</span>
                         </div>
                     </div>
                 </div>
@@ -23,7 +23,6 @@
                 <div class="col-lg-3 col-md-5">
                     <div class="sidebar">
                         <div class="sidebar__item">
-                            <input id="id_category" value="{{$subCategorybyCategory[0]->id_category}}" hidden>
                             <h4>DANH MỤC CON</h4>
                             <ul>
                                 @foreach($subCategorybyCategory as $sub)
@@ -220,8 +219,10 @@
                                     <span>Sắp xếp</span>
                                     <select id="sortBy">
                                         <option value="0">Mặc định</option>
-                                        <option value="ASC">Giá từ thấp đến cao</option>
-                                        <option value="DESC">Giá từ cao đến thấp</option>
+                                        <option value="price_product ASC">Sắp xếp giá Thấp - Cao</option>
+                                        <option value="price_product DESC">Sắp xếp giá Cao - Thấp</option>
+                                        <option value="name_product ASC">Sắp xếp tên A - Z</option>
+                                        <option value="name_product DESC">Sắp xếp tên Z - A</option>
                                     </select>
                                 </div>
                             </div>
@@ -233,13 +234,16 @@
                             <div class="col-lg-4 col-mproductCategoryd-3">
                                 <div class="filter__option">
                                     <span class="icon_grid-2x2"></span>
-                                    <span class="icon_ul"></span>
+                                    <!-- <span class="icon_ul"></span> -->
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <div id="productSortBy" class="row">
+                        @if (count($productCategory)==0)
+                            <div class="col-lg-12" style="text-align: center; font-size: 200%">Không có sản phẩm</div>
+                        @else
                         @foreach($productCategory as $pro)
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
@@ -252,11 +256,12 @@
                                 </div>
                                 <div class="product__item__text">
                                     <h6><a href="{{URL::to('/chi-tiet-san-pham/'.$pro->id_product)}}">{{$pro->name_product}}</a></h6>
-                                    <h5>{{number_format($pro->price_product)}} VNĐ</h5>
+                                    <h5>{{number_format($pro->price_product, 0, ',', '.') . " ₫"}}</h5>
                                 </div>
                             </div>
                         </div>
                         @endforeach
+                        @endif
                     </div>
                     <span>
                         {!!$productCategory->render()!!}
@@ -290,15 +295,17 @@
 
             $('#sortBy').on('change', function(){
                 sortBy = document.getElementById('sortBy').value
-                id_category = document.getElementById('id_category').value
-                console.log(sortBy)
+                // console.log(sortBy)
                 $.ajax({
-                    url:"{{URL::to('/sort-by-product')}}",
+                    url:"{{URL::to('/sort-by-product-categories')}}",
                     type:'GET',
-                    data: {sortBy: sortBy, id_category: id_category},
+                    data: {sortBy: sortBy},
                 }).done(function(data){
-                    $("#productSortBy").empty();
-                    $("#productSortBy").html(data);
+                    if (data == 1)
+                        alert('Hệ thống gặp một chút sự cố. Xin thử lại sau.')
+                    else{
+                        $("#productSortBy").empty();
+                        $("#productSortBy").html(data);}
                 })
             })
         })

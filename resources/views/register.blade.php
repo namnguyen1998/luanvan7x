@@ -5,7 +5,7 @@
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>Biz Admin - Multipurpose bootstrap 4 admin templates</title>
+<title>OGANI | ĐĂNG KÝ</title>
 <!-- Tell the browser to be responsive to screen width -->
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -43,37 +43,37 @@
   <div class="login-logo">
     <a href="{{URL::to('/')}}"><img src="{{asset('public/frontend/img/logo.png')}}" alt=""></a>
   </div>
-    <p class="login-box-msg">Sign in to start your session</p>
+    <p class="login-box-msg">Nhập thông tin của bạn</p>
     <form action="{{URL::to('/postRegister')}}" method="post" enctype="multipart/form-data">
          @csrf
       <!-- <div class="form-group has-feedback">
         <input type="email" class="form-control sty1" name=""placeholder="Name">
       </div> -->
       <div class="form-group has-feedback">
-        <input type="email" class="form-control sty1" name="email" placeholder="Email">
+        <input type="email" class="form-control sty1" name="email" placeholder="Email đăng ký">
       </div>
       <div class="form-group has-feedback">
-        <input type="password" class="form-control sty1" name ="password" placeholder="Password">
+        <input type="password" class="form-control sty1" name ="password" placeholder="Nhập mật khẩu">
       </div>
       <div class="form-group has-feedback">
-        <input type="password" class="form-control sty1" name ="re_password" placeholder="Conform Password">
+        <input type="password" class="form-control sty1" name ="re_password" placeholder="Nhập lại mật khẩu">
       </div>
       <div>
         <div class="col-xs-8">
           <div class="checkbox icheck">
-            <label>
+            <!-- <label>
               <input type="checkbox">
               I agree to all Terms</label>
-            </div>
+            </div> -->
         </div>
         <!-- /.col -->
         <div class="col-xs-4 m-t-1">
-          <button type="submit" class="btn btn-primary btn-block btn-flat">Sign Up</button>
+          <button type="submit" class="btn btn-primary btn-block btn-flat">Đăng ký</button>
         </div>
         <!-- /.col --> 
       </div>
     </form>    
-    <div class="m-t-2">Already have an account? <a href="{{URL::to('/login')}}" class="text-center">Sign Up</a></div>
+    <div class="m-t-2">Bạn đã có tài khoản? <a href="{{URL::to('/login')}}" class="text-center">Đăng nhập</a></div>
   </div>
   <!-- /.login-box-body --> 
 </div>
@@ -89,17 +89,7 @@
 <!-- for demo purposes --> 
 <script src="{{asset('public/backend/dist/js/demo.js')}}"></script>
 <!--Start of Tawk.to Script-->
-<script type="text/javascript">
-var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-(function(){
-var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-s1.async=true;
-s1.src='https://embed.tawk.to/5b7257d2afc2c34e96e78bfc/default';
-s1.charset='UTF-8';
-s1.setAttribute('crossorigin','*');
-s0.parentNode.insertBefore(s1,s0);
-})();
-</script>
+
 <!--End of Tawk.to Script-->
 </body>
 

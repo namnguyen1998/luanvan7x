@@ -5,7 +5,7 @@
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>OGANI | LOGIN</title>
+<title>OGANI | ĐĂNG NHẬP</title>
 <!-- Tell the browser to be responsive to screen width -->
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -52,35 +52,34 @@
     <form action="{{URL::to('/postLogin')}}" method="post" enctype="multipart/form-data">
          @csrf
       <div class="form-group has-feedback">
-        <input type="email" class="form-control sty1" name="email" placeholder="User">
+        <input type="email" class="form-control sty1" name="email" placeholder="Tài khoản">
       </div>
       <div class="form-group has-feedback">
-        <input type="password" class="form-control sty1" name="password" placeholder="Password">
+        <input type="password" class="form-control sty1" name="password" placeholder="Mật khẩu">
       </div>
       <div>
         <div class="col-xs-8">
           <div class="checkbox icheck">
-            <label>
+            <!-- <label>
               <input type="checkbox">
-              Remember Me </label>
-            <a href="pages-recover-password.html" class="pull-right"><i class="fa fa-lock"></i> Forgot pwd?</a> </div>
+              Remember Me </label> -->
+            <a href="pages-recover-password.html" class="pull-right"><i class="fa fa-lock"></i> Quên mật khẩu?</a> </div>
 
         </div>
         <!-- /.col -->
         <div class="col-xs-4 m-t-1">
-          <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+          <button type="submit" class="btn btn-primary btn-block btn-flat">Đăng nhập</button>
         </div>
         <!-- /.col --> 
       </div>
     </form>
     <div class="social-auth-links text-center">
-      <p>- OR -</p>
-      <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign in using
-      Facebook</a> <a href="{{ Route('redirect', ['google'])}}" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Sign in using
-      Google+</a> </div>
+      <p>- HOẶC -</p>
+      <!-- <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Đăng nhập bằng Facebook</a>  -->
+      <a href="{{ Route('redirect', ['google'])}}" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Đăng nhập bằng Google+</a> </div>
     <!-- /.social-auth-links -->
     
-    <div class="m-t-2">Don't have an account? <a href="{{URL::to('/register')}}" class="text-center">Sign Up</a></div>
+    <div class="m-t-2">Bạn chưa có cài khoản? <a href="{{URL::to('/register')}}" class="text-center">Đăng ký</a></div>
   </div>
   <!-- /.login-box-body --> 
 </div>
@@ -96,17 +95,7 @@
 <!-- for demo purposes --> 
 <script src="{{asset('public/backend/dist/js/demo.js')}}"></script>
 <!--Start of Tawk.to Script-->
-<script type="text/javascript">
-var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-(function(){
-var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-s1.async=true;
-s1.src='https://embed.tawk.to/5b7257d2afc2c34e96e78bfc/default';
-s1.charset='UTF-8';
-s1.setAttribute('crossorigin','*');
-s0.parentNode.insertBefore(s1,s0);
-})();
-</script>
+
 <!--End of Tawk.to Script-->
 </body>
 

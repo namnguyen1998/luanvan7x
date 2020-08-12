@@ -7,7 +7,7 @@
                     <div class="hero__categories">
                         <div class="hero__categories__all">
                             <i class="fa fa-bars"></i>
-                            <span>All departments</span>
+                            <span>Danh sách danh mục</span>
                         </div>
                         <ul>
                             @foreach($Category as $category)
@@ -79,16 +79,16 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="section-title">
-                        <h2>Featured Product</h2>
+                        <h2>Sản phẩm</h2>
                     </div>
                     <div class="featured__controls">
-                        <ul>
+                        <!-- <ul>
                             <li class="active" data-filter="*">All</li>
                             <li data-filter=".oranges">Oranges</li>
                             <li data-filter=".fresh-meat">Fresh Meat</li>
                             <li data-filter=".vegetables">Vegetables</li>
                             <li data-filter=".fastfood">Fastfood</li>
-                        </ul>
+                        </ul> -->
                     </div>
                 </div>
             </div>
@@ -284,7 +284,7 @@
 
     <!-- Blog Section Begin -->
     <section class="from-blog spad">
-        <div class="container">
+        <!-- <div class="container">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="section-title from-blog__title">
@@ -339,7 +339,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
        @if(Session::get('Cart')!=null)
        <input type="hidden" id="total-quantity-cart" type="number" value="{{Session::get('Cart')->totalQuantity}}">
        @endif

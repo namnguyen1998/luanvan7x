@@ -7,7 +7,7 @@
     <meta name="keywords" content="Ogani, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Ogani</title>
+    <title>OGANI</title>
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
@@ -41,7 +41,7 @@
                                     <i class="fa fa-hand-o-right"></i>Kênh bán hàng</li>
                                 </a>
                                 @endif
-                                <li>Free Shipping for all Order of $99</li>
+                                <!-- <li>Free Shipping for all Order of $99</li> -->
                             </ul>
                         </div>
                     </div>
@@ -72,7 +72,7 @@
                             @endif
                             @if(Session::get('id_customer')==null)                   
                             <div class="header__top__right__auth">
-                                <a href="{{URL::to('login')}}"><i class="fa fa-user"></i>Login</a>
+                                <a href="{{URL::to('login')}}"><i class="fa fa-user"></i>Đăng nhập</a>
                             </div>
                             @endif
                         </div>
@@ -91,11 +91,11 @@
                     <div class="hero__search__form">
                         <form action="{{URL::to('/search')}}" method="get">
                             <div class="hero__search__categories" style="width:30%">
-                                All Categories
-                                <span class="arrow_carrot-down"></span>
+                                Tìm trong tất cả
+                                <!-- <span class="arrow_carrot-down"></span> -->
                             </div>
-                            <input type="text" name="key" placeholder="What do yo u need?">
-                            <button type="submit" class="site-btn">SEARCH</button>
+                            <input type="text" name="key" placeholder="Nhập tên sản phẩm cần tìm.">
+                            <button type="submit" class="site-btn">Tìm kiếm</button>
                         </form>
                     </div>
                 </div>
