@@ -25,7 +25,23 @@ class PagesController extends Controller
         $listProducts = Products::where('is_deleted','=',0)->orderby('id_product','desc')->paginate(12);
         //var_dump(Session::get('id_shop'));
         //var_dump($productCategory);
-    	return view('pages.home',compact('Category','listProducts'));
+        $listTopProduct5 = Products::join('order_detail', 'order_detail.product_id', '=', 'products.id_product')
+                                    ->leftjoin('orders', 'orders.id_orders', '=', 'order_detail.orders_id')
+                                    ->groupBy('id_product')
+                                    ->orderBy('topProduct', 'DESC')
+                                    ->select('name_product', 'price_product', 'img_product', 'id_product')
+                                    ->addSelect(DB::raw('COUNT(id_orders) as topProduct'))
+                                    ->offset(0)->limit(5)->get();
+        $listTopProduct10 = Products::join('order_detail', 'order_detail.product_id', '=', 'products.id_product')
+                                    ->leftjoin('orders', 'orders.id_orders', '=', 'order_detail.orders_id')
+                                    ->groupBy('id_product')
+                                    ->orderBy('topProduct', 'DESC')
+                                    ->select('name_product', 'price_product', 'img_product', 'id_product')
+                                    ->addSelect(DB::raw('COUNT(id_orders) as topProduct'))
+                                    ->offset(5)->limit(5)->get();
+        $listNewProduct5 = Products::orderBy('id_product', 'DESC')->offset(0)->limit(5)->get();
+        $listNewProduct10 = Products::orderBy('id_product', 'DESC')->offset(5)->limit(5)->get();
+    	return view('pages.home',compact('Category','listProducts', 'listTopProduct5', 'listTopProduct10' ,'listNewProduct5', 'listNewProduct10'));
     }
     
     public function getPagesProductCategory($id_category){

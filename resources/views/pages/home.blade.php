@@ -105,7 +105,7 @@
                         </div>
                         <div class="featured__item__text">
                             <h6><a href="{{URL::to('/chi-tiet-san-pham/'.$product->id_product)}}">{{$product->name_product}}</a></h6>
-                            <h5>{{number_format($product->price_product)}} VNĐ</h5>
+                            <h5>{{number_format($product->price_product, 0, ',', '.') . " ₫"}}</h5>
                         </div>
                     </div>
                 </div>
@@ -139,137 +139,80 @@
     <section class="latest-product spad">
         <div class="container">
             <div class="row">
-                <div class="col-lg-4 col-md-6">
+                <div class="col-lg-6 col-md-6">
                     <div class="latest-product__text">
-                        <h4>Latest Products</h4>
+                        <h4>Sản phẩm mới</h4>
                         <div class="latest-product__slider owl-carousel">
                             <div class="latest-prdouct__slider__item">
-                                <a href="#" class="latest-product__item">
+                                @foreach ($listNewProduct5 as $topProduct)
+                                <a href="{{URL::to('/chi-tiet-san-pham/'.$topProduct->id_product)}}" class="latest-product__item">
                                     <div class="latest-product__item__pic">
-                                        <img src="{{asset('public/frontend/img/latest-product/lp-1.jpg')}}" alt="">
+                                        <img style="width: 100px; height: 100px" src="{{asset('public/frontend/img/product/'.$topProduct->img_product)}}" alt="">
                                     </div>
                                     <div class="latest-product__item__text">
-                                        <h6>Crab Pool Security</h6>
-                                        <span>$30.00</span>
+                                        <h6>{{$topProduct->name_product}}</h6>
+                                        <span>{{number_format($topProduct->price_product, 0, ',', '.') . " ₫"}}</span>
+                                        <p>{{ number_format($topProduct->topProduct, 0, ',', '.')}} Lượt</p>
                                     </div>
                                 </a>
-                                <a href="#" class="latest-product__item">
-                                    <div class="latest-product__item__pic">
-                                        <img src="{{asset('public/frontend/img/latest-product/lp-2.jpg')}}" alt="">
-                                    </div>
-                                    <div class="latest-product__item__text">
-                                        <h6>Crab Pool Security</h6>
-                                        <span>$30.00</span>
-                                    </div>
-                                </a>
-                                <a href="#" class="latest-product__item">
-                                    <div class="latest-product__item__pic">
-                                        <img src="{{asset('public/frontend/img/latest-product/lp-3.jpg')}}" alt="">
-                                    </div>
-                                    <div class="latest-product__item__text">
-                                        <h6>Crab Pool Security</h6>
-                                        <span>$30.00</span>
-                                    </div>
-                                </a>
+                                @endforeach
+                                
                             </div>
                             <div class="latest-prdouct__slider__item">
-                                <a href="#" class="latest-product__item">
+                                @foreach ($listNewProduct10 as $topProduct)
+                                <a href="{{URL::to('/chi-tiet-san-pham/'.$topProduct->id_product)}}" class="latest-product__item">
                                     <div class="latest-product__item__pic">
-                                        <img src="{{asset('public/frontend/img/latest-product/lp-1.jpg')}}" alt="">
+                                        <img style="width: 100px; height: 100px" src="{{asset('public/frontend/img/product/'.$topProduct->img_product)}}" alt="">
                                     </div>
                                     <div class="latest-product__item__text">
-                                        <h6>Crab Pool Security</h6>
-                                        <span>$30.00</span>
+                                        <h6>{{$topProduct->name_product}}</h6>
+                                        <span>{{number_format($topProduct->price_product, 0, ',', '.') . " ₫"}}</span>
+                                        <p>{{ number_format($topProduct->topProduct, 0, ',', '.')}} Lượt</p>
                                     </div>
                                 </a>
-                                <a href="#" class="latest-product__item">
-                                    <div class="latest-product__item__pic">
-                                        <img src="{{asset('public/frontend/img/latest-product/lp-2.jpg')}}" alt="">
-                                    </div>
-                                    <div class="latest-product__item__text">
-                                        <h6>Crab Pool Security</h6>
-                                        <span>$30.00</span>
-                                    </div>
-                                </a>
-                                <a href="#" class="latest-product__item">
-                                    <div class="latest-product__item__pic">
-                                        <img src="{{asset('public/frontend/img/latest-product/lp-3.jpg')}}" alt="">
-                                    </div>
-                                    <div class="latest-product__item__text">
-                                        <h6>Crab Pool Security</h6>
-                                        <span>$30.00</span>
-                                    </div>
-                                </a>
+                                @endforeach
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-6">
+                <div class="col-lg-6 col-md-6">
                     <div class="latest-product__text">
-                        <h4>Top Rated Products</h4>
+                        <h4>Sản phẩm bán chạy nhất</h4>
                         <div class="latest-product__slider owl-carousel">
                             <div class="latest-prdouct__slider__item">
-                                <a href="#" class="latest-product__item">
+                                @foreach ($listTopProduct5 as $topProduct)
+                                <a href="{{URL::to('/chi-tiet-san-pham/'.$topProduct->id_product)}}" class="latest-product__item">
                                     <div class="latest-product__item__pic">
-                                        <img src="{{asset('public/frontend/img/latest-product/lp-1.jpg')}}" alt="">
+                                        <img style="width: 100px; height: 100px" src="{{asset('public/frontend/img/product/'.$topProduct->img_product)}}" alt="">
                                     </div>
                                     <div class="latest-product__item__text">
-                                        <h6>Crab Pool Security</h6>
-                                        <span>$30.00</span>
+                                        <h6>{{$topProduct->name_product}}</h6>
+                                        <span>{{number_format($topProduct->price_product, 0, ',', '.') . " ₫"}}</span>
+                                        <p>{{ number_format($topProduct->topProduct, 0, ',', '.')}} Lượt</p>
                                     </div>
                                 </a>
-                                <a href="#" class="latest-product__item">
-                                    <div class="latest-product__item__pic">
-                                        <img src="{{asset('public/frontend/img/latest-product/lp-2.jpg')}}" alt="">
-                                    </div>
-                                    <div class="latest-product__item__text">
-                                        <h6>Crab Pool Security</h6>
-                                        <span>$30.00</span>
-                                    </div>
-                                </a>
-                                <a href="#" class="latest-product__item">
-                                    <div class="latest-product__item__pic">
-                                        <img src="{{asset('public/frontend/img/latest-product/lp-3.jpg')}}" alt="">
-                                    </div>
-                                    <div class="latest-product__item__text">
-                                        <h6>Crab Pool Security</h6>
-                                        <span>$30.00</span>
-                                    </div>
-                                </a>
+                                @endforeach
+                                
                             </div>
                             <div class="latest-prdouct__slider__item">
-                                <a href="#" class="latest-product__item">
+                                @foreach ($listTopProduct10 as $topProduct)
+                                <a href="{{URL::to('/chi-tiet-san-pham/'.$topProduct->id_product)}}" class="latest-product__item">
                                     <div class="latest-product__item__pic">
-                                        <img src="{{asset('public/frontend/img/latest-product/lp-1.jpg')}}" alt="">
+                                        <img style="width: 100px; height: 100px" src="{{asset('public/frontend/img/product/'.$topProduct->img_product)}}" alt="">
                                     </div>
                                     <div class="latest-product__item__text">
-                                        <h6>Crab Pool Security</h6>
-                                        <span>$30.00</span>
+                                        <h6>{{$topProduct->name_product}}</h6>
+                                        <span>{{number_format($topProduct->price_product, 0, ',', '.') . " ₫"}}</span>
+                                        <p>{{ number_format($topProduct->topProduct, 0, ',', '.')}} Lượt</p>
                                     </div>
                                 </a>
-                                <a href="#" class="latest-product__item">
-                                    <div class="latest-product__item__pic">
-                                        <img src="{{asset('public/frontend/img/latest-product/lp-2.jpg')}}" alt="">
-                                    </div>
-                                    <div class="latest-product__item__text">
-                                        <h6>Crab Pool Security</h6>
-                                        <span>$30.00</span>
-                                    </div>
-                                </a>
-                                <a href="#" class="latest-product__item">
-                                    <div class="latest-product__item__pic">
-                                        <img src="{{asset('public/frontend/img/latest-product/lp-3.jpg')}}" alt="">
-                                    </div>
-                                    <div class="latest-product__item__text">
-                                        <h6>Crab Pool Security</h6>
-                                        <span>$30.00</span>
-                                    </div>
-                                </a>
+                                @endforeach
                             </div>
+                           
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-6">
+                <!-- <div class="col-lg-4 col-md-6">
                     <div class="latest-product__text">
                         <h4>Review Products</h4>
                         <div class="latest-product__slider owl-carousel">
@@ -333,7 +276,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </section>
