@@ -74,21 +74,15 @@ class PagesController extends Controller
         
     }
     public function getSearch(Request $request){
-        $keySearch = $request->key;
+        if($request->key != null){
+            $keySearch = $request->key;
+        };
         $products = DB::table('products_category')
         ->where('name_product','like','%'.$keySearch.'%')
         ->where('is_deleted','=',0)
         ->orWhere('price_product',$keySearch)
         ->orWhere('name_shop',$keySearch)
         ->get();
-
-        foreach ($products as $key => $value){
-            $sub_category = $value->sub_category_id;
-        }
-        
-        $productsRalated = DB::table('products')->where('sub_category_id','=',$sub_category)
-        ->where('is_deleted','=',0)->inRandomOrder()->get();
-        
-        return view('pages.search', compact('products','productsRalated','keySearch'));
+        return view('pages.search', compact('products','keySearch'));
     }
 }

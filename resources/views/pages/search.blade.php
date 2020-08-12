@@ -111,20 +111,6 @@
                             <div class="latest-product__text">
                                 <h4>Latest Products</h4>
                                 <div class="latest-product__slider owl-carousel">
-                                    @foreach($productsRalated as $product)
-                                    <div class="latest-prdouct__slider__item">
-                                        <a href="{{URL::to('/chi-tiet-san-pham/'.$product->id_product)}}" class="latest-product__item">
-                                            <div class="latest-product__item__pic">
-                                                <img src="{{asset('public/frontend/img/product/'.$product->img_product)}}" alt="">
-                                            </div>
-                                            <div class="latest-product__item__text">
-                                                <h6>{{$product->name_product}}</h6>
-                                                <span>{{number_format($product->price_product)}}</span>
-                                            </div>
-                                        </a>
-                                        
-                                    </div>
-                                    @endforeach
                                 </div>
                             </div>
                         </div>
