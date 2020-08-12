@@ -25,6 +25,8 @@ Route::get('/danh-muc-{id_category}/sub-{id_sub}','PagesController@getProductsSu
 Route::get('/shop-ban-hang/{id_shop}','SellerController@getShop');
 Route::get('/search','PagesController@getSearch');
 
+Route::get('/sort-by-product','PagesController@sortByProduct');
+
 //Mail
 Route::get('/send-email','MailController@sendMail');
 Route::get('/send-email-shop','MailController@sendMailShop');

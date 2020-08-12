@@ -25,12 +25,12 @@
                     <div class="product__details__text">
                         <h3>{{$product->name_product}}</h3>
                         <div class="product__details__rating">
+                            <!-- <i class="fa fa-star"></i>
                             <i class="fa fa-star"></i>
                             <i class="fa fa-star"></i>
                             <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star-half-o"></i>
-                            <span>({{count($listComments)}} reviews)</span>
+                            <i class="fa fa-star-half-o"></i> -->
+                            <span>({{count($listComments)}} bình luận)</span>
                         </div>
                         <div class="product__details__price">{{number_format($product->price_product)}} VNĐ</div>
                         <p>{{$product->note_product}}</p>
@@ -43,15 +43,15 @@
                                     </div>
                                 </div>
                             </div>
-                            <i class="fa fa-shopping-cart"><a onClick="AddCart({{$product->id_product}})" href="javascript:" style="color:black">ADD TO CARD</a></i>
-                            <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
+                            <i class="fa fa-shopping-cart"><a onClick="AddCart({{$product->id_product}})" href="javascript:" style="color:black"> THÊM VÀO GIỎ HÀNG</a></i>
+                            <!-- <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a> -->
                         <ul>
                             <li><b>THÔNG TIN SHOP</b> <span>{{$product->name_shop}}</span>
                                 <a href="{{URL::to('/shop-ban-hang/'.$product->id_shop)}}" class="btn btn-primary" style="margin-left:10px">Xem shop</a>
                             </li>
                             <li><b>Địa chỉ</b> <span>{{$product->address_shop}}</span></li>
-                            <li><b>Weight</b> <span>0.5 kg</span></li>
-                            <li><b>Share on</b>
+                            <!-- <li><b>Weight</b> <span>0.5 kg</span></li> -->
+                            <li><b>Chia sẻ</b>
                                 <div class="share">
                                     <a href="#"><i class="fa fa-facebook"></i></a>
                                     <a href="#"><i class="fa fa-twitter"></i></a>
@@ -67,11 +67,11 @@
                         <ul class="nav nav-tabs" role="tablist">
                             <li class="nav-item">
                                 <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab"
-                                    aria-selected="true">Description</a>
+                                    aria-selected="true">Mô tả</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab"
-                                    aria-selected="false">Reviews <span>({{count($listComments)}})</span></a>
+                                    aria-selected="false">Bình luận <span>({{count($listComments)}})</span></a>
                             </li>
                         </ul>
                         <div class="tab-content">
@@ -82,29 +82,30 @@
                                 </div>
                             </div>
                             <div class="tab-pane" id="tabs-3" role="tabpanel">
-                                @foreach($listComments as $comment)
-                                <div class="product__details__tab__desc">
-                                    <div class="row">
-                                        <img class="w-100" src="">
-                                        <h6>{{$comment->name_customer}}<h6>
-                                    </div>
-                                    <p>{{$comment->created_at}}</p>
-                                    <span>{!!$comment->content!!}</span>
-                                </div>
-                                @endforeach
                                 @if(Session::get('id_customer')!=null)
                                 <div class="product__details__tab__desc">
                                     <div class="col-md-6 offset-md-3">
                                         <form action="{{URL::to('/postComment')}}" method="POST">
                                         <input type="hidden" name="_token" value="{{csrf_token()}}" >
                                         <input type="hidden" value="{{$product->id_product}}" name="id_product">
-                                            <h6>Comment</h6>
+                                            <h6>Viết bình luận của bạn</h6>
                                             <textarea name="content" class="form-control" placeholder="Viết bình luận"></textarea>
                                             <button type="submit" class="btn btn-success float-right">Đăng</button>
                                         </form>
                                     </div>
                                 </div>
                                 @endif
+                                @foreach($listComments as $comment)
+                                <div class="product__details__tab__desc">
+                                    <div class="row">
+                                        <img class="w-100" src="">
+                                        <h6>{{$comment->name_customer}}<h6>
+                                    </div>
+                                    <p>Ngày: {{date('d-m-Y H:i:s', strtotime($comment->created_at))}}</p>
+                                    <span>Nội dung: {!!$comment->content!!}</span>
+                                </div>
+                                @endforeach
+                                
                             </div>
                         </div>
                     </div>
@@ -121,7 +122,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="section-title related__product__title">
-                        <h2>Related Product</h2>
+                        <h2>Sản phẩm liên quan</h2>
                     </div>
                 </div>
             </div>

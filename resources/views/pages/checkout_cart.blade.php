@@ -7,8 +7,8 @@
                     <div class="breadcrumb__text">
                         <h2>Organi</h2>
                         <div class="breadcrumb__option">
-                            <a href="./index.html">Home</a>
-                            <span>Checkout</span>
+                            <a href="{{URL::to('/')}}">Trang chủ</a>
+                            <span>Thanh toán</span>
                         </div>
                     </div>
                 </div>

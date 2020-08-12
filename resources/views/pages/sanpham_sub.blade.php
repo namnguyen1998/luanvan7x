@@ -23,7 +23,7 @@
                 <div class="col-lg-3 col-md-5">
                     <div class="sidebar">
                         <div class="sidebar__item">
-                            <h4>CATEGORY</h4>
+                            <h4>DANH MỤC CON</h4>
                             <ul>
                                 @foreach($subCategorybyCategory as $sub)
                                 <li><a href="{{URL::to('/danh-muc-'.$sub->category_id.'/sub-'.$sub->id_sub)}}">{{$sub->name_sub}}</a></li>
@@ -31,7 +31,7 @@
                             </ul>
                         </div>
                         <div class="sidebar__item">
-                            <h4>Price</h4>
+                            <h4>Chọn giá</h4>
                             <div class="price-range-wrap">
                                 <div class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
                                     data-min="10" data-max="10000000">
@@ -47,7 +47,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="sidebar__item sidebar__item__color--option">
+                        <!-- <div class="sidebar__item sidebar__item__color--option">
                             <h4>Colors</h4>
                             <div class="sidebar__item__color sidebar__item__color--white">
                                 <label for="white">
@@ -177,7 +177,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <div class="col-lg-9 col-md-7">

@@ -6,7 +6,7 @@
                     <div class="breadcrumb__text">
                         <h2>Organi</h2>
                         <div class="breadcrumb__option">
-                            <a href="./index.html">Home</a>
+                            <a href="{{URL::to('/')}}">Trang chủ</a>
                             <span>Shop</span>
                         </div>
                     </div>
@@ -23,15 +23,17 @@
                 <div class="col-lg-3 col-md-5">
                     <div class="sidebar">
                         <div class="sidebar__item">
-                            <h4>CATEGORY</h4>
+                            <input id="id_category" value="{{$subCategorybyCategory[0]->id_category}}" hidden>
+                            <h4>DANH MỤC CON</h4>
                             <ul>
                                 @foreach($subCategorybyCategory as $sub)
                                 <li><a href="{{URL::to('/danh-muc-'.$sub->category_id.'/sub-'.$sub->id_sub)}}">{{$sub->name_sub}}</a></li>
                                 @endforeach
                             </ul>
+                            
                         </div>
                         <div class="sidebar__item">
-                            <h4>Price</h4>
+                            <h4>Chọn giá</h4>
                             <div class="price-range-wrap">
                                 <div id="price" class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
                                     data-min="100000" data-max="10000000"  step="200.000">
@@ -47,7 +49,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="sidebar__item sidebar__item__color--option">
+                        <!-- <div class="sidebar__item sidebar__item__color--option">
                             <h4>Colors</h4>
                             <div class="sidebar__item__color sidebar__item__color--white">
                                 <label for="white">
@@ -177,7 +179,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <div class="col-lg-9 col-md-7">
@@ -215,16 +217,17 @@
                         <div class="row">
                             <div class="col-lg-4 col-md-5">
                                 <div class="filter__sort">
-                                    <span>Sort By</span>
-                                    <select>
-                                        <option value="0">Default</option>
-                                        <option value="0">Default</option>
+                                    <span>Sắp xếp</span>
+                                    <select id="sortBy">
+                                        <option value="0">Mặc định</option>
+                                        <option value="ASC">Giá từ thấp đến cao</option>
+                                        <option value="DESC">Giá từ cao đến thấp</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="col-lg-4 col-md-4">
                                 <div class="filter__found">
-                                    <h6><span>{{count($productCategory)}}</span> Products found</h6>
+                                    <h6>Hiển thị <span> {{count($productCategory)}}</span></h6>
                                 </div>
                             </div>
                             <div class="col-lg-4 col-mproductCategoryd-3">
@@ -235,7 +238,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+
+                    <div id="productSortBy" class="row">
                         @foreach($productCategory as $pro)
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
@@ -255,8 +259,9 @@
                         @endforeach
                     </div>
                     <span>
-                       {!!$productCategory->render()!!}
+                        {!!$productCategory->render()!!}
                     </span>
+               
                 </div>
             </div>
         </div>
@@ -281,6 +286,21 @@
             });
             minamount.val(rangeSlider.slider("values", 0) + ' VNĐ');
             maxamount.val(rangeSlider.slider("values", 1) + ' VNĐ');
+
+
+            $('#sortBy').on('change', function(){
+                sortBy = document.getElementById('sortBy').value
+                id_category = document.getElementById('id_category').value
+                console.log(sortBy)
+                $.ajax({
+                    url:"{{URL::to('/sort-by-product')}}",
+                    type:'GET',
+                    data: {sortBy: sortBy, id_category: id_category},
+                }).done(function(data){
+                    $("#productSortBy").empty();
+                    $("#productSortBy").html(data);
+                })
+            })
         })
     </script>
     <!-- Product Section End -->
