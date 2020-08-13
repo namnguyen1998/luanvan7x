@@ -152,7 +152,7 @@
                                     <div class="latest-product__item__text">
                                         <h6>{{$topProduct->name_product}}</h6>
                                         <span>{{number_format($topProduct->price_product, 0, ',', '.') . " ₫"}}</span>
-                                        <p>{{ number_format($topProduct->topProduct, 0, ',', '.')}} Lượt</p>
+                                        
                                     </div>
                                 </a>
                                 @endforeach
@@ -167,7 +167,7 @@
                                     <div class="latest-product__item__text">
                                         <h6>{{$topProduct->name_product}}</h6>
                                         <span>{{number_format($topProduct->price_product, 0, ',', '.') . " ₫"}}</span>
-                                        <p>{{ number_format($topProduct->topProduct, 0, ',', '.')}} Lượt</p>
+                                       
                                     </div>
                                 </a>
                                 @endforeach

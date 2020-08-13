@@ -22,10 +22,12 @@ class PagesController extends Controller
         $Category = Category::all();
         // $productCategory = DB::table('products_category')->where('category_id','=',1)
         // ->where('status_product','=',1)->where('is_deleted','=',0)->get();
-        $listProducts = Products::where('is_deleted','=',0)->orderby('id_product','desc')->paginate(12);
+        $listProducts = Products::where('is_deleted','=',0)->where('status_product','!=', -1)->orderby('id_product','desc')->paginate(12);
         //var_dump(Session::get('id_shop'));
         //var_dump($productCategory);
         $listTopProduct5 = Products::join('order_detail', 'order_detail.product_id', '=', 'products.id_product')
+                                    ->where('is_deleted','=',0)
+                                    ->where('status_product','!=', -1)
                                     ->leftjoin('orders', 'orders.id_orders', '=', 'order_detail.orders_id')
                                     ->groupBy('id_product')
                                     ->orderBy('topProduct', 'DESC')
@@ -33,20 +35,27 @@ class PagesController extends Controller
                                     ->addSelect(DB::raw('COUNT(id_orders) as topProduct'))
                                     ->offset(0)->limit(5)->get();
         $listTopProduct10 = Products::join('order_detail', 'order_detail.product_id', '=', 'products.id_product')
+                                    ->where('is_deleted','=',0)                            
+                                    ->where('status_product','!=', -1)
                                     ->leftjoin('orders', 'orders.id_orders', '=', 'order_detail.orders_id')
                                     ->groupBy('id_product')
                                     ->orderBy('topProduct', 'DESC')
                                     ->select('name_product', 'price_product', 'img_product', 'id_product')
                                     ->addSelect(DB::raw('COUNT(id_orders) as topProduct'))
                                     ->offset(5)->limit(5)->get();
-        $listNewProduct5 = Products::orderBy('id_product', 'DESC')->offset(0)->limit(5)->get();
-        $listNewProduct10 = Products::orderBy('id_product', 'DESC')->offset(5)->limit(5)->get();
+        $listNewProduct5 = Products::orderBy('id_product', 'DESC')->where('is_deleted','=',0)                            
+                                    ->where('status_product','!=', -1)
+                                    ->offset(0)->limit(5)->get();
+        // dd($listNewProduct5);
+        $listNewProduct10 = Products::orderBy('id_product', 'DESC')->where('is_deleted','=',0)                            
+                                    ->where('status_product','!=', -1)
+                                    ->offset(5)->limit(5)->get();
     	return view('pages.home',compact('Category','listProducts', 'listTopProduct5', 'listTopProduct10' ,'listNewProduct5', 'listNewProduct10'));
     }
     
     public function getPagesProductCategory($id_category){
     	$productCategory = DB::table('products_category')->where('category_id','=',$id_category)
-        ->where('is_deleted','=',0)->paginate(9);
+        ->where('is_deleted','=',0)->where('status_product','!=', -1)->paginate(9);
         $subCategorybyCategory = DB::table('sub_category')->join('category','id_category','=','category_id')
         ->where('category_id','=',$id_category)
         ->get();
@@ -59,6 +68,7 @@ class PagesController extends Controller
         $productByID = DB::table('products')
                                 ->join('shop','id_shop','=','shop_id')
                                 ->where('is_deleted','=',0)
+                                ->where('status_product','!=', -1)
                                 ->where('id_product','=',$id_product)->get();
 
         foreach ($productByID as $key => $value){
@@ -80,6 +90,7 @@ class PagesController extends Controller
         $productByID = DB::table('products')
                                 ->join('shop','id_shop','=','shop_id')
                                 ->where('is_deleted','=',0)
+                                ->where('status_product','!=', -1)
                                 ->where('slug','=',$slug_product)->get();
                                 //var_dump($productByID);
         return view('pages.chitietsanpham',compact('productByID'));
@@ -100,6 +111,7 @@ class PagesController extends Controller
         $products = DB::table('products_category')
                         ->where('name_product','like','%'.$keySearch.'%')
                         ->where('is_deleted','=',0)
+                        ->where('status_product','!=', -1)
                         ->orWhere('price_product',$keySearch)
                         ->orWhere('name_shop',$keySearch)
                         ->get();
@@ -115,11 +127,13 @@ class PagesController extends Controller
         if (empty($req->sortBy)) {
             $sortByProduct = DB::table('products_category')->where('category_id','=',$id_category)
                                 ->where('is_deleted','=',0)
+                                ->where('status_product','!=', -1)
                                 ->get();
         }
         else {
             $sortByProduct = DB::table('products_category')->where('category_id','=',$id_category)
                                 ->where('is_deleted','=',0)
+                                ->where('status_product','!=', -1)
                                 ->orderBy(array_shift($explode), array_pop($explode))
                                 ->get();
         }
@@ -138,11 +152,13 @@ class PagesController extends Controller
         if (empty($req->sortBySub)) {
             $sortByProduct = DB::table('products_category')->where('sub_category_id','=', $id_sub)
                                 ->where('is_deleted','=',0)
+                                ->where('status_product','!=', -1)
                                 ->get();
         }
         else {
             $sortByProduct = DB::table('products_category')->where('sub_category_id','=', $id_sub)
                                 ->where('is_deleted','=',0)
+                                ->where('status_product','!=', -1)
                                 ->orderBy(array_shift($explode), array_pop($explode))
                                 ->get();
         }
@@ -164,6 +180,7 @@ class PagesController extends Controller
             $sortByProduct = DB::table('products_category')
                                 ->where('name_product','like','%'.$decodeUrlKeyword.'%')
                                 ->where('is_deleted','=',0)
+                                ->where('status_product','!=', -1)
                                 ->orWhere('price_product',$decodeUrlKeyword)
                                 ->orWhere('name_shop',$decodeUrlKeyword)
                                 ->get();
@@ -172,6 +189,7 @@ class PagesController extends Controller
             $sortByProduct = DB::table('products_category')
                                 ->where('name_product','like','%'.$decodeUrlKeyword.'%')
                                 ->where('is_deleted','=',0)
+                                ->where('status_product','!=', -1)
                                 ->orWhere('price_product',$decodeUrlKeyword)
                                 ->orWhere('name_shop',$decodeUrlKeyword)
                                 ->orderBy(array_shift($explode), array_pop($explode))
