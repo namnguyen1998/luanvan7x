@@ -194,7 +194,7 @@ class ProductController extends Controller
     public function getListProduct(){
         $this->AuthLogin();
         $listProducts = DB::table('products_category')->where('shop_id','=',Session::get('id_shop'))
-        ->where('is_deleted','=',0)->orderBy('id_product','DESC')->paginate(6);
+        ->where('is_deleted','=',0)->orderBy('created_at','DESC')->paginate(6);
         return view('users.seller.banhang_danhsachsanpham',compact('listProducts'));
     }
 

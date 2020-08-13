@@ -157,6 +157,7 @@ class SellerController extends Controller
                                 ->leftjoin('shop', 'shop.id_shop', '=', 'products.shop_id')
                                 ->where('id_shop', '=', Session::get('id_shop'))
                                 ->where( 'orders_id', '=', $orders_id)
+                                // ->orderBy('created_at', 'DESC')
                                 ->get();
         if (!empty($loadOrderDetail->count())){
             $loadShop = DB::table('shop')->where('id_shop','=', Session::get('id_shop'))->first();

@@ -49,7 +49,7 @@
 		</div>
 
 		<div style="text-align: center">
-			@if ($status_order != -1)
+			@if ($status_order <= 0)
 			<button type="button" class="btn btn-secondary">
 				<a style="color: white" href=" {{URL::to('profile/huy-don-hang/'.$id_orders)}} ">
 					<span>
