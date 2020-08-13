@@ -13,6 +13,9 @@
                 <strong>Hồ sơ của tôi</strong>
             </div>
                 <div class="card-body card-block" style="">
+                    @foreach($errors->all() as $err)
+                        <div class="alert alert-danger" role="alert">{{$err}}</div>
+                    @endforeach
                     <form action="{{URL::to('/updateProfile')}}" method="post" enctype="multipart/form-data" class="form-horizontal">
                             @csrf
                         <div class="row form-group">
@@ -25,15 +28,15 @@
                         </div>
                         <div class="row form-group">
                             <div class="col col-md-3">
-                                <label class=" form-control-label">Inline Radios</label>
+                                <label class=" form-control-label">Giới tính</label>
                             </div>
                             <div class="col col-md-9">
                                 <div class="form-check-inline form-check">
                                     <label for="inline-radio1" class="form-check-label"style="padding-left: 10px;">
-                                        <input type="radio" id="inline-radio1" @if(Session::get('sex_customer')==0) {{'checked="true"'}} @endif name="sex_customer" value="0" class="form-check-input">Nam
+                                        <input type="radio" id="inline-radio1" @if(Session::get('customer')->sex_customer==0) {{'checked="true"'}} @endif name="sex_customer" value="0" class="form-check-input">Nam
                                     </label>
                                     <label for="inline-radio2" class="form-check-label"style="padding-left: 10px;">
-                                        <input type="radio" id="inline-radio2" @if(Session::get('sex_customer')==1) {{'checked="true"'}} @endif name="sex_customer" value="1"  class="form-check-input">Nữ
+                                        <input type="radio" id="inline-radio2" @if(Session::get('customer')->sex_customer==1) {{'checked="true"'}} @endif name="sex_customer" value="1"  class="form-check-input">Nữ
                                     </label>
                                 </div>
                             </div>
@@ -46,31 +49,39 @@
                                 <label for="text-input" class=" form-control-label">{{$email_customer}}******@gmail.com</label>
                             </div>
                         </div>
-                        
-                    <div class="row form-group">
-                        <div class="col col-md-3">
-                            <label for="text-input" class=" form-control-label">Số điện thoại</label>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-input" class=" form-control-label">Ngày sinh</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                @if(Session::get('customer')->date_customer!=null)
+                                    <label for="text-input" class=" form-control-label">{{date('d-m-Y', strtotime(Session::get('customer')->date_customer))}}</label>
+                                @else
+                                <input type="text" placeholder="dd/mm/yyyy" id="text-input" name="date_customer" class="form-control" style="width: 280px;">
+                                @endif
+                            </div>
                         </div>
-                        
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-input" class=" form-control-label">Số điện thoại</label>
+                            </div>
                             <div class="col-12 col-md-9">
                                 @if($phone_customer!=null)
-                                    <label for="text-input" class=" form-control-label">******{{$phone_customer}}</label>
-                                @else
-                                <input id="_disabled" disabled type="text" id="text-input" name="phone_customer" class="form-control">
-                                <div class="col-12 col-md-3">
-                                    <label style="color: #A52652" id="click_disabled" for="text-input" class=" form-control-label fa fa-hand-o-right">Nhấn tại đây để điền SDT</label>
+                                <div class="row">
+                                    <input id="_disabled" disabled type="text" id="text-input" value="{{Session::get('customer')->phone_customer}}" name="phone_customer" class="form-control" style="width: 280px;">
+                                    <div class="col-12 col-md-3">
+                                        <label style="color: #A52652" id="click_disabled" for="text-input" class=" form-control-label fa fa-hand-o-right">Nhấn tại đây để điền SDT</label>
+                                    </div>
                                 </div>
                                 @endif
                             </div>
-                    </div>
-                    
-
+                        </div>
                         <div class="row form-group">
                             <div class="col col-md-3">
                                 <label for="file-input" class=" form-control-label">Chọn ảnh</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <input type="file" id="file-input" name="img" class="form-control-file">
+                                <input type="file" id="file-input" name="img_customer" class="form-control-file">
                             </div>
                         </div>
                 <div class="card-footer" style="text-align: center;">
@@ -89,9 +100,18 @@
         $("#_disabled").attr("disabled", false);
         
     });
-
     $(document).ready(function(){
         $("#phone_customer").change(function(){
+            $("#_disabled").val(null); 
+            $("#_disabled").attr("disabled", true);
+        })
+    })
+    $(document).on('click', '#click_disabled', function() {
+        $("#_disabled").attr("disabled", false);
+        
+    });
+    $(document).ready(function(){
+        $("#date_customer").change(function(){
             $("#_disabled").val(null); 
             $("#_disabled").attr("disabled", true);
         })

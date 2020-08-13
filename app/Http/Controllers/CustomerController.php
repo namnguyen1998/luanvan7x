@@ -31,8 +31,22 @@ class CustomerController extends Controller
             return Redirect::to('/login')->send();
         }
     }
+    public function setNameImage($data){
+        if(empty($data)){
+            return null;
+        }
+        else{
+            $getNameImage = current(explode('.', $data->getClientOriginalName()));
+            $destinationPath = 'public/frontend/img/shop';
+            $date = date('dmY');
+            $hash = md5($getNameImage);
+            $plus = $date . '_' . $hash . '.jpg';
+            $data->move($destinationPath, $plus);
+            return $plus;
+        }
+    }
     public function getLoginForm(){
-    	return view('login');
+        return view('login');
     }
     public function postLogin(Request $request){
         $this->validate($request,
@@ -46,17 +60,17 @@ class CustomerController extends Controller
                 'password.min'=>'Mật khẩu có ít nhất 6 kí tự',
                 'password.max'=>'Mật khẩu không quá 20 kí tựs'
             ]);
-    	
+        
 
         $email = $request->email;
-    	$password =md5($request->password);
+        $password =md5($request->password);
 
-    	// $result = DB::table('Customers')
-    	// ->where('email_customer', $email)
-    	// ->where('password_customer', $password)->first();
-    	$result = Customers::where('email_customer', $email)->where('password_customer',$password)->first();
+        // $result = DB::table('Customers')
+        // ->where('email_customer', $email)
+        // ->where('password_customer', $password)->first();
+        $result = Customers::where('email_customer', $email)->where('password_customer',$password)->first();
         
-    	if($result){
+        if($result){
             Session::put('name_customer',$result->name_customer);
             Session::put('email_customer',$result->email_customer);
 
@@ -68,37 +82,46 @@ class CustomerController extends Controller
             Session::put('id_customer',$result->id_customer);
             return redirect::to('/');
             
-    	}else{
-    		return redirect::to('/login');
-    	}
+        }else{
+            return redirect::to('/login');
+        }
     }
     public function getRegisterForm(){
-    	return 	view('register');
+        return  view('register');
     }
     public function postRegister(Request $request){
-    	$this->validate($request,
-    		[
-    			'email' => 'required|email|unique:customers,email_customer',
-    			'password' => 'required|min:6|max:20',
-    			're_password' => 'required|same:password',
-    		],
-    		[
-    			'email.required'=>'Vui lòng nhập Email',
-    			'email.unique'=>'Email đã được sử dụng',
-    			'password.required'=>'Vui lòng nhập mật khẩu',
-    			're_password.same'=>'Mật khẩu không giống nhau',
-    			'password.min'=>'Mật khẩu có ít nhất 6 kí tự'
-    		]);
-    	$customer = new Customers();
-    	$customer->email_customer = $request->email;
-    	$customer->password_customer = md5($request->password);	
-    	$customer->save();
+        $this->validate($request,
+            [
+                'email' => 'required|email|unique:customers,email_customer',
+                'password' => 'required|min:6|max:20',
+                're_password' => 'required|same:password',
+            ],
+            [
+                'email.required'=>'Vui lòng nhập Email',
+                'email.unique'=>'Email đã được sử dụng',
+                'password.required'=>'Vui lòng nhập mật khẩu',
+                're_password.same'=>'Mật khẩu không giống nhau',
+                'password.min'=>'Mật khẩu có ít nhất 6 kí tự'
+            ]);
+        $customer = new Customers();
+        $customer->email_customer = $request->email;
+        $customer->password_customer = md5($request->password); 
+        $customer->save();
 
-    	return redirect('/')->with('success','Tạo tài khoản thành công');
+        return redirect('/')->with('success','Tạo tài khoản thành công');
     }
     public function logout(){
         $this->AuthLogin();
-        Session::flush();
+        Session::forget('id_customer');
+        Session::forget('name_customer');
+        Session::forget('provider_customer');
+        Session::forget('sex_customer');
+        Session::forget('img_customer');
+        Session::forget('phone_customer');
+        Session::forget('address_customer');
+        Session::forget('email_customer');
+        Session::forget('provider_id');
+        Session::forget('Cart');
         return Redirect::to('/');
     }
     // Login Google Api
@@ -173,20 +196,29 @@ class CustomerController extends Controller
         //var_dump($shop_customer);
         return view('users.customer.thongtin_customer',compact('phone_customer','email_customer'));
     }   
-
-     public function updateProfile(){
+     public function updateProfile(Request $request){
         $this->AuthLogin();
+        $this->validate($request, 
+        [
+            'img_customer' => 'mimes:jpg,jpeg,png,gif|max:2048',
+            'date_customer' => 'date_format:"Y/m/d"|before:tomorrow',
+        ], 
+        [
+            'date_customer.date_format' =>'Định dạng ngày, tháng không đúng. Xin vui lòng nhập lại',
+            'img_customer.mimes' => 'Chỉ chấp nhận với đuôi .jpg .jpeg .png .gif',
+            'img_customer.max' => 'Hình ảnh giới hạn dung lượng không quá 2M',
+
+        ]);
         $customer = Customers::find($this->checkUser());
-        $customer->name_customer = $_POST['name_customer'];
-        $customer->sex_customer = $_POST['sex_customer'];
-        $customer->phone_customer = $_POST['phone_customer'];
+        $customer->name_customer = $request->name_customer;
+        $customer->sex_customer = $request->sex_customer;
+        $customer->phone_customer = $request->phone_customer;
+        $customer->date_customer = $request->date_customer;
+        $customer->img_customer = $this->setNameImage($request->img_customer);
+        
         $customer->save();
-        $addressDefault = array();
-        $addressDefault['address_customer'] = $_POST['address_default'];
-        $addressDefault['customer_id'] = $this->checkUser();
-        DB::table('shipping_address')->insert($addressDefault);
-       
-            
+        //dd($customer);
+             
         return Redirect::to('/profile');
     }
     public function getAddressCustomer(){
@@ -275,21 +307,6 @@ class CustomerController extends Controller
         return view('users.seller.banhang_dangkyshop');
     }
 
-    public function setNameImage($data){
-        if(empty($data)){
-            return null;
-        }
-        else{
-            $getNameImage = current(explode('.', $data->getClientOriginalName()));
-            $destinationPath = 'public/frontend/img/shop';
-            $date = date('dmY');
-            $hash = md5($getNameImage);
-            $plus = $date . '_' . $hash . '.jpg';
-            $data->move($destinationPath, $plus);
-            return $plus;
-        }
-    }
-
     public function postRegisterShop(Request $request){
         $this->AuthLogin();
         $data = $request->validate(
@@ -298,12 +315,13 @@ class CustomerController extends Controller
                 'address_shop' => 'required',
                 'phone_shop' => 'required|max:10',
                 'img_shop' => 'mimes:jpg,jpeg,png,gif|max:2048',
-                'email_shop' => 'required',
+                'email_shop' => 'required|unique:shop_customer,email_shop',
                 'password_shop' => 'required|min:6|max:20',
                 're-password' => 'required|same:password_shop',
                 'g-recaptcha-response' => new Captcha(),         //dòng kiểm tra Captcha
             ],[
                 'name_shop.unique' => 'Tên shop đã tồn tại',
+                'email_shop.unique' => 'Email này đã được đăng ký',
                 'email.required'=>'Vui lòng nhập Email',
                 'password.required'=>'Vui lòng nhập mật khẩu',
                 're_password.same'=>'Mật khẩu không giống nhau',
