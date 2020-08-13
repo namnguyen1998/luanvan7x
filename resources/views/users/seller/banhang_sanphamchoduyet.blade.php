@@ -30,10 +30,10 @@
     @foreach($listProductsPending as $product)
     <tbody>
       <tr>
-      	<td>{{$product->created_at}}</td>
+      	<td>{{ date('d-m-Y H:i:s', strtotime( $product->created_at )) }}</td>
         <td>{{$product->name_product}}</td>
         <td>{{$product->madeby}}</td>
-        <td>{{ number_format($product->price_product)}}</td>
+        <td>{{ number_format($product->price_product, 0, ',', '.') . " ₫" }}</td>
         <td>
           <img src='{{asset("public/frontend/img/product/$product->img_product")}}' height="70" width="70">
           <?php

@@ -3,7 +3,9 @@
 
 <div class="col-lg-9 col-md-7">
 	<div class="container">
-	  <h2>Đơn mua hàng</h2>    
+	  <h2>Đơn mua hàng</h2>
+	  <h6><strong>Lưu ý:</strong> Đơn hàng đã được <strong>"Đã xác nhận"</strong> hoặc <strong>"Đang vận chuyển"</strong> không thể huỷ.</h6>
+	  <br>
 	  	<?php
 			if (!empty(Session::get('message'))){
 				echo'<div class = "alert-danger">'.Session::get('message').'</div></br>';
@@ -35,7 +37,7 @@
 					@if ($bill->status_order == 0)
 						<span class="label label-other">Đang duyệt</span>
 					@elseif ($bill->status_order == 1)
-						<span class="label label-success">Đã duyệt</span>
+						<span class="label label-success">Đã xác nhận</span>
 					@elseif ($bill->status_order == -1)
 						<span class="label label-danger">Huỷ</span>
 					@else
@@ -46,7 +48,7 @@
 					<a href="{{URL::to('profile/chi-tiet-don-hang/'.$bill->id_orders)}}"><button class="btn"><span class="fa fa-tripadvisor"></span></button></a>
 				</td>
 				<td>
-					@if ($bill->status_order != -1)
+					@if ($bill->status_order <= 0)
 						<a href="{{URL::to('profile/huy-don-hang/'.$bill->id_orders)}}"><button class="btn"><span class="fa fa-expeditedssl"></span></button></a>
 					@endif
 				</td>

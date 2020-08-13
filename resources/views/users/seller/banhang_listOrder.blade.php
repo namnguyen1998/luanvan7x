@@ -37,7 +37,7 @@
             <tr style="text-align: center">
                 <th><?php echo $number ++ ;?></th>
                 <td>#{{ $order->orders_id }}</td>
-                <td>{{ date('d-m-Y', strtotime( $order->created_at ))}}</td>
+                <td>{{ date('d-m-Y', strtotime( $order->created_at )) }}</td>
                 <td>{{ number_format( $order->price_order, 0, ',', '.') . " ₫" }}</td>
                 <td>
                     @if ($order->status_order == 0)

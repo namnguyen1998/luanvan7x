@@ -118,7 +118,7 @@ class SellerController extends Controller
             ->where('id_shop', '=', Session::get('id_shop'))
             ->groupBy('orders_id')
             ->orderBy('created_at', 'DESC')
-            ->paginate(6);
+            ->paginate(10);
             // ->get();
             //dd($loadOrderShop);
         return view('users.seller.banhang_listOrder', compact('loadOrderShop'));
@@ -137,7 +137,7 @@ class SellerController extends Controller
                             ->where('id_shop', '=', Session::get('id_shop'))
                             ->groupBy('orders_id')
                             ->orderBy('created_at', 'DESC')
-                            ->paginate(6);
+                            ->paginate(10);
         return view('users.seller.banhang_updateStatusShip', compact('loadOrderShop'));
     }
 
@@ -163,7 +163,7 @@ class SellerController extends Controller
             $loadOrders = Orders::where('id_orders', $orders_id)
                                 ->join('customers', 'customers.id_customer', '=', 'orders.customer_id')
                                 ->first();
-            $loadAddressCustomer = DB::table('shipping_address')->where('customer_id', '=', $loadOrders->customer_id)->where('status_default','=', 1)->first();
+            $loadAddressCustomer = DB::table('shipping_address')->where('customer_id', '=', $loadOrders->customer_id)->first();
             return view('users.seller.banhang_orderDetail', compact('loadOrderDetail', 'loadShop', 'loadOrders', 'loadAddressCustomer'));
         }
         else 
@@ -187,7 +187,7 @@ class SellerController extends Controller
         $loadOrders = Orders::where('id_orders', $req->id_orders)
                             ->join('customers', 'customers.id_customer', '=', 'orders.customer_id')
                             ->first();
-        $loadAddressCustomer = DB::table('shipping_address')->where('customer_id', '=', $loadOrders->customer_id)->where('status_default','=', 1)->first();
+        $loadAddressCustomer = DB::table('shipping_address')->where('customer_id', '=', $loadOrders->customer_id)->first();
         view()->share('loadOrderDetail',$loadOrderDetail);
         view()->share('loadShop',$loadShop);
         view()->share('loadOrders',$loadOrders);
