@@ -114,6 +114,7 @@ class CartController extends Controller
     public function listItemsCart(){
         if (empty(Session::get('Cart')->totalPrice) && empty(Session::get('Cart')->totalQuantity))
             Session::forget('Cart');
+        // dd(Session::get('Cart'));
         return view ('pages.giohang2');
     }
 

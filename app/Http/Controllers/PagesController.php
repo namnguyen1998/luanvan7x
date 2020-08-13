@@ -98,11 +98,11 @@ class PagesController extends Controller
             $keySearch = $request->key;
         };
         $products = DB::table('products_category')
-        ->where('name_product','like','%'.$keySearch.'%')
-        ->where('is_deleted','=',0)
-        ->orWhere('price_product',$keySearch)
-        ->orWhere('name_shop',$keySearch)
-        ->get();
+                        ->where('name_product','like','%'.$keySearch.'%')
+                        ->where('is_deleted','=',0)
+                        ->orWhere('price_product',$keySearch)
+                        ->orWhere('name_shop',$keySearch)
+                        ->get();
         return view('pages.search', compact('products','keySearch'));
     }
 
@@ -146,6 +146,38 @@ class PagesController extends Controller
                                 ->orderBy(array_shift($explode), array_pop($explode))
                                 ->get();
         }
+        if (empty($sortByProduct))
+            return 1;
+        else
+            return view('pages.trangsanpham_sortByProductAjax', compact('sortByProduct'));
+    }
+
+    public function sortByProductKeyWord(Request $req){
+        // Get the full URL for the previous request
+        $getUrlKeyWord = explode('=', url()->previous());
+        $getKeyWord = array_pop($getUrlKeyWord);
+        $decodeUrlKeyword = urldecode($getKeyWord);
+        // dd(($decodeUrlKeyword));
+        
+        $explode = explode(' ', $req->sortBySub);
+        if (empty($req->sortBySub)) {
+            $sortByProduct = DB::table('products_category')
+                                ->where('name_product','like','%'.$decodeUrlKeyword.'%')
+                                ->where('is_deleted','=',0)
+                                ->orWhere('price_product',$decodeUrlKeyword)
+                                ->orWhere('name_shop',$decodeUrlKeyword)
+                                ->get();
+        }
+        else {
+            $sortByProduct = DB::table('products_category')
+                                ->where('name_product','like','%'.$decodeUrlKeyword.'%')
+                                ->where('is_deleted','=',0)
+                                ->orWhere('price_product',$decodeUrlKeyword)
+                                ->orWhere('name_shop',$decodeUrlKeyword)
+                                ->orderBy(array_shift($explode), array_pop($explode))
+                                ->get();
+        }
+        // dd($sortByProduct);
         if (empty($sortByProduct))
             return 1;
         else

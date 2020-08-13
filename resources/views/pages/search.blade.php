@@ -136,11 +136,14 @@
                         <div class="row">
                             <div class="col-lg-4 col-md-5">
                                 <div class="filter__sort">
-                                    <!-- <span>Sort By</span>
-                                    <select>
-                                        <option value="0">Default</option>
-                                        <option value="0">Default</option>
-                                    </select> -->
+                                    <span>Sắp xếp</span>
+                                    <select id="sortBySub">
+                                        <option value="0">Mặc định</option>
+                                        <option value="price_product ASC">Sắp xếp giá Thấp - Cao</option>
+                                        <option value="price_product DESC">Sắp xếp giá Cao - Thấp</option>
+                                        <option value="name_product ASC">Sắp xếp tên A - Z</option>
+                                        <option value="name_product DESC">Sắp xếp tên Z - A</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-lg-4 col-md-4">
@@ -150,13 +153,13 @@
                             </div>
                             <div class="col-lg-4 col-mproductCategoryd-3">
                                 <div class="filter__option">
-                                    <!-- <span class="icon_grid-2x2"></span>
-                                    <span class="icon_ul"></span> -->
+                                    <span class="icon_grid-2x2"></span>
+                                    <!-- <span class="icon_ul"></span> -->
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div id="productSortBy" class="row">
                         @foreach($products as $pro)
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
@@ -179,5 +182,29 @@
             </div>
         </div>
     </section>
+
+    <script src="{{asset('public/backend/dist/js/jquery.min.js')}}"></script>  
+    <script>
+        $(document).ready(function(){
+            
+            $('#sortBySub').on('change', function(){
+                sortBySub = document.getElementById('sortBySub').value
+                console.log(sortBySub)
+                $.ajax({
+                    url:"{{URL::to('/sort-by-product-keyword')}}",
+                    type:'GET',
+                    data: {sortBySub: sortBySub},
+                }).done(function(data){
+                    if (data == 1)
+                        alert('Hệ thống gặp một chút sự cố. Xin thử lại sau.')
+                    else {
+                        $("#productSortBy").empty();
+                        $("#productSortBy").html(data);
+                    }
+                    
+                })
+            })
+        })
+    </script>
     <!-- Product Section End -->
     @include('pages.footer')
