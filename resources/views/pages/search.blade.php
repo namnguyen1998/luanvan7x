@@ -160,6 +160,9 @@
                         </div>
                     </div>
                     <div id="productSortBy" class="row">
+                        @if (count($products) == 0)
+                            <div class="col-lg-12" style="text-align: center; font-size: 200%">Xin lỗi. Chúng tôi không tìm thấy sản phẩm bạn muốn tìm.</div>
+                        @else
                         @foreach($products as $pro)
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
@@ -177,6 +180,7 @@
                             </div>
                         </div>
                         @endforeach
+                        @endif
                     </div>
                 </div>
             </div>

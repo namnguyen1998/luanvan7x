@@ -211,6 +211,9 @@
                         </div>
                     </div>
                     <div id="productSortBy" class="row">
+                        @if (count($products_sub) == 0)
+                            <div class="col-lg-12" style="text-align: center; font-size: 200%">Không có sản phẩm</div>
+                        @else
                         @foreach($products_sub as $pro)
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
@@ -228,6 +231,7 @@
                             </div>
                         </div>
                         @endforeach
+                        @endif
                     </div>
                     <span>{!!$products_sub->render()!!}</span>
                 </div>
