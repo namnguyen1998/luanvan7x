@@ -29,7 +29,8 @@
                     <strong>Tên: {{ $loadShop->name_shop }}</strong><br>
                     Địa chỉ: {{ $loadShop->address_shop }}<br>
                     SĐT: {{ $loadShop->phone_shop }}<br>
-                    Email: {{ $loadShop->email_shop }}
+                    Email: {{ $loadShop->email_shop }}<br>
+                    Ngày tham gia: {{ date('d-m-Y', strtotime( $loadShop->created_at )) }}
                 </address>
             </div>
             <!-- /.col -->
