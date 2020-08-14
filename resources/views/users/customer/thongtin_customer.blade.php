@@ -12,6 +12,9 @@
             <div class="card-header">
                 <strong>Hồ sơ của tôi</strong>
             </div>
+                @if(Session::get('message')!=null)
+                <div class="alert alert-success" role="alert">{{Session::get('message')}}</div>
+                @endif
                 <div class="card-body card-block" style="">
                     @foreach($errors->all() as $err)
                         <div class="alert alert-danger" role="alert">{{$err}}</div>
@@ -23,7 +26,7 @@
                                 <label for="text-input" class=" form-control-label">Tên</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <input type="text" id="text-input" name="name_customer" value="{{Session::get('name_customer')}}" class="form-control" style="width: 280px;">
+                                <input type="text" id="text-input" name="name_customer" value="{{Session::get('customer')->name_customer}}" class="form-control" style="width: 280px;">
                             </div>
                         </div>
                         <div class="row form-group">
@@ -55,9 +58,9 @@
                             </div>
                             <div class="col-12 col-md-9">
                                 @if(Session::get('customer')->date_customer!=null)
-                                    <label for="text-input" class=" form-control-label">{{date('d-m-Y', strtotime(Session::get('customer')->date_customer))}}</label>
+                                    <label for="text-input" class=" form-control-label">{{date('d/m/Y', strtotime(Session::get('customer')->date_customer))}}</label>
                                 @else
-                                <input type="text" placeholder="dd/mm/yyyy" id="text-input" name="date_customer" class="form-control" style="width: 280px;">
+                                <input type="text" placeholder="dd-mm-yyyy" id="text-input" name="date_customer" class="form-control" style="width: 280px;">
                                 @endif
                             </div>
                         </div>
@@ -66,14 +69,14 @@
                                 <label for="text-input" class=" form-control-label">Số điện thoại</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                @if($phone_customer!=null)
+                                
                                 <div class="row">
                                     <input id="_disabled" disabled type="text" id="text-input" value="{{Session::get('customer')->phone_customer}}" name="phone_customer" class="form-control" style="width: 280px;">
                                     <div class="col-12 col-md-3">
                                         <label style="color: #A52652" id="click_disabled" for="text-input" class=" form-control-label fa fa-hand-o-right">Nhấn tại đây để điền SDT</label>
                                     </div>
                                 </div>
-                                @endif
+                               
                             </div>
                         </div>
                         <div class="row form-group">
@@ -86,7 +89,7 @@
                         </div>
                 <div class="card-footer" style="text-align: center;">
                     <button type="submit" class="btn btn-primary btn-sm">
-                        Save
+                        Cập nhật
                     </button>
                 </div>
             </form>

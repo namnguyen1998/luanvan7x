@@ -161,7 +161,7 @@ class CustomerController extends Controller
             $newCustomers->password_customer         = '';
             $newCustomers->save();
         }
-
+        Session::put('customers', $Customers);
         Session::put('name_customer',$Customers->name);
         Session::put('id_customer',$Customers->id);
         Session::put('provider_id',$Customers->id);
@@ -190,6 +190,7 @@ class CustomerController extends Controller
         ->first();       
         if(!empty($customer)){
             Session::put('customer',$customer);
+            Session::put('img_customer',$customer->img_customer);
             $phone_customer = substr(Session::get('customer')->phone_customer,7);
             $email_customer = substr(Session::get('customer')->email_customer,0,3);
         }
@@ -201,24 +202,41 @@ class CustomerController extends Controller
         $this->validate($request, 
         [
             'img_customer' => 'mimes:jpg,jpeg,png,gif|max:2048',
-            'date_customer' => 'date_format:"Y/m/d"|before:tomorrow',
+            'date_customer' => 'date|before:tomorrow',
         ], 
         [
-            'date_customer.date_format' =>'Định dạng ngày, tháng không đúng. Xin vui lòng nhập lại',
+            'date_customer.date' =>'Định dạng ngày, tháng không đúng. Xin vui lòng nhập lại',
             'img_customer.mimes' => 'Chỉ chấp nhận với đuôi .jpg .jpeg .png .gif',
             'img_customer.max' => 'Hình ảnh giới hạn dung lượng không quá 2M',
 
         ]);
         $customer = Customers::find($this->checkUser());
-        $customer->name_customer = $request->name_customer;
-        $customer->sex_customer = $request->sex_customer;
-        $customer->phone_customer = $request->phone_customer;
-        $customer->date_customer = $request->date_customer;
-        $customer->img_customer = $this->setNameImage($request->img_customer);
-        
+        if($request->name_customer!= null){
+            $customer->name_customer = $request->name_customer;
+        }else{
+            $customer->name_customer = $customer->name_customer;
+        }
+        if($request->sex_customer!= null){
+            $customer->sex_customer = $request->sex_customer;    
+        }else{
+            $customer->sex_customer = $customer->sex_customer;
+        }if($request->phone_customer!= null){
+            $customer->phone_customer = $request->phone_customer;
+         }else{
+             $customer->phone_customer = $customer->phone_customer;
+         }if($request->date_customer != null){
+            $customer->date_customer = date('Y-m-d', strtotime($request->date_customer));
+        }else{
+            $customer->date_customer = $customer->date_customer;
+        }
+        if($request->img_customer){
+            $customer->img_customer = $this->setNameImage($request->img_customer);
+        }else{
+            $customer->img_customer = $customer->img_customer;
+        }
         $customer->save();
         //dd($customer);
-             
+        Session::put('message','Cập nhật thành công.');
         return Redirect::to('/profile');
     }
     public function getAddressCustomer(){
