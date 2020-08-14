@@ -48,7 +48,7 @@
 					<a href="{{URL::to('profile/chi-tiet-don-hang/'.$bill->id_orders)}}"><button class="btn"><span class="fa fa-tripadvisor"></span></button></a>
 				</td>
 				<td>
-					@if ($bill->status_order <= 0)
+					@if ($bill->status_order >= 0)
 						<a href="{{URL::to('profile/huy-don-hang/'.$bill->id_orders)}}"><button class="btn"><span class="fa fa-expeditedssl"></span></button></a>
 					@endif
 				</td>
