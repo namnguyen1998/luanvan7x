@@ -46,10 +46,22 @@
         <td>{{$user->email_user}}</td>
         <td>{{$user->phone_user}}</td>
         <td>{{$user->name_role}}</td>
-        <?php if($user->id_role != 1) { ?>
-          <td meth style="text-align: right"><a href="{{URL::to('/admin-sua-quyen-nhan-vien/'.$user->id_users)}}"><button class="btn"><span class="icon-wrench"></span></button></a></td>
-          <td style="text-align: right"><a href="{{URL::to('/admin-dat-lai-mat-khau/'.$user->id_users)}}"><button class="btn"><span class="icon-wrench"></span></button></a></td>
-        <?php } if($user->id_role == 1) { ?>
+
+        @if ($user->id_role != 1)
+        <form action="{{URL::to('/admin-sua-quyen-nhan-vien')}}" method="post">
+          @csrf
+            <input hidden name="id_users" value="{{$user->id_users}}">
+            <td meth style="text-align: right"><button class="btn"><span class="icon-wrench"></span></button></td>
+        </form>
+
+        <form action="{{URL::to('/admin-dat-lai-mat-khau')}}" method="post">
+          @csrf
+          <input hidden name="id_users" value="{{$user->id_users}}">
+          <td style="text-align: right"><button class="btn"><span class="icon-wrench"></span></button></td>
+        </form>
+        @endif
+
+        <?php if($user->id_role == 1) { ?>
             <td> </td><td></td>
         <?php } ?>
         

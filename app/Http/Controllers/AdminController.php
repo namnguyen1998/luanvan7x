@@ -390,10 +390,10 @@ class AdminController extends Controller
         }
     }
 
-    public function editRoleUser($id_users){
+    public function editRoleUser(Request $req){
         $this->AuthAdmin();
         $this->checkUrlRoleUser(Session::get('role_id'));
-        $loadUser = DB::table('users')->where('id_users', $id_users)
+        $loadUser = DB::table('users')->where('id_users', $req->id_users)
                         ->join('roles', 'roles.id_role', '=', 'users.role_id')
                         ->select('roles.name_role', 'users.id_users', 'users.name_user', 'users.username_user', 'users.email_user', 'users.phone_user', 'users.role_id')
                         ->get();
@@ -404,19 +404,19 @@ class AdminController extends Controller
             return view('admin.admin_edituser', compact('loadUser', 'loadRole'));
     }
 
-    public function updateRoleUser(Request $req, $id_users){
+    public function updateRoleUser(Request $req){
         $this->AuthAdmin();
         $this->checkUrlRoleUser(Session::get('role_id'));
         $updateRoleUser['role_id'] = $req->role_user;
-        DB::table('users')->where('id_users', $id_users)->update($updateRoleUser);
+        DB::table('users')->where('id_users', $req->id_users)->update($updateRoleUser);
         Session::put('message', 'Cập nhật thành công.');
         return redirect::to('/admin-danh-sach-nhan-vien');
     }
 
-    public function loadPasswordUser($id_users){
+    public function loadPasswordUser(Request $req){
         $this->AuthAdmin();
         $this->checkUrlRoleUser(Session::get('role_id'));
-        $loadUser = DB::table('users')->where('id_users', $id_users)
+        $loadUser = DB::table('users')->where('id_users', $req->id_users)
                         ->join('roles', 'roles.id_role', '=', 'users.role_id')
                         ->select('roles.name_role', 'users.id_users', 'users.name_user', 'users.username_user', 'users.email_user', 'users.phone_user', 'users.role_id')
                         ->get();
@@ -427,25 +427,14 @@ class AdminController extends Controller
             return view('admin.admin_resetpassworduser', compact('loadUser'));
     }
 
-    public function updatePasswordUser(Request $req, $id_users){
+    public function updatePasswordUser(Request $req){
         $this->AuthAdmin();
         $this->checkUrlRoleUser(Session::get('role_id'));
-        if (empty($req->password_user)){
-            Session::put('message', 'Bạn chưa nhập mật khẩu. Vui lòng nhập mật khẩu.');
-            return redirect::to('/admin-dat-lai-mat-khau/'.$id_users);
-        }
-        else {
-            if (strcmp($req->password_user, $req->confirm_password_user) != 0){
-                Session::put('message', 'Mật khẩu nhập lại không đúng. Vui lòng nhập lại.');
-                return redirect::to('/admin-dat-lai-mat-khau/'.$id_users);
-            }
-            else {
-                $updatePasswordUser['password_user'] = md5(sha1($req->confirm_password_user));
-                DB::table('users')->where('id_users', $id_users)->update($updatePasswordUser);
-                Session::put('message', 'Cập nhật thành công.');
-                return redirect::to('/admin-danh-sach-nhan-vien');
-            }
-        }   
+        $updatePasswordUser['password_user'] = md5(sha1($req->password_user));
+        DB::table('users')->where('id_users', $req->id_users)->update($updatePasswordUser);
+        Session::put('message', 'Cập nhật thành công.');
+        return redirect::to('/admin-danh-sach-nhan-vien');
+
     }
 
     public function changePasswordUser(){
@@ -454,10 +443,10 @@ class AdminController extends Controller
         return view('admin.admin_changepassworduser');
     }
 
-    public function updateChangePasswordUser(Request $req, $id_users){
+    public function updateChangePasswordUser(Request $req){
         $this->AuthAdmin();
         $this->checkUrlRoleUser(Session::get('role_id'));
-        $change_password = Users::where('id_users', $id_users)->where('password_user', md5(sha1($req->password_user)))->first();
+        $change_password = Users::where('id_users', $req->id_users)->where('password_user', md5(sha1($req->password_user)))->first();
         if (empty($change_password)){
             Session::put('message', 'Mật khẩu cũ không đúng. Vui lòng nhập lại.');
             return redirect::to('/admin-doi-mat-khau');
@@ -474,7 +463,7 @@ class AdminController extends Controller
                 }
                 else {
                     $updatePasswordUser['password_user'] = md5(sha1($req->confirm_new_password_user));
-                    DB::table('users')->where('id_users', $id_users)->update($updatePasswordUser);
+                    DB::table('users')->where('id_users', $req->id_users)->update($updatePasswordUser);
                     Session::put('message', 'Cập nhật thành công.');
                     return redirect::to('/admin-danh-sach-nhan-vien');
                 } 

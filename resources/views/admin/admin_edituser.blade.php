@@ -4,9 +4,10 @@
     <div class="content-wrapper"> 
         <!-- Content Header (Page header) -->
        @foreach ($loadUser as $user)
-        <form action="{{URL::to('/admin-update-nhan-vien/'.$user->id_users)}}" class="form-horizontal form-bordered" enctype="multipart/form-data" method="POST" >
+        <form action="{{URL::to('/admin-update-nhan-vien')}}" class="form-horizontal form-bordered" enctype="multipart/form-data" method="POST" >
         
         @csrf
+        <input hidden name="id_users" value="{{ $user->id_users }}">
         <!-- Main content -->
             <hr class="m-t-2 m-b-2">
             <div class="row m-t-3">
@@ -65,7 +66,7 @@
                         
                         <div style="text-align: center;" class="card-body">
                             <div class="click2edit m-b-3"></div>
-                            <button id="save" class="btn btn-success" type="submit">Cập nhật</button>
+                            <button class="btn btn-success" type="submit">Cập nhật</button>
                             <a href="{{URL::to('/admin-danh-sach-nhan-vien')}}">
                                 <button id="cancel" class="btn btn-info"  type="button">Huỷ</button>
                             </a>

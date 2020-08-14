@@ -142,10 +142,10 @@ Route::get('/admin-danh-sach-shop-tam-ngung-hoat-dong', 'AdminController@listSho
 Route::get('/admin-danh-sach-nhan-vien', 'AdminController@listUser');
 Route::get('/admin-them-nhan-vien', 'AdminController@addUser');
 Route::post('/admin-save-nhan-vien', 'AdminController@saveUser');
-Route::get('/admin-sua-quyen-nhan-vien/{id_users}', 'AdminController@editRoleUser');
-Route::post('/admin-update-nhan-vien/{id_users}', 'AdminController@updateRoleUser');
-Route::get('/admin-dat-lai-mat-khau/{id_users}', 'AdminController@loadPasswordUser');
-Route::post('/admin-update-password-nhan-vien/{id_users}', 'AdminController@updatePasswordUser');
+Route::post('/admin-sua-quyen-nhan-vien', 'AdminController@editRoleUser');
+Route::post('/admin-update-nhan-vien', 'AdminController@updateRoleUser');
+Route::post('/admin-dat-lai-mat-khau', 'AdminController@loadPasswordUser');
+Route::post('/admin-update-password-nhan-vien', 'AdminController@updatePasswordUser');
 
 Route::get('/admin-chart-profit', 'AdminController@profitChartDashboard');
 Route::get('/admin-chart-revenue', 'AdminController@revenueChartDashboard');

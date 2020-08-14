@@ -3,8 +3,9 @@
 <div class="content-wrapper"> 
     <!-- Content Header (Page header) -->
     @foreach ($loadUser as $user)
-        <form action="{{URL::to('/admin-update-password-nhan-vien/'.$user->id_users)}}" class="form-horizontal form-bordered" enctype="multipart/form-data" method="POST" >
+        <form action="{{URL::to('/admin-update-password-nhan-vien')}}" class="form-horizontal form-bordered" enctype="multipart/form-data" method="POST" >
         @csrf
+        <input hidden name="id_users" value="{{$user->id_users}}">
         <!-- Main content -->
             <hr class="m-t-2 m-b-2">
             <div class="row m-t-3">
@@ -66,23 +67,16 @@
                             <div class="form-group has-feedback row">
                                 <label class="control-label text-right col-md-3">Mật khẩu*</label>
                                 <div class="col-md-9">
-                                    <input class="form-control col-md-12" name="password_user" placeholder="Nhập mật khẩu " type="password">
+                                    <input id="password_user" class="form-control col-md-12" name="password_user" placeholder="Nhập mật khẩu " type="password">
                                     <span class="fa ti-lock form-control-feedback" aria-hidden="true"></span>
                                 </div>                
                             </div>
 
-                            <div class="form-group has-feedback row">
-                                <label class="control-label text-right col-md-3">Nhập lại mật khẩu*</label>
-                                <div class="col-md-9">
-                                    <input class="form-control col-md-12" name="confirm_password_user" placeholder="Nhập lại mật khẩu" type="password">
-                                    <span class="fa ti-lock form-control-feedback" aria-hidden="true"></span>
-                                </div>                
-                            </div>
                         </div>
 
                         <div style="text-align: center;" class="card-body">
                             <div class="click2edit m-b-3"></div>
-                            <button id="save" class="btn btn-success" onclick="save()" type="submit">Cập nhật</button>
+                            <button hidden id="save" class="btn btn-success" type="submit">Cập nhật</button>
                             <a href="{{URL::to('/admin-danh-sach-nhan-vien')}}">
                                 <button id="cancel" class="btn btn-info" type="button">Huỷ</button>
                             </a>
@@ -107,3 +101,14 @@
 <!-- for demo purposes --> 
 <script src="{{asset('public/backend/dist/js/demo.js')}}"></script> 
 
+<script>
+    $(document).ready(function(){
+        $('#password_user').keyup(function(){
+            keyup = document.getElementById('password_user').value
+            if (keyup.length === 0)
+                $("#save").attr("hidden", true)
+            else
+                $("#save").attr("hidden", false)
+        })
+    })
+</script>
