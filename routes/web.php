@@ -137,6 +137,7 @@ Route::post('/admin-tu-choi-duyet-san-pham/{id_product}', 'AdminController@editR
 Route::get('/admin-danh-sach-shop', 'AdminController@listShop');
 Route::get('/admin-danh-sach-shop-cho-phe-duyet', 'AdminController@listShopPending');
 Route::post('/admin-duyet-shop/{id_shop}', 'AdminController@editAgreeShop');
+Route::get('/admin-san-pham-shop/{id_shop}', 'AdminController@loadProductShop');
 Route::get('/admin-danh-sach-shop-tam-ngung-hoat-dong', 'AdminController@listShopBlock');
 
 Route::get('/admin-danh-sach-nhan-vien', 'AdminController@listUser');

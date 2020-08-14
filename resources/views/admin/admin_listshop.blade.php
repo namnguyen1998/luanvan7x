@@ -19,7 +19,7 @@
         <th>SĐT</th>
         <th>Địa chỉ</th>
         <th>Trạng thái</th>
-        
+        <th>Xem SP Shop</th>
       </tr>
     </thead>
     @foreach($listShop as $shop)
@@ -39,7 +39,7 @@
               if ($shop->status_shop == -1)
                 echo('<td><span class="label label-danger">Từ chối duyệt</span></td>')
         ?>
-       	
+       	<td><a href="{{URL::to('/admin-san-pham-shop/'.$shop->id_shop)}}"><button class="btn"><span class="ti-github"></span></button></a></td>
       </tr>
     </tbody>
      @endforeach

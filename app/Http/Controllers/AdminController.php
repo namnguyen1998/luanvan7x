@@ -306,6 +306,15 @@ class AdminController extends Controller
         return response()->json(['success'=>'Product saved successfully.']);
     }
 
+    public function loadProductShop($id_shop){
+        // dd($id_shop);
+        $this->AuthAdmin();
+        $this->checkUrlRoleUser(Session::get('role_id'));
+        $loadShop = DB::table('shop')->where('id_shop', $id_shop)->first();
+        $loadProductShop = Products::where('shop_id', $id_shop)->orderBy('created_at', 'DESC')->paginate(10);
+        return view('admin.admin_productShop', compact('loadShop', 'loadProductShop'));
+    }
+
     // Users
     public function checkUrlRoleUser($role_id){
         // $role_id == 2 Quản lý danh mục
