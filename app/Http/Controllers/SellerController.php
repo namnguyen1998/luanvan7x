@@ -18,6 +18,7 @@ use App\ShippingAddress;
 use App\Products;
 use App\Orders;
 use App\OrderDetail;
+use App\Shop;
 use Illuminate\Support\Facades\Input;
 session_start();
 
@@ -69,6 +70,52 @@ class SellerController extends Controller
     	$this->AuthLogin();
     	Session::forget('id_shop');
     	return Redirect::to('/');
+    }
+
+     public function getForgotPasswordShop(){
+        return view('users.seller.forgot_password');
+    }
+     public function sendMailResetPassShop(Request $request)
+    {
+        $shop = Shop::where('email_shop',$request->email_shop)->first();
+
+        //print_r($user);exit;
+        if(($shop)== null){
+            return redirect()->back()->with(['Lỗi' => 'Email không có trong hệ thống']);
+        }
+
+        $str = \Str::random(32);
+        $url = \URL::to('/reset-password-shop?key='.$str.base64_encode($shop->id_shop));
+        
+        $details = [
+            'url' => $url
+        ];
+
+        \Mail::to($shop->email_shop)->send(new \App\Mail\SendMailForgetPassword($details));
+        
+        return redirect()->back()->with(['Thành công' => 'Email đã được gửi. Vui lòng kiểm tra mail để cập nhật thông tin.']);
+    }
+
+    public function formResetPasswordShop(){
+        $key = $_GET['key'];
+        return view('users.seller.update_password',compact('key'));
+    }
+    public function resetPasswordShop(Request $request){
+        $this->validate($request,
+            [
+                'password_new' => 'required|min:6|max:20',
+                'password_new_confirmation' => 'required|same:password_new',
+            ],
+            [
+                'password_new.required'=>'Vui lòng nhập mật khẩu',
+                'password_new_confirmation.same'=>'Mật khẩu không giống nhau',
+                'password.min'=>'Mật khẩu có ít nhất 6 kí tự'
+            ]);
+        $keyID = base64_decode(substr($request->key,32));
+        $shop = Shop::find($keyID);
+        $shop->password_shop = md5($request->password_new);
+        $shop->save();
+        return Redirect('/banhang')->with('success','Cập nhật mật khẩu thành công');
     }
     public function getShop($id_shop){
         $dataShop = DB::table('shop')->where('id_shop','=',$id_shop)->where('status_shop','=',1)->first();
