@@ -161,5 +161,5 @@ Route::get('/admin-load-revenue/{val_revenue}', 'AdminController@Revenue');
 // Route::get('/{slug_id}','PagesController@getPagesProductDetailSlug');
 
 Route::get('/admin-doi-mat-khau', 'AdminController@changePasswordUser');
-Route::post('/admin-update-change-password-nhan-vien/{id_users}', 'AdminController@updateChangePasswordUser');
+Route::post('/admin-update-change-password/{id_users}', 'AdminController@updateChangePasswordUser');
 

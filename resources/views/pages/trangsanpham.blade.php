@@ -26,7 +26,9 @@
                             <h4>DANH MỤC CON</h4>
                             <ul>
                                 @foreach($subCategorybyCategory as $sub)
-                                <li><a href="{{URL::to('/danh-muc-'.$sub->category_id.'/sub-'.$sub->id_sub)}}">{{$sub->name_sub}}</a></li>
+                                <li>
+                                    <a href="{{URL::to('/danh-muc-'.base64_encode(base64_encode($sub->category_id)).'/sub-'.base64_encode(base64_encode($sub->id_sub)))}}">{{$sub->name_sub}}</a>
+                                </li>
                                 @endforeach
                             </ul>
                             
@@ -255,7 +257,7 @@
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
-                                    <h6><a href="{{URL::to('/chi-tiet-san-pham/'.$pro->id_product)}}">{{$pro->name_product}}</a></h6>
+                                    <h6><a href="{{URL::to('/chi-tiet-san-pham/'. base64_encode(base64_encode($pro->id_product)))}}">{{$pro->name_product}}</a></h6>
                                     <h5>{{number_format($pro->price_product, 0, ',', '.') . " ₫"}}</h5>
                                 </div>
                             </div>

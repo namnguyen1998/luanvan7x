@@ -45,7 +45,7 @@
         <td></td>
         <td>{{$sub->name_sub}}</td>
         <td>{{$sub->name_category}}</td>
-        <td style="text-align: right"><a href="{{URL::to('/admin-sua-danh-muc-con/'.$sub->id_sub)}}"><button class="btn"><span class="icon-wrench"></span></button></a></td>
+        <td style="text-align: right"><a href="{{URL::to('/admin-sua-danh-muc-con/'.base64_encode(base64_encode($sub->id_sub)))}}"><button class="btn"><span class="icon-wrench"></span></button></a></td>
       </tr>
       @endforeach
     </tbody>

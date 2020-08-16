@@ -41,7 +41,7 @@
         <tbody>
             <tr style="text-align: center">
                 <th><?php echo $number ++ ;?></th>
-                <td>#{{ $order->orders_id }}</td>
+                <td>#{{ base64_encode(base64_encode($order->orders_id)) }}</td>
                 <td>{{ date('d-m-Y', strtotime( $order->created_at ))}}</td>
                 <td>{{ number_format( $order->price_order, 0, ',', '.') . " ₫" }}</td>
                 <form action="{{URL::to('/shop-update-status-ship')}}" method="get">
@@ -67,7 +67,7 @@
                     </td>
                     <td><a href="{{URL::to('/shop-update-status-ship')}}"><button id="updateStatus" class="btn"><span class="fa fa-check"></span></button></a></td>
                 </form>
-                <td><a href="{{URL::to('/chi-tiet-don-hang/'.$order->orders_id)}}"><button class="btn"><span class="ti-github"></span></button></a></td>
+                <td><a href="{{URL::to('/chi-tiet-don-hang/'.base64_encode($order->orders_id))}}"><button class="btn"><span class="ti-github"></span></button></a></td>
             </tr>
         </tbody>
        @endforeach

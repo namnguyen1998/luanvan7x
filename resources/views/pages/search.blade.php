@@ -174,7 +174,7 @@
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
-                                    <h6><a href="{{URL::to('/chi-tiet-san-pham/'.$pro->id_product)}}">{{$pro->name_product}}</a></h6>
+                                    <h6><a href="{{URL::to('/chi-tiet-san-pham/'.base64_encode(base64_encode($pro->id_product)))}}">{{$pro->name_product}}</a></h6>
                                     <h5>{{number_format($pro->price_product, 0, ',', '.') . " ₫"}}</h5>
                                 </div>
                             </div>

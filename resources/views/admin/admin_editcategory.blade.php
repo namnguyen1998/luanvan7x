@@ -4,7 +4,7 @@
     <div class="content-wrapper"> 
         <!-- Content Header (Page header) -->
         @foreach ($id_category as $category)
-        <form action="{{URL::to('/admin-update-danh-muc/'.$category->id_category)}}" class="form-horizontal form-bordered" enctype="multipart/form-data" method="POST" >
+        <form action="{{URL::to('/admin-update-danh-muc/'.base64_encode(base64_encode($category->id_category)))}}" class="form-horizontal form-bordered" enctype="multipart/form-data" method="POST" >
         
         @csrf
         <!-- Main content -->

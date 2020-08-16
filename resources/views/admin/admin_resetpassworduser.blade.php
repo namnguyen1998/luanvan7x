@@ -5,7 +5,7 @@
     @foreach ($loadUser as $user)
         <form action="{{URL::to('/admin-update-password-nhan-vien')}}" class="form-horizontal form-bordered" enctype="multipart/form-data" method="POST" >
         @csrf
-        <input hidden name="id_users" value="{{$user->id_users}}">
+        <input hidden name="id_users" value="{{ base64_encode(base64_encode($user->id_users)) }}">
         <!-- Main content -->
             <hr class="m-t-2 m-b-2">
             <div class="row m-t-3">
