@@ -39,7 +39,7 @@
               if ($shop->status_shop == -1)
                 echo('<td><span class="label label-danger">Từ chối duyệt</span></td>')
         ?>
-       	<td><a href="{{URL::to('/admin-san-pham-shop/'.$shop->id_shop)}}"><button class="btn"><span class="ti-github"></span></button></a></td>
+       	<td><a href="{{URL::to('/admin-san-pham-shop/'.base64_encode(base64_encode($shop->id_shop)))}}"><button class="btn"><span class="ti-github"></span></button></a></td>
       </tr>
     </tbody>
      @endforeach

@@ -16,6 +16,9 @@ use App\Brands;
 use App\OrderDetail;
 use App\Orders;
 use App\ShippingAddress;
+use Sentinel;
+use Reminder;
+use Mail;
 use Hash;
 use PharIo\Manifest\Email;
 
@@ -107,9 +110,54 @@ class CustomerController extends Controller
         $customer->email_customer = $request->email;
         $customer->password_customer = md5($request->password); 
         $customer->save();
-
-        return redirect('/')->with('success','Tạo tài khoản thành công');
+        return redirect('/login')->with('success','Tạo tài khoản thành công');
     }
+    public function getForgotPassword(){
+        return view('forgot_password');
+    }
+     public function sendMailResetPass(Request $request)
+    {
+        $customer = Customers::where('email_customer',$request->email_customer)->first();
+
+        //print_r($user);exit;
+        if(($customer)== null){
+            return redirect()->back()->with(['Lỗi' => 'Email không có trong hệ thống']);
+        }
+
+        $str = \Str::random(32);
+        $url = \URL::to('/reset-password?key='.$str.base64_encode($customer->id_customer));
+        
+        $details = [
+            'url' => $url
+        ];
+
+        \Mail::to($customer->email_customer)->send(new \App\Mail\SendMailForgetPassword($details));
+        
+        return redirect()->back()->with(['Thành công' => 'Email đã được gửi. Vui lòng kiểm tra mail để cập nhật thông tin.']);
+    }
+
+    public function formResetPassword(){
+        $key = $_GET['key'];
+        return view('update_password',compact('key'));
+    }
+    public function resetPassword(Request $request){
+        $this->validate($request,
+            [
+                'password_new' => 'required|min:6|max:20',
+                'password_new_confirmation' => 'required|same:password_new',
+            ],
+            [
+                'password_new.required'=>'Vui lòng nhập mật khẩu',
+                'password_new_confirmation.same'=>'Mật khẩu không giống nhau',
+                'password.min'=>'Mật khẩu có ít nhất 6 kí tự'
+            ]);
+        $keyID = base64_decode(substr($request->key,32));
+        $customer = Customers::find($keyID);
+        $customer->password_customer = md5($request->password_new);
+        $customer->save();
+        return Redirect('/login')->with('success','Cập nhật mật khẩu thành công');
+    }
+    
     public function logout(){
         $this->AuthLogin();
         Session::forget('id_customer');
@@ -169,7 +217,6 @@ class CustomerController extends Controller
         Session::put('email_customer',$Customers->email);
         //dd($Customers);
 
-
         return redirect()->to('/');
     }
 
@@ -185,9 +232,7 @@ class CustomerController extends Controller
     //Cập nhật info customer
     public function profile(){
         $this->AuthLogin();
-        $customer = DB::table('customers')
-        ->where('id_customer','=',$this->checkUser())
-        ->first();       
+        $customer = Customers::find($this->checkUser());
         if(!empty($customer)){
             Session::put('customer',$customer);
             Session::put('img_customer',$customer->img_customer);

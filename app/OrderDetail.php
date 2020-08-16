@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class OrderDetail extends Model
 {
-    protected $table = "Order_Detail";
+    protected $table = "order_detail";
 
     public function Products(){
     	return $this->belongsTo(Products::class);

@@ -2,7 +2,7 @@
 @include('admin.menu_admin')
 <div class="content-wrapper"> 
     <!-- Content Header (Page header) -->
-        <form action="{{URL::to('/admin-update-change-password-nhan-vien/'.Session::get('id_users'))}}" class="form-horizontal form-bordered" enctype="multipart/form-data" method="POST" >
+        <form action="{{ URL::to('/admin-update-change-password/'.base64_encode(base64_encode(Session::get('id_users')))) }}" class="form-horizontal form-bordered" enctype="multipart/form-data" method="POST" >
         @csrf
         <!-- Main content -->
             <hr class="m-t-2 m-b-2">

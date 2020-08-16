@@ -5,7 +5,7 @@
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>OGANI | Bán hàng</title>
+<title>OGANI | CẬP NHẬT MẬT KHẨU</title>
 <!-- Tell the browser to be responsive to screen width -->
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -37,40 +37,39 @@
 <![endif]-->
 
 </head>
-<body class="login-page">
-<div class="login-box">
-  <div class="login-box-body">
-    <h3 class="login-box-msg">Sign In</h3>
-    
-    <form action="{{URL::to('/postSellerDashBoard')}}" method="post">
-    {{ csrf_field() }}
+
+<body class="login-page sty1">
+<div class="login-box sty1">
+  <div class="login-box-body sty1">
+  <div class="login-logo">
+    <a href="{{URL::to('/')}}"><img src="{{asset('public/frontend/img/logo.png')}}" alt=""></a>
+  </div>
+  @foreach($errors->all() as $err)
+      <div class="alert alert-danger" role="alert">{{$err}}</div>
+  @endforeach
+    <form action="{{URL::to('/resetPassword')}}" method="post" enctype="multipart/form-data">
+         @csrf
+      <input type="hidden" class="form-control sty1" name="key" value="{{$key}}">
       <div class="form-group has-feedback">
-        <input type="email" class="form-control sty1" name="email_shop" placeholder="Email">
+        <input type="password" class="form-control sty1" name="password_new" placeholder="Nhập mật khẩu mới">
       </div>
       <div class="form-group has-feedback">
-        <input type="password" class="form-control sty1" name="password_shop" placeholder="Password">
+        <input type="password" class="form-control sty1" name="password_new_confirmation" placeholder="Nhập lại mật khẩu">
       </div>
       <div>
         <div class="col-xs-8">
           <div class="checkbox icheck">
-            <label>
+            <!-- <label>
               <input type="checkbox">
-              Remember Me </label>
-            <a href="{{URL::to('/forgot-password-shop')}}" class="pull-right"><i class="fa fa-lock"></i> Forgot password?</a> </div>
+              Remember Me </label> -->
         </div>
         <!-- /.col -->
         <div class="col-xs-4 m-t-1">
-          <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+          <button type="submit" class="btn btn-primary btn-block btn-flat">Đổi mật khẩu</button>
         </div>
         <!-- /.col --> 
       </div>
     </form>
-    <div class="social-auth-links text-center">
-      
-    <!-- /.social-auth-links -->
-    
-    <div class="m-t-2">Don't have an account? <a href="pages-register.html" class="text-center">Sign Up</a></div>
-  </div>
   <!-- /.login-box-body --> 
 </div>
 <!-- ./wrapper --> 
@@ -84,7 +83,9 @@
 
 <!-- for demo purposes --> 
 <script src="{{asset('public/backend/dist/js/demo.js')}}"></script>
+<!--Start of Tawk.to Script-->
 
+<!--End of Tawk.to Script-->
 </body>
 
 <!-- Mirrored from uxliner.com/bizadmin/demo/main/pages-login-2.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 25 Jun 2020 17:58:25 GMT -->

@@ -50,13 +50,13 @@
         @if ($user->id_role != 1)
         <form action="{{URL::to('/admin-sua-quyen-nhan-vien')}}" method="post">
           @csrf
-            <input hidden name="id_users" value="{{$user->id_users}}">
+            <input hidden name="id_users" value="{{ base64_encode(base64_encode($user->id_users)) }}">
             <td meth style="text-align: right"><button class="btn"><span class="icon-wrench"></span></button></td>
         </form>
 
         <form action="{{URL::to('/admin-dat-lai-mat-khau')}}" method="post">
           @csrf
-          <input hidden name="id_users" value="{{$user->id_users}}">
+          <input hidden name="id_users" value="{{base64_encode(base64_encode($user->id_users))}}">
           <td style="text-align: right"><button class="btn"><span class="icon-wrench"></span></button></td>
         </form>
         @endif

@@ -18,6 +18,7 @@ use App\ShippingAddress;
 use App\Products;
 use App\Orders;
 use App\OrderDetail;
+use App\Shop;
 use Illuminate\Support\Facades\Input;
 session_start();
 
@@ -70,15 +71,61 @@ class SellerController extends Controller
     	Session::forget('id_shop');
     	return Redirect::to('/');
     }
+
+     public function getForgotPasswordShop(){
+        return view('users.seller.forgot_password');
+    }
+     public function sendMailResetPassShop(Request $request)
+    {
+        $shop = Shop::where('email_shop',$request->email_shop)->first();
+
+        //print_r($user);exit;
+        if(($shop)== null){
+            return redirect()->back()->with(['Lỗi' => 'Email không có trong hệ thống']);
+        }
+
+        $str = \Str::random(32);
+        $url = \URL::to('/reset-password-shop?key='.$str.base64_encode($shop->id_shop));
+        
+        $details = [
+            'url' => $url
+        ];
+
+        \Mail::to($shop->email_shop)->send(new \App\Mail\SendMailForgetPassword($details));
+        
+        return redirect()->back()->with(['Thành công' => 'Email đã được gửi. Vui lòng kiểm tra mail để cập nhật thông tin.']);
+    }
+
+    public function formResetPasswordShop(){
+        $key = $_GET['key'];
+        return view('users.seller.update_password',compact('key'));
+    }
+    public function resetPasswordShop(Request $request){
+        $this->validate($request,
+            [
+                'password_new' => 'required|min:6|max:20',
+                'password_new_confirmation' => 'required|same:password_new',
+            ],
+            [
+                'password_new.required'=>'Vui lòng nhập mật khẩu',
+                'password_new_confirmation.same'=>'Mật khẩu không giống nhau',
+                'password.min'=>'Mật khẩu có ít nhất 6 kí tự'
+            ]);
+        $keyID = base64_decode(substr($request->key,32));
+        $shop = Shop::find($keyID);
+        $shop->password_shop = md5($request->password_new);
+        $shop->save();
+        return Redirect('/banhang')->with('success','Cập nhật mật khẩu thành công');
+    }
     public function getShop($id_shop){
-        $dataShop = DB::table('shop')->where('id_shop','=',$id_shop)->where('status_shop','=',1)->first();
+        $dataShop = DB::table('shop')->where('id_shop','=', base64_decode(base64_decode($id_shop)))->where('status_shop','=',1)->first();
         
         $productShop = DB::table('sub_category')->join('products','sub_category_id','=','id_sub')
-        ->where('shop_id','=',$id_shop)
+        ->where('shop_id','=', base64_decode(base64_decode($id_shop)))
         ->where('is_deleted','=','0')
         ->paginate(9);
         $categoryShop = DB::table('shop')->join('products_category','shop_id','=','id_shop')
-        ->where('id_shop','=',$id_shop)
+        ->where('id_shop','=', base64_decode(base64_decode($id_shop)))
         ->groupBy(array(
             DB::raw('sub_category_id'),
             DB::raw('shop.id_shop '),
@@ -156,12 +203,12 @@ class SellerController extends Controller
                                 ->join('products', 'products.id_product', '=', 'order_detail.product_id')
                                 ->leftjoin('shop', 'shop.id_shop', '=', 'products.shop_id')
                                 ->where('id_shop', '=', Session::get('id_shop'))
-                                ->where( 'orders_id', '=', $orders_id)
+                                ->where( 'orders_id', '=', base64_decode($orders_id))
                                 // ->orderBy('created_at', 'DESC')
                                 ->get();
         if (!empty($loadOrderDetail->count())){
             $loadShop = DB::table('shop')->where('id_shop','=', Session::get('id_shop'))->first();
-            $loadOrders = Orders::where('id_orders', $orders_id)
+            $loadOrders = Orders::where('id_orders', base64_decode($orders_id))
                                 ->join('customers', 'customers.id_customer', '=', 'orders.customer_id')
                                 ->first();
             $loadAddressCustomer = DB::table('shipping_address')->where('customer_id', '=', $loadOrders->customer_id)->first();
@@ -189,11 +236,16 @@ class SellerController extends Controller
                             ->join('customers', 'customers.id_customer', '=', 'orders.customer_id')
                             ->first();
         $loadAddressCustomer = DB::table('shipping_address')->where('customer_id', '=', $loadOrders->customer_id)->first();
+
+        $id_name_orders['id_orders'] = $loadOrders->id_orders;
+        $id_name_orders['name_orders'] = $loadOrders->name_customer;
+
         view()->share('loadOrderDetail',$loadOrderDetail);
         view()->share('loadShop',$loadShop);
         view()->share('loadOrders',$loadOrders);
-        view()->share('loadAddressCustomer',$loadAddressCustomer);
-        $pdf = PDF::loadView('users.seller.banhang_dowloadOrderDetail', [$loadAddressCustomer, $loadOrderDetail, $loadShop, $loadOrders, $loadAddressCustomer]);
+        view()->share('loadAddressCustomer',$loadAddressCustomer);  
+        view()->share('id_name_orders', $id_name_orders);
+        $pdf = PDF::loadView('users.seller.banhang_dowloadOrderDetail', [$loadAddressCustomer, $loadOrderDetail, $loadShop, $loadOrders, $loadAddressCustomer, $id_name_orders]);
         return $pdf->download('in-don-hang.pdf');
     } 
 

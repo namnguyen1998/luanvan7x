@@ -58,7 +58,7 @@
             <!-- /.col -->
             <div class="col-sm-4 invoice-col"> <b>Thông tin khác</b><br>
                 <b>Tên khách hàng:</b> {{ $loadOrders->name_customer }}<br>
-                <b>Mã đơn hàng:</b> #{{ $loadOrders->id_orders }}<br>
+                <b>Mã đơn hàng:</b> #{{ base64_encode(base64_encode($loadOrders->id_orders)) }}<br>
                 <b>Ngày đặt hàng:</b> {{ date('d-m-Y', strtotime( $loadOrders->created_at )) }}<br>
              </div>
             <!-- /.col --> 

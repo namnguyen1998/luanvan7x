@@ -31,7 +31,7 @@
 			<tr style="text-align: center" >
 				<td><?php echo $number ++; ?></td>
 				<td>{{ date('d-m-Y H:i:s', strtotime( $bill->created_at )) }}</td>
-				<td>#{{ $bill->id_orders }}</td>
+				<td>#{{ base64_encode(base64_encode($bill->id_orders)) }}</td>
 				<td>{{ number_format($bill->price_orders, 0, ',', '.') . " ₫" }}</td>
 				<td>
 					@if ($bill->status_order == 0)

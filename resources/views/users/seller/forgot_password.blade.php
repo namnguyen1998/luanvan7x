@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<!-- Mirrored from uxliner.com/bizadmin/demo/main/pages-login-2.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 25 Jun 2020 17:58:24 GMT -->
+<!-- Mirrored from uxliner.com/bizadmin/demo/main/pages-recover-password.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 25 Jun 2020 17:58:25 GMT -->
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>OGANI | Bán hàng</title>
+<title>OGANI | FORGOT_PASSWORD</title>
 <!-- Tell the browser to be responsive to screen width -->
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -40,36 +40,26 @@
 <body class="login-page">
 <div class="login-box">
   <div class="login-box-body">
-    <h3 class="login-box-msg">Sign In</h3>
-    
-    <form action="{{URL::to('/postSellerDashBoard')}}" method="post">
-    {{ csrf_field() }}
+    <h3 class="login-box-msg m-b-1">Reset Password</h3>
+        @if(session('Lỗi'))
+          <div class="alert alert-danger">{{ session('Lỗi')}}</div>
+        @endif
+        @if(session('Thành công'))
+          <div class="alert alert-success">{{ session('Thành công')}}</div>
+        @endif
+    <p>Nhập Email để reset password</p>
+    <form action="{{URL::to('sendMailResetPassShop')}}" method="post">
+    <input type="hidden" name="_token" value="{{csrf_token()}}" >
       <div class="form-group has-feedback">
-        <input type="email" class="form-control sty1" name="email_shop" placeholder="Email">
-      </div>
-      <div class="form-group has-feedback">
-        <input type="password" class="form-control sty1" name="password_shop" placeholder="Password">
+        <input type="email" class="form-control sty1" name="email_shop">
       </div>
       <div>
-        <div class="col-xs-8">
-          <div class="checkbox icheck">
-            <label>
-              <input type="checkbox">
-              Remember Me </label>
-            <a href="{{URL::to('/forgot-password-shop')}}" class="pull-right"><i class="fa fa-lock"></i> Forgot password?</a> </div>
-        </div>
-        <!-- /.col -->
         <div class="col-xs-4 m-t-1">
-          <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+          <button type="submit" class="btn btn-primary btn-block btn-flat">Reset</button>
         </div>
         <!-- /.col --> 
       </div>
     </form>
-    <div class="social-auth-links text-center">
-      
-    <!-- /.social-auth-links -->
-    
-    <div class="m-t-2">Don't have an account? <a href="pages-register.html" class="text-center">Sign Up</a></div>
   </div>
   <!-- /.login-box-body --> 
 </div>
@@ -84,8 +74,20 @@
 
 <!-- for demo purposes --> 
 <script src="{{asset('public/backend/dist/js/demo.js')}}"></script>
-
+<!--Start of Tawk.to Script-->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/5b7257d2afc2c34e96e78bfc/default';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
 </body>
 
-<!-- Mirrored from uxliner.com/bizadmin/demo/main/pages-login-2.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 25 Jun 2020 17:58:25 GMT -->
+<!-- Mirrored from uxliner.com/bizadmin/demo/main/pages-recover-password.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 25 Jun 2020 17:58:25 GMT -->
 </html>

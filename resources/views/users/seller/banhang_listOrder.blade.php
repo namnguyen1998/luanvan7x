@@ -36,7 +36,7 @@
         <tbody>
             <tr style="text-align: center">
                 <th><?php echo $number ++ ;?></th>
-                <td>#{{ $order->orders_id }}</td>
+                <td>#{{ base64_encode(base64_encode($order->orders_id)) }}</td>
                 <td>{{ date('d-m-Y', strtotime( $order->created_at )) }}</td>
                 <td>{{ number_format( $order->price_order, 0, ',', '.') . " ₫" }}</td>
                 <td>
@@ -53,7 +53,7 @@
 						<span class="label label-info">Đang vận chuyển</span>
 					@endif
                 </td>
-                <td><a href="{{URL::to('/chi-tiet-don-hang/'.$order->orders_id)}}"><button class="btn"><span class="ti-github"></span></button></a></td>
+                <td><a href="{{URL::to('/chi-tiet-don-hang/'.base64_encode($order->orders_id))}}"><button class="btn"><span class="ti-github"></span></button></a></td>
             </tr>
         </tbody>
        @endforeach

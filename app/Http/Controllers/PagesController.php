@@ -54,12 +54,14 @@ class PagesController extends Controller
     }
     
     public function getPagesProductCategory($id_category){
-    	$productCategory = DB::table('products_category')->where('category_id','=',$id_category)
-        ->where('is_deleted','=',0)->where('status_product','!=', -1)->paginate(9);
+    	$productCategory = DB::table('products_category')->where('category_id','=', base64_decode(base64_decode($id_category)))
+                            ->where('is_deleted','=',0)
+                            ->where('status_product','!=', -1)
+                            ->paginate(9);
         $subCategorybyCategory = DB::table('sub_category')->join('category','id_category','=','category_id')
-        ->where('category_id','=',$id_category)
-        ->get();
-        $loadBrand = Brands::where('category_id', $id_category)->get();
+                            ->where('category_id','=', base64_decode(base64_decode($id_category)))
+                            ->get();
+        $loadBrand = Brands::where('category_id', base64_decode(base64_decode($id_category)))->get();
         // dd($subCategorybyCategory);
     	return view('pages.trangsanpham',compact('productCategory','subCategorybyCategory', 'loadBrand'));
     }
@@ -69,19 +71,19 @@ class PagesController extends Controller
                                 ->join('shop','id_shop','=','shop_id')
                                 ->where('is_deleted','=',0)
                                 ->where('status_product','!=', -1)
-                                ->where('id_product','=',$id_product)->get();
+                                ->where('id_product','=', base64_decode(base64_decode($id_product)))->get();
 
         foreach ($productByID as $key => $value){
             $sub_category = $value->sub_category_id;
         }
         
-        $productsRalated = DB::table('products')->where('sub_category_id','=',$sub_category)
+        $productsRalated = DB::table('products')->where('sub_category_id','=', base64_decode(base64_decode($sub_category)))
                                 ->where('is_deleted','=',0)
                                 ->inRandomOrder()->limit(4)->get();
         $listComments = DB::table('comment')->join('customers','id_customer','=','customer_id')
                                 ->select('customers.name_customer', 'comment.created_at', 'comment.content')
                                 ->orderBy('created_at', 'DESC')
-                                ->where('product_id','=',$id_product)
+                                ->where('product_id','=', base64_decode(base64_decode($id_product)))
                                 ->get();
 
         return view('pages.chitietsanpham',compact('productByID','productsRalated','listComments'));
@@ -97,10 +99,10 @@ class PagesController extends Controller
     }
     public function getProductsSubCategory($id_category, $id_sub){
         $subCategorybyCategory = DB::table('sub_category')->join('category','id_category','=','category_id')
-        ->where('category_id','=',$id_category)
+        ->where('category_id','=', base64_decode(base64_decode($id_category)))
         ->get();
         
-        $products_sub = Products::where('sub_category_id','=',$id_sub)->where('is_deleted','=',0)->paginate(9);
+        $products_sub = Products::where('sub_category_id','=', base64_decode(base64_decode($id_sub)))->where('is_deleted','=',0)->paginate(9);
         return view('pages.sanpham_sub',compact('subCategorybyCategory','products_sub'));
         
     }
@@ -122,10 +124,10 @@ class PagesController extends Controller
         // Get the full URL for the previous request
         $id = explode('-', url()->previous());
         $id_category = array_pop($id);
-
+        $id_category = base64_decode(base64_decode($id_category));
         $explode = explode(' ', $req->sortBy);
         if (empty($req->sortBy)) {
-            $sortByProduct = DB::table('products_category')->where('category_id','=',$id_category)
+            $sortByProduct = DB::table('products_category')->where('category_id','=', $id_category)
                                 ->where('is_deleted','=',0)
                                 ->where('status_product','!=', -1)
                                 ->get();
@@ -147,7 +149,7 @@ class PagesController extends Controller
         // Get the full URL for the previous request
         $id = explode('-', url()->previous());
         $id_sub = array_pop($id);
-
+        $id_sub = base64_decode(base64_decode($id_sub));
         $explode = explode(' ', $req->sortBySub);
         if (empty($req->sortBySub)) {
             $sortByProduct = DB::table('products_category')->where('sub_category_id','=', $id_sub)

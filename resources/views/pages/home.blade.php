@@ -11,7 +11,7 @@
                         </div>
                         <ul>
                             @foreach($Category as $category)
-                            <li><a href="{{URL::to('/danh-muc-'.$category->id_category)}}">
+                            <li><a href="{{URL::to('/danh-muc-'.base64_encode(base64_encode($category->id_category)))}}">
                                 <img src="{{asset('public/frontend/img/categories/'.$category->icon_category)}}" 
                                 style="padding-right:10px;width:30px"/>
                                      {{$category->name_category}}
@@ -63,7 +63,7 @@
                     @foreach($Category as $cat)
                     <div class="col-lg-3">
                         <div class="categories__item set-bg" data-setbg="{{asset('public/frontend/img/categories/'.$cat->img_category)}}">
-                            <h5><a href="{{URL::to('/danh-muc-'.$cat->id_category)}}">{{$cat->name_category}}</a></h5>
+                            <h5><a href="{{URL::to('/danh-muc-'.base64_encode(base64_encode($cat->id_category)))}}">{{$cat->name_category}}</a></h5>
                         </div>
                     </div>
                     @endforeach
@@ -104,7 +104,7 @@
                             </ul>
                         </div>
                         <div class="featured__item__text">
-                            <h6><a href="{{URL::to('/chi-tiet-san-pham/'.$product->id_product)}}">{{$product->name_product}}</a></h6>
+                            <h6><a href="{{URL::to('/chi-tiet-san-pham/'.base64_encode(base64_encode($product->id_product)))}}">{{$product->name_product}}</a></h6>
                             <h5>{{number_format($product->price_product, 0, ',', '.') . " ₫"}}</h5>
                         </div>
                     </div>
@@ -145,7 +145,7 @@
                         <div class="latest-product__slider owl-carousel">
                             <div class="latest-prdouct__slider__item">
                                 @foreach ($listNewProduct5 as $topProduct)
-                                <a href="{{URL::to('/chi-tiet-san-pham/'.$topProduct->id_product)}}" class="latest-product__item">
+                                <a href="{{ URL::to('/chi-tiet-san-pham/'.base64_encode(base64_encode($topProduct->id_product)) ) }}" class="latest-product__item">
                                     <div class="latest-product__item__pic">
                                         <img style="width: 100px; height: 100px" src="{{asset('public/frontend/img/product/'.$topProduct->img_product)}}" alt="">
                                     </div>
@@ -160,7 +160,7 @@
                             </div>
                             <div class="latest-prdouct__slider__item">
                                 @foreach ($listNewProduct10 as $topProduct)
-                                <a href="{{URL::to('/chi-tiet-san-pham/'.$topProduct->id_product)}}" class="latest-product__item">
+                                <a href="{{URL::to('/chi-tiet-san-pham/'.base64_encode(base64_encode($topProduct->id_product)) ) }}" class="latest-product__item">
                                     <div class="latest-product__item__pic">
                                         <img style="width: 100px; height: 100px" src="{{asset('public/frontend/img/product/'.$topProduct->img_product)}}" alt="">
                                     </div>
@@ -181,7 +181,7 @@
                         <div class="latest-product__slider owl-carousel">
                             <div class="latest-prdouct__slider__item">
                                 @foreach ($listTopProduct5 as $topProduct)
-                                <a href="{{URL::to('/chi-tiet-san-pham/'.$topProduct->id_product)}}" class="latest-product__item">
+                                <a href="{{URL::to('/chi-tiet-san-pham/'.base64_encode(base64_encode($topProduct->id_product)))}}" class="latest-product__item">
                                     <div class="latest-product__item__pic">
                                         <img style="width: 100px; height: 100px" src="{{asset('public/frontend/img/product/'.$topProduct->img_product)}}" alt="">
                                     </div>
@@ -196,7 +196,7 @@
                             </div>
                             <div class="latest-prdouct__slider__item">
                                 @foreach ($listTopProduct10 as $topProduct)
-                                <a href="{{URL::to('/chi-tiet-san-pham/'.$topProduct->id_product)}}" class="latest-product__item">
+                                <a href="{{URL::to('/chi-tiet-san-pham/'.base64_encode(base64_encode($topProduct->id_product)))}}" class="latest-product__item">
                                     <div class="latest-product__item__pic">
                                         <img style="width: 100px; height: 100px" src="{{asset('public/frontend/img/product/'.$topProduct->img_product)}}" alt="">
                                     </div>

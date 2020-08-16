@@ -1,4 +1,4 @@
-@extends('users.seller.banhang')
+@extends('admin.admin')
 @section('content')
 <link rel="stylesheet" href="{{asset('public/backend/dist/bootstrap/css/bootstrap.min.css')}}">
 

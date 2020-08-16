@@ -48,7 +48,7 @@
             }
           ?>
         </td>
-        <td style="text-align: right"><a href="{{URL::to('/admin-sua-danh-muc/'.$category->id_category)}}"><button class="btn"><span class="icon-wrench"></span></button></a></td>
+        <td style="text-align: right"><a href="{{URL::to('/admin-sua-danh-muc/'.base64_encode(base64_encode($category->id_category)))}}"><button class="btn"><span class="icon-wrench"></span></button></a></td>
       </tr>
       @endforeach
     </tbody>
