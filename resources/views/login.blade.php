@@ -44,10 +44,11 @@
   <div class="login-logo">
     <a href="{{URL::to('/')}}"><img src="{{asset('public/frontend/img/logo.png')}}" alt=""></a>
   </div>
+  @foreach($errors->all() as $err)
+      <div class="alert alert-danger" role="alert">{{$err}}</div>
+  @endforeach
   @if(Session::has('success'))
-      <div class="alert alert-success" role="alert">
-          {{Session::get('success')}}
-      </div>
+      <div class="alert alert-success" role="alert">{{Session::get('success')}}</div>
   @endif
     <form action="{{URL::to('/postLogin')}}" method="post" enctype="multipart/form-data">
          @csrf
@@ -63,7 +64,7 @@
             <!-- <label>
               <input type="checkbox">
               Remember Me </label> -->
-            <a href="pages-recover-password.html" class="pull-right"><i class="fa fa-lock"></i> Quên mật khẩu?</a> </div>
+            <a href="{{URL::to('/forgot-password')}}" class="pull-right"><i class="fa fa-lock"></i> Quên mật khẩu?</a> </div>
 
         </div>
         <!-- /.col -->

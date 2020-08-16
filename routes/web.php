@@ -73,7 +73,11 @@ Route::get('/profile/chi-tiet-don-hang/{id_orders}','CustomerController@getOrder
 Route::get('/profile/huy-don-hang/{id_orders}','CustomerController@loadCancelOrdersCustomer');
 Route::post('/profile/huy','CustomerController@cancelOrdersCustomer');
 Route::post('/postComment','CustomerController@postComment');
-
+Route::get('/forgot-password','CustomerController@getForgotPassword');
+Route::post('/sendMailResetPass','CustomerController@sendMailResetPass');
+Route::get('/reset-password','CustomerController@formResetPassword');//Mail
+// Route::get('/reset-password','CustomerController@formResetPassword');//
+Route::post('/resetPassword','CustomerController@resetPassword');
 
 // Seller
 Route::get('/dang-ky-shop','CustomerController@getRegisterShop');
@@ -91,6 +95,14 @@ Route::get('/banhang','SellerController@sellerChannel');
 Route::post('/postSellerDashBoard','SellerController@postSellerDashBoard');
 Route::post('/updateProduct/{id_product}','ProductController@updateProduct');
 Route::get('/logout-shop','SellerController@logoutShop');
+
+
+Route::get('/forgot-password-shop','SellerController@getForgotPasswordShop');
+Route::post('/sendMailResetPassShop','SellerController@sendMailResetPassShop');
+Route::get('/reset-password-shop','SellerController@formResetPasswordShop');//Mail
+// Route::get('/reset-password','CustomerController@formResetPassword');//
+Route::post('/resetPasswordShop','SellerController@resetPasswordShop');
+
 
 Route::get('/danh-sach-don-hang', 'SellerController@loadOrderShop');
 Route::get('/chi-tiet-don-hang/{orders_id}', 'SellerController@loadOrderDetailShop');
