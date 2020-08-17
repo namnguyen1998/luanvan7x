@@ -50,6 +50,18 @@ class SellerController extends Controller
     }
    public function postSellerDashBoard(Request $request){
         $this->AuthLogin();
+        $this->validate($request,
+            [
+                'email_shop' => 'required',
+                'password_shop' => 'required|min:6|max:20',
+
+            ],
+            [
+                'email_shop.required'=>'Vui lòng nhập Email',
+                'password_shop.required'=>'Vui lòng nhập mật khẩu',
+                'password_shop.min'=>'Mật khẩu có ít nhất 6 kí tự',
+                'password_shop.max'=>'Mật khẩu có tối đa 20 kí tự'
+            ]);
         $email_shop = $request->email_shop;
         $password_shop = md5($request->password_shop);
         $result = DB::table('shop')

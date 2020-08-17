@@ -41,7 +41,9 @@
 <div class="login-box">
   <div class="login-box-body">
     <h3 class="login-box-msg">Sign In</h3>
-    
+    @foreach($errors->all() as $err)
+        <div class="alert alert-danger" role="alert">{{$err}}</div>
+    @endforeach
     <form action="{{URL::to('/postSellerDashBoard')}}" method="post">
     {{ csrf_field() }}
       <div class="form-group has-feedback">

@@ -104,7 +104,8 @@ class CustomerController extends Controller
                 'email.unique'=>'Email đã được sử dụng',
                 'password.required'=>'Vui lòng nhập mật khẩu',
                 're_password.same'=>'Mật khẩu không giống nhau',
-                'password.min'=>'Mật khẩu có ít nhất 6 kí tự'
+                'password.min'=>'Mật khẩu có ít nhất 6 kí tự',
+                'password.max'=>'Mật khẩu có tối đa 20 kí tự'
             ]);
         $customer = new Customers();
         $customer->email_customer = $request->email;

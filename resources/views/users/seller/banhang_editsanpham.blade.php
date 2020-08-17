@@ -34,10 +34,14 @@
             <h4 class="text-black">Chọn Loại Danh Mục</h4>
             <div class="row">
                 <div class="col-lg-12">
-                    <select name="_id_sub_category" class="form-control">
-                        @foreach ($listSub as $sub)
-                            <option value="{{$sub->id_sub}}">{{$sub->name_sub}}</option>
-                            @endforeach
+
+                    <select name="_id_sub_category" id="_id_sub_category" class="form-control">
+                        @foreach($loadSubEdit as $sub)
+                        @if($pro->sub_category_id == $sub->id_sub)
+                            <option value="{{ $sub->id_sub}}" selected>--{{$sub->name_sub}}--</option>
+                        @endif
+                            <option value="{{ $sub->id_sub}}">{{$sub->name_sub}}</option>
+                        @endforeach
                     </select>
                 </div>
             </div>
@@ -125,7 +129,6 @@
                     </div>
                 </div>
             </div>
-            
             <hr class="m-t-1 m-b-1">
             <div class="col-lg-12 col-md-12">
                 <div class="card">
@@ -172,9 +175,8 @@
         </form>
         <!-- /.content --> 
     </div>
-
-    <!-- CKeditor  -->
     <script src="{{asset('public/backend/dist/js/jquery.min.js')}}"></script>  
+    <!-- CKeditor  -->
     <script src="{{asset('public/backend/dist/bootstrap/js/bootstrap.min.js')}}"></script> 
 
     <!-- template --> 
@@ -242,26 +244,28 @@
     <!-- Get Data Sub Category -->
     <script src="{{asset('public/backend/dist/js/hashtable.js')}}"></script>
     <script src="{{asset('public/backend/dist/js/jquery.numberformatter.js')}}"></script> 
+    
+
     <script>
         $(document).ready(function(){
             $('#_id_category').change(function(){
                 val = document.getElementById('_id_category').value
+                // console.log(val);
                 $.ajax({
                     url: '{{URL::to('/danh-sach-sub')}}',
                     method: 'get',
                     data: 'val_id_category=' + val,
                 }).done(function(data_sub_category){
-                    // console.log(data_sub_category)
+                    console.log(data_sub_category)
                     data_sub_category = JSON.parse(data_sub_category)
-                    // console.log(data_sub_category)
                     $('#_id_sub_category').empty();
                     $.each(data_sub_category, function(key, value){
                         $('#_id_sub_category').append("<option value='" + value.id_sub + "'>" + value.name_sub + "</option>")
+                        // console.log(value)
                     })
                 })
             })
         })
-
         $("#_price").keyup(function(){
             $(this).parseNumber({format:"#,###", locale:"VND"});
             $(this).formatNumber({format:"#,###", locale:"VND"});

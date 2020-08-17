@@ -21,7 +21,7 @@ session_start();
     
 class ProductController extends Controller
 {
-	public function AuthLogin(){
+    public function AuthLogin(){
         if(Session::get('id_customer')!=null)
             $customer_id = Session::get('id_customer');
         else
@@ -44,19 +44,19 @@ class ProductController extends Controller
     }
     
     public function getSubCategory(){
-        if(isset($_GET['val_id_category'])){
+        // echo $_GET['val_id_category'];
+        if(!empty($_GET['val_id_category'])){
             if($_GET['val_id_category'] == -1)
                 echo ' ';
             else{
                 $data = $_GET['val_id_category'];
-                $listSub = DB::table('sub_category')
-                    ->where('category_id','like','%'.$data.'%')
+                $listSub = SubCategory::
+                    where('category_id',$data)
                     ->get();
-                echo $listSub;
+                echo ($listSub);
             }
         }
     }
-
     public function getBrandCategory(){
         if(isset($_GET['val_id_category'])){
             if($_GET['val_id_category'] == -1)
@@ -70,7 +70,6 @@ class ProductController extends Controller
             }
         }
     }
-
     public function setNameImage($data){
         if(empty($data)){
             return null;
@@ -194,7 +193,7 @@ class ProductController extends Controller
     public function getListProduct(){
         $this->AuthLogin();
         $listProducts = DB::table('products_category')->where('shop_id','=',Session::get('id_shop'))
-        ->where('is_deleted','=',0)->orderBy('id_product','DESC')->paginate(6);
+        ->where('is_deleted','=',0)->orderBy('created_at','DESC')->paginate(6);
         return view('users.seller.banhang_danhsachsanpham',compact('listProducts'));
     }
 
@@ -206,9 +205,9 @@ class ProductController extends Controller
                                 ->where('shop_id','=',Session::get('id_shop'))
                                 ->join('sub_category','id_sub','=','sub_category_id')
                                 ->get();
-        $listSub = SubCategory::where('category_id', $productEdit[0]->category_id )->get();
-        //dd($listSub);
-        return view('users.seller.banhang_editsanpham', compact('productEdit','listCategory','listBrand', 'listSub'));
+        $loadSubEdit = SubCategory::where('category_id', $productEdit[0]->category_id )->get();
+        // dd($loadSubEdit);
+        return view('users.seller.banhang_editsanpham', compact('productEdit','listCategory','listBrand', 'loadSubEdit'));
     }
 
     public function updateProduct(Request $req,$id_product){
@@ -231,29 +230,73 @@ class ProductController extends Controller
             'img3_product.mimes' => 'Chỉ chấp nhận với đuôi .jpg .jpeg .png .gif',
             'img3_product.max' => 'Hình ảnh giới hạn dung lượng không quá 2M',
         ]);
+        
         if (empty($req->nameProduct) || empty($req->madeby) || empty($req->price) || empty($req->description)){
             Session::put('message', 'Bạn chưa điền đầy đủ thông tin. Vui lòng kiểm tra lại <strong> "Danh mục", "Thương hiệu", "Tên SP", "Nơi SX", "Giá", "Mô tả", "Hình 1".</strong>');
             return Redirect::to('/them-san-pham');
         }
         else {
-            $dataProduct = array();
-            $dataProduct['name_product'] = $req->nameProduct;
-            $dataProduct['madeby'] = $req->madeby;
-            $dataProduct['sub_category_id'] = $req->_id_sub_category;
-            $dataProduct['brand_id'] = $req->_id_brand;
-            $dataProduct['shop_id'] = Session::get('id_shop');
-            $dataProduct['img_product'] = $this->setNameImage($req->img_product);
-            $dataProduct['img1_product'] = $this->setNameImage($req->img1_product);
-            $dataProduct['img2_product'] = $this->setNameImage($req->img2_product);
-            $dataProduct['img3_product'] = $this->setNameImage($req->img3_product);
-            $dataProduct['note_product'] = $req->note;
-            $dataProduct['description_product'] = $req->description;
-            $dataProduct['price_product'] = $this->stringToNumber($req->price);
-            
-            dd($dataProduct);
-            DB::table('products')->where('id_product','=', $id_product)->update($dataProduct);
-
-            return Redirect::to('/san-pham-cho-duyet');
+            $productEdit = Products::find($id_product);
+            $productEdit->shop_id = Session::get('id_shop');
+            $productEdit->status_product = $productEdit->status_product;
+            if(!empty($req->nameProduct)){
+                $productEdit->name_product = $req->nameProduct;
+            }else{
+                 $productEdit->name_product = $productEdit->name_product;
+            }
+            if(!empty($req->madeby)){
+                $productEdit->madeby = $req->madeby;
+            }else{
+                 $productEdit->madeby = $productEdit->madeby;
+            }
+            if(!empty($req->_id_sub_category)){
+                $productEdit->sub_category_id = $req->_id_sub_category;
+            }else{
+                 $productEdit->sub_category_id = $productEdit->sub_category_id;
+            }
+            if(!empty($req->_id_brand)){
+                $productEdit->brand_id = $req->_id_brand;
+            }else{
+                 $productEdit->brand_id = $productEdit->brand_id;
+            }
+            if(!empty($req->img_product)){
+                $productEdit->img_product = $this->setNameImage($req->img_product);
+            }else{
+                 $productEdit->img_product = $productEdit->img_product;
+            }
+            if(!empty($req->img1_product)){
+                $productEdit->img1_product = $this->setNameImage($req->img1_product);
+            }else{
+                $productEdit->img1_product = $productEdit->img1_product;
+            }
+            if(!empty($req->img2_product)){
+                $productEdit->img2_product = $this->setNameImage($req->img2_product);
+            }else{
+                 $productEdit->img2_product = $productEdit->img2_product;
+            }
+            if(!empty($req->img3_product)){
+                $productEdit->img3_product = $this->setNameImage($req->img3_product);
+            }else{
+                 $productEdit->img3_product = $productEdit->img3_product;
+            }
+            if(!empty($req->description_product)){
+                $productEdit->description_product = $req->description_product;
+            }else{
+                 $productEdit->description_product = $productEdit->description_product;
+            }
+            if(!empty($req->price)){
+                $productEdit->price_product = $this->stringToNumber($req->price);
+            }else{
+                 $productEdit->price_product = $this->stringToNumber($productEdit->price_product);
+            }
+            if(!empty($req->note)){
+                $productEdit->note_product = $req->note;
+            }else{
+                 $productEdit->note_product = $productEdit->note_product;
+            }
+            //dd($productEdit);
+            $productEdit->save();
+            return Redirect::to('/list-san-pham')->with('notification','Cập nhật thành công!!');
         }
     }
     public function deleteProduct(Request $request,$id_product){
