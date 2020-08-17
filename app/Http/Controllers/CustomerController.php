@@ -20,6 +20,7 @@ use Sentinel;
 use Reminder;
 use Mail;
 use Hash;
+use Image;
 use PharIo\Manifest\Email;
 
 session_start();
@@ -206,9 +207,10 @@ class CustomerController extends Controller
             $newCustomers->name_customer             = $Customers->name;
             $newCustomers->email_customer            = $Customers->email;
             $newCustomers->provider_id               = $Customers->id;
-            $newCustomers->img_customer              = $Customers->avatar;
+            $newCustomers->img_customer              = $Customers->id . '.jpg';
             $newCustomers->password_customer         = '';
             $newCustomers->save();
+            Image::make($Customers->avatar)->save(public_path('frontend/img/shop/' . $Customers->id . '.jpg'));
         }
         Session::put('customers', $Customers);
         Session::put('name_customer',$Customers->name);

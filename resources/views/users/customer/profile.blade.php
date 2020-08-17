@@ -24,7 +24,7 @@
                     <ul>
                         <li>
                             @if(Session::get('img_customer')!=null)
-                            <img class="profile-user-img img-responsive img-circle m-b-2" src="{{Session::get('img_customer')}}" alt="User profile picture" style="height: 100px;
+                            <img class="profile-user-img img-responsive img-circle m-b-2" src="{{asset('public/frontend/img/shop/'.Session::get('img_customer'))}}" alt="User profile picture" style="height: 100px;
                                 padding-left: 56px;">
                             @else
                             <img class="profile-user-img img-responsive img-circle m-b-2" src="{{asset('public/frontend/img/default-avatar.png')}}" alt="User profile picture" style="height: 100px;

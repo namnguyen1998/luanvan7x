@@ -13,3 +13,5 @@ NOTE: e sợ xóa package phát sinh lỗi nên để đó đi k có xài tới 
 
 + PDF
 	composer require barryvdh/laravel-dompdf
+Image:
+	composer require intervention/image
