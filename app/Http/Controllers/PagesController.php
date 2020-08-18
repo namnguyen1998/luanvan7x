@@ -22,7 +22,7 @@ class PagesController extends Controller
         $Category = Category::all();
         // $productCategory = DB::table('products_category')->where('category_id','=',1)
         // ->where('status_product','=',1)->where('is_deleted','=',0)->get();
-        $listProducts = Products::where('is_deleted','=',0)->orderby('id_product','desc')->paginate(12);
+        $listProducts = Products::where('is_deleted','=',0)->where('status_product','>',0)->orderby('id_product','desc')->paginate(12);
         //var_dump(Session::get('id_shop'));
         //var_dump($productCategory);
         $listTopProduct5 = Products::join('order_detail', 'order_detail.product_id', '=', 'products.id_product')
@@ -59,9 +59,15 @@ class PagesController extends Controller
         $productByID = DB::table('products')
                                 ->join('shop','id_shop','=','shop_id')
                                 ->where('is_deleted','=',0)
+                                ->where('status_product','>',0)
                                 ->where('id_product','=',$id_product)->get();
 
-        foreach ($productByID as $key => $value){
+        //dd($productByID);
+        if(empty(count($productByID))){
+            return Redirect('/');
+        }
+        else{
+            foreach ($productByID as $key => $value){
             $sub_category = $value->sub_category_id;
         }
         
@@ -75,6 +81,7 @@ class PagesController extends Controller
                                 ->get();
 
         return view('pages.chitietsanpham',compact('productByID','productsRalated','listComments'));
+        }
     }
     public function getPagesProductDetailSlug($slug_product){
         $productByID = DB::table('products')
