@@ -290,7 +290,7 @@ class CustomerController extends Controller
     public function getAddressCustomer(){
         $this->AuthLogin();
         $addressCustomer = ShippingAddress::where('customer_id','=',$this->checkUser())
-                                        ->where('id_deleted', '=', 0)
+                                        ->where('id_deleted', '>=', 0)
                                         ->orderBy('status_default', 'DESC')
                                         ->get();
         if (empty($addressCustomer->count()))
@@ -407,7 +407,8 @@ class CustomerController extends Controller
     }
 
     public function getBillCustomer(){
-        $billCustomer = Orders::where('customer_id', $this->checkUser())->paginate(5);
+        $billCustomer = Orders::where('customer_id', $this->checkUser())->orderBy('created_at', 'DESC')->paginate(5);
+        // dd($billCustomer);
         $orderDetail = OrderDetail::join('products', 'products.id_product', '=', 'order_detail.product_id')->get();
         return view('users.customer.donhang_customer', compact('billCustomer', 'orderDetail'));
     }
@@ -417,6 +418,7 @@ class CustomerController extends Controller
                                     ->where('customer_id', $this->checkUser())
                                     ->join('products', 'products.id_product', '=', 'order_detail.product_id')
                                     ->join('orders', 'orders.id_orders', '=', 'order_detail.orders_id')
+                                    // ->orderBy('create_at', 'DESC')
                                     ->get();
         // dd($orderDetail);
         if (empty($orderDetail->count()))

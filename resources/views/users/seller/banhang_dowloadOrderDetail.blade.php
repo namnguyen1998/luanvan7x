@@ -216,9 +216,13 @@
                             </div>
                             
                             <!-- Date Now -->
-                            <div style="height: 22%"> 
+                            <div style="height: 26%"> 
                                 <address>
                                     Ngày in: <?php echo  date_format(now()->setTimezone( new DateTimeZone('Asia/Ho_Chi_Minh')), 'd-m-Y H:i:s'); ?>
+                                    <br>
+                                    Mã đơn hàng: #{{ base64_encode(base64_encode($id_name_orders['id_orders']))}}
+                                    <br>
+                                    Khách hàng đặt: {{ $id_name_orders['name_orders']}}
                                 </address>
                             </div>
                             <!-- /. Date Now -->
@@ -243,9 +247,9 @@
                                             <td><?php echo $number ++; ?></td>
                                             <td>{{ $orderDetail->name_product }}</td>
                                             <td>{{ $orderDetail->quantity }}</td>
-                                            <td>{{ number_format($orderDetail->price_product , 0, ',', '.') . " ₫" }}</td>
-                                            <td>{{ number_format($orderDetail->price_product * $orderDetail->quantity , 0, ',', '.') . " ₫" }}</td>
-                                            <?php $total += $orderDetail->price_product * $orderDetail->quantity; ?>
+                                            <td>{{ number_format($orderDetail->price_order_detail , 0, ',', '.') . " ₫" }}</td>
+                                            <td>{{ number_format($orderDetail->price_order_detail * $orderDetail->quantity , 0, ',', '.') . " ₫" }}</td>
+                                            <?php $total += $orderDetail->price_order_detail * $orderDetail->quantity; ?>
                                         </tr>
                                     </tbody>
                                     @endforeach
@@ -293,7 +297,7 @@
         </div>
         <form class="form-group">
             <div class="row">
-                <div style="text-align: right; height: 5%" class="col-12">
+                <div style="text-align: right; height: 6%" class="col-12">
                     <span>..... Ngày..... Tháng..... Năm.....</span>
                 </div>
             </div>

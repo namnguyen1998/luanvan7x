@@ -27,7 +27,7 @@
                             <h4>DANH MỤC CON</h4>
                             <ul>
                                 @foreach($subCategorybyCategory as $sub)
-                                <li><a href="{{URL::to('/danh-muc-'.$sub->category_id.'/sub-'.$sub->id_sub)}}">{{$sub->name_sub}}</a></li>
+                                <li><a href="{{URL::to('/danh-muc-'.base64_encode(base64_encode($sub->category_id)).'/sub-'.base64_encode(base64_encode($sub->id_sub)))}}">{{$sub->name_sub}}</a></li>
                                 <!-- <input id="id_sub" value="{{$subCategorybyCategory[1]->id_sub}}" hidden> -->
                                 @endforeach
                             </ul>
@@ -211,6 +211,9 @@
                         </div>
                     </div>
                     <div id="productSortBy" class="row">
+                        @if (count($products_sub) == 0)
+                            <div class="col-lg-12" style="text-align: center; font-size: 200%">Không có sản phẩm</div>
+                        @else
                         @foreach($products_sub as $pro)
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
@@ -218,16 +221,16 @@
                                     <ul class="product__item__pic__hover">
                                         <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                         <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
-                                    <h6><a href="{{URL::to('/chi-tiet-san-pham/'.$pro->id_product)}}">{{$pro->name_product}}</a></h6>
+                                    <h6><a href="{{URL::to('/chi-tiet-san-pham/'.base64_encode(base64_encode($pro->id_product)))}}">{{$pro->name_product}}</a></h6>
                                     <h5>{{number_format($pro->price_product, 0, ',', '.') . " ₫"}}</h5>
                                 </div>
                             </div>
                         </div>
                         @endforeach
+                        @endif
                     </div>
                     <span>{!!$products_sub->render()!!}</span>
                 </div>

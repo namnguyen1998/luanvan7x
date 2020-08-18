@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Products extends Model
 {
-    protected $products = "Products";
+    protected $products = "products";
     protected $primaryKey = 'id_product';
 
     public function Category(){
@@ -16,7 +16,7 @@ class Products extends Model
     	return $this->belongsTo(SubCategory::class);
     }
     public function Brand(){
-    	return $this->belongsTo(Brand::class);
+    	return $this->belongsTo(Brands::class);
     }
     public function OderDetail(){
     	return $this->hasMany(OrderDetail::class);

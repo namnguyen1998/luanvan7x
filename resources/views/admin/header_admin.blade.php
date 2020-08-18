@@ -42,7 +42,7 @@
 <div class="wrapper boxed-wrapper">
   <header class="main-header"> 
     <!-- Logo --> 
-    <a href="index.html" class="logo blue-bg"> 
+    <a href="{{URL::to('/')}}" class="logo blue-bg"> 
     <!-- mini logo for sidebar mini 50x50 pixels --> 
     <span class="logo-mini"><img src="{{asset('public/backend/dist/img/logo-small.png')}}" alt=""></span> 
     <!-- logo for regular state and mobile devices --> 
@@ -136,7 +136,8 @@
                 <div class="pull-left user-img"><img src="{{asset('public/backend/dist/img/img1.jpg')}}" class="img-responsive img-circle" alt="User"></div>
                 <p class="text-left">{{Session::get('username_user')}}<small>{{Session::get('email_user')}}</small> </p>
               </li>
-              <li><a href="{{URL::to('/thong-tin-ca-nhan')}}"><i class="icon-profile-male"></i> Thông tin cá nhân</a></li>
+              <!-- <li><a href="{{URL::to('/thong-tin-ca-nhan')}}"><i class="icon-profile-male"></i> Thông tin cá nhân</a></li> -->
+              
               <!-- <li><a href="#"><i class="icon-wallet"></i> My Balance</a></li>
               <li><a href="#"><i class="icon-envelope"></i> Inbox</a></li> -->
               <li role="separator" class="divider"></li>

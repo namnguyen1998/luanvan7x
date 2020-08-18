@@ -130,14 +130,14 @@ class SellerController extends Controller
         return Redirect('/banhang')->with('success','Cập nhật mật khẩu thành công');
     }
     public function getShop($id_shop){
-        $dataShop = DB::table('shop')->where('id_shop','=',$id_shop)->where('status_shop','=',1)->first();
+        $dataShop = DB::table('shop')->where('id_shop','=', base64_decode(base64_decode($id_shop)))->where('status_shop','=',1)->first();
         
         $productShop = DB::table('sub_category')->join('products','sub_category_id','=','id_sub')
-        ->where('shop_id','=',$id_shop)
+        ->where('shop_id','=', base64_decode(base64_decode($id_shop)))
         ->where('is_deleted','=','0')
         ->paginate(9);
         $categoryShop = DB::table('shop')->join('products_category','shop_id','=','id_shop')
-        ->where('id_shop','=',$id_shop)
+        ->where('id_shop','=', base64_decode(base64_decode($id_shop)))
         ->groupBy(array(
             DB::raw('sub_category_id'),
             DB::raw('shop.id_shop '),
@@ -177,7 +177,7 @@ class SellerController extends Controller
             ->where('id_shop', '=', Session::get('id_shop'))
             ->groupBy('orders_id')
             ->orderBy('created_at', 'DESC')
-            ->paginate(6);
+            ->paginate(10);
             // ->get();
             //dd($loadOrderShop);
         return view('users.seller.banhang_listOrder', compact('loadOrderShop'));
@@ -196,7 +196,7 @@ class SellerController extends Controller
                             ->where('id_shop', '=', Session::get('id_shop'))
                             ->groupBy('orders_id')
                             ->orderBy('created_at', 'DESC')
-                            ->paginate(6);
+                            ->paginate(10);
         return view('users.seller.banhang_updateStatusShip', compact('loadOrderShop'));
     }
 
@@ -210,19 +210,20 @@ class SellerController extends Controller
     }
 
     public function loadOrderDetailShop($orders_id){
-        $loadOrderDetail = OrderDetail::select('products.name_product', 'products.price_product', 'shop.id_shop', 'shop.name_shop', 'order_detail.id_order_detail', 'order_detail.quantity')
+        $loadOrderDetail = OrderDetail::select('products.name_product', 'order_detail.price_order_detail', 'shop.id_shop', 'shop.name_shop', 'order_detail.id_order_detail', 'order_detail.quantity')
                                 ->join('orders', 'orders.id_orders', '=', 'order_detail.orders_id')
                                 ->join('products', 'products.id_product', '=', 'order_detail.product_id')
                                 ->leftjoin('shop', 'shop.id_shop', '=', 'products.shop_id')
                                 ->where('id_shop', '=', Session::get('id_shop'))
-                                ->where( 'orders_id', '=', $orders_id)
+                                ->where( 'orders_id', '=', base64_decode($orders_id))
+                                // ->orderBy('created_at', 'DESC')
                                 ->get();
         if (!empty($loadOrderDetail->count())){
             $loadShop = DB::table('shop')->where('id_shop','=', Session::get('id_shop'))->first();
-            $loadOrders = Orders::where('id_orders', $orders_id)
+            $loadOrders = Orders::where('id_orders', base64_decode($orders_id))
                                 ->join('customers', 'customers.id_customer', '=', 'orders.customer_id')
                                 ->first();
-            $loadAddressCustomer = DB::table('shipping_address')->where('customer_id', '=', $loadOrders->customer_id)->where('status_default','=', 1)->first();
+            $loadAddressCustomer = DB::table('shipping_address')->where('customer_id', '=', $loadOrders->customer_id)->first();
             return view('users.seller.banhang_orderDetail', compact('loadOrderDetail', 'loadShop', 'loadOrders', 'loadAddressCustomer'));
         }
         else 
@@ -235,7 +236,7 @@ class SellerController extends Controller
     }
 
     public function downloadPDF(Request $req){
-        $loadOrderDetail = OrderDetail::select('products.name_product', 'products.price_product', 'shop.id_shop', 'shop.name_shop', 'order_detail.id_order_detail', 'order_detail.quantity')
+        $loadOrderDetail = OrderDetail::select('products.name_product', 'order_detail.price_order_detail', 'shop.id_shop', 'shop.name_shop', 'order_detail.id_order_detail', 'order_detail.quantity')
                                 ->join('orders', 'orders.id_orders', '=', 'order_detail.orders_id')
                                 ->join('products', 'products.id_product', '=', 'order_detail.product_id')
                                 ->leftjoin('shop', 'shop.id_shop', '=', 'products.shop_id')
@@ -246,12 +247,17 @@ class SellerController extends Controller
         $loadOrders = Orders::where('id_orders', $req->id_orders)
                             ->join('customers', 'customers.id_customer', '=', 'orders.customer_id')
                             ->first();
-        $loadAddressCustomer = DB::table('shipping_address')->where('customer_id', '=', $loadOrders->customer_id)->where('status_default','=', 1)->first();
+        $loadAddressCustomer = DB::table('shipping_address')->where('customer_id', '=', $loadOrders->customer_id)->first();
+
+        $id_name_orders['id_orders'] = $loadOrders->id_orders;
+        $id_name_orders['name_orders'] = $loadOrders->name_customer;
+
         view()->share('loadOrderDetail',$loadOrderDetail);
         view()->share('loadShop',$loadShop);
         view()->share('loadOrders',$loadOrders);
-        view()->share('loadAddressCustomer',$loadAddressCustomer);
-        $pdf = PDF::loadView('users.seller.banhang_dowloadOrderDetail', [$loadAddressCustomer, $loadOrderDetail, $loadShop, $loadOrders, $loadAddressCustomer]);
+        view()->share('loadAddressCustomer',$loadAddressCustomer);  
+        view()->share('id_name_orders', $id_name_orders);
+        $pdf = PDF::loadView('users.seller.banhang_dowloadOrderDetail', [$loadAddressCustomer, $loadOrderDetail, $loadShop, $loadOrders, $loadAddressCustomer, $id_name_orders]);
         return $pdf->download('in-don-hang.pdf');
     } 
 

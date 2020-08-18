@@ -40,7 +40,7 @@
                 url:'send-email',
                 type:'GET',
                 success: function(){
-                    alert('Xoá thành công.');
+                    alert('Email đã gửi thành công.');
                 },
             })
         });

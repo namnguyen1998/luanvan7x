@@ -125,7 +125,7 @@
                     <div class="card-body">
                     <h4 class="card-title">Hình 1</h4>
                     <label for="input-file-now-custom-1">Chọn hình</label>
-                    <input data-default-file="{{asset('public/frontend/img/product/'.$pro->img_product)}}" value="{{$pro->img_product}}" name="img_product" type="file" id="input-file-now-custom-1" class="dropify" />
+                    <input data-default-file="{{asset('public/frontend/img/product/'.$pro->img_product)}}" name="img_product" type="file" id="input-file-now-custom-1" class="dropify" />
                     </div>
                 </div>
             </div>

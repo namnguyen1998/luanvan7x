@@ -29,8 +29,8 @@
         @if (Session::get('role_id') == 1)
         <li class="treeview"> <a href="#"> <i class="icon-grid"></i> <span>Quản lý danh mục</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span> </a>
           <ul class="treeview-menu">
-          <li><a href="{{URL::to('admin-danh-sach-danh-muc')}}"><i class="fa fa-angle-right"></i> Danh mục cha</a></li>
-            <li><a href="{{URL::to('admin-danh-sach-danh-muc-con')}}"><i class="fa fa-angle-right"></i> Danh mục con</a></li>
+          <li><a href="{{URL::to('admin-danh-sach-danh-muc')}}"><i class="fa fa-angle-right"></i> Danh mục </a></li>
+            <li><a href="{{URL::to('admin-danh-sach-danh-muc-con')}}"><i class="fa fa-angle-right"></i> Loại danh mục</a></li>
           </ul>
         </li>
 
