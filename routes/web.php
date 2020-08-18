@@ -164,6 +164,9 @@ Route::get('/admin-profit', 'AdminController@profitDashboard');
 Route::get('/admin-revenue', 'AdminController@revenueDashboard');
 Route::get('/admin-doanh-thu-don-hang', 'AdminController@pageRevenue');
 Route::get('/admin-load-revenue/{val_revenue}', 'AdminController@Revenue');
+
+
+Route::get('/admin-comment','AdminController@getListComments');
 // Route::get('/admin-doanh-thu-shop', 'AdminController@pageRevenueShop');
 // Route::get('/admin-load-revenue-shop/{val_revenue}', 'AdminController@RevenueShop');
 

@@ -598,5 +598,10 @@ class AdminController extends Controller
     // public function pageRevenueShop(){
     //     return view('admin.admin_revenueShop');
     // }
-    
+    public function getListComments(){
+        $listComments = DB::table('comment')->join('products','id_product','=','product_id')
+        ->join('customers','id_customer','=','customer_id')
+        ->select('comment.created_at','comment.customer_id','comment.product_id','comment.content','products.name_product', 'products.img_product','customers.name_customer')->paginate(6);
+        return view('admin.admin_listcomments',compact('listComments'));
+    }
 }
