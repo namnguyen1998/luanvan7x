@@ -52,6 +52,7 @@ class PagesController extends Controller
         $listNewProduct10 = Products::orderBy('id_product', 'DESC')->where('is_deleted','=',0)                            
                                     ->where('status_product','>', 0)
                                     ->offset(5)->limit(5)->get();
+        Session::forget('keySearch');
     	return view('pages.home',compact('Category','listProducts', 'listTopProduct5', 'listTopProduct10' ,'listNewProduct5', 'listNewProduct10'));
     }
     
@@ -64,11 +65,13 @@ class PagesController extends Controller
                             ->where('category_id','=', base64_decode(base64_decode($id_category)))
                             ->get();
         $loadBrand = Brands::where('category_id', base64_decode(base64_decode($id_category)))->get();
+        Session::forget('keySearch');
         // dd($subCategorybyCategory);
     	return view('pages.trangsanpham',compact('productCategory','subCategorybyCategory', 'loadBrand'));
     }
 
     public function getPagesProductDetail($id_product){
+        Session::forget('keySearch');
         $productByID = DB::table('products')
                                 ->join('shop','id_shop','=','shop_id')
                                 ->where('is_deleted','=',0)
@@ -99,6 +102,7 @@ class PagesController extends Controller
         }
     }
     public function getProductsSubCategory($id_category, $id_sub){
+        Session::forget('keySearch');
         $subCategorybyCategory = DB::table('sub_category')->join('category','id_category','=','category_id')
         ->where('category_id','=', base64_decode(base64_decode($id_category)))
         ->get();
@@ -108,17 +112,18 @@ class PagesController extends Controller
         
     }
     public function getSearch(Request $request){
-        if($request->key != null){
-            $keySearch = $request->key;
-        };
+        $keySearch = $request->key;
         $products = DB::table('products_category')
-                        ->where('name_product','like','%'.$keySearch.'%')
-                        ->where('is_deleted','=',0)
-                        ->where('status_product','>', 0)
-                        ->orWhere('price_product',$keySearch)
-                        ->orWhere('name_shop',$keySearch)
-                        ->get();
-        return view('pages.search', compact('products','keySearch'));
+                    ->where('name_product','like','%'.$keySearch.'%')
+                    ->where('is_deleted','=',0)
+                    ->where('status_product','>', 0)
+                    ->orWhere('price_product',$keySearch)
+                    ->orWhere('name_shop',$keySearch)
+                    ->get();
+        if(!empty($products)){
+            Session::put('keySearch',$keySearch);
+        }
+        return view('pages.search', compact('products'));
     }
 
     public function sortByProductCategories(Request $req){

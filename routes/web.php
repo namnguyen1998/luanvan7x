@@ -78,10 +78,14 @@ Route::post('/sendMailResetPass','CustomerController@sendMailResetPass');
 Route::get('/reset-password','CustomerController@formResetPassword');//Mail
 // Route::get('/reset-password','CustomerController@formResetPassword');//
 Route::post('/resetPassword','CustomerController@resetPassword');
+Route::get('/profile/update-password','CustomerController@getUpdatePassword');
+Route::post('/updatePassword/{id_customer}','CustomerController@postUpdatePassword');
 
 // Seller
 Route::get('/dang-ky-shop','CustomerController@getRegisterShop');
 Route::post('/postRegisterShop','CustomerController@postRegisterShop');
+Route::get('/ban-hang/profile-shop','SellerController@getProfileShop');
+Route::post('/updateProfileShop','SellerController@updateProfileShop');
 Route::get('/dashboard','SellerController@sellerDashBoard');
 Route::get('/them-san-pham','ProductController@getAddProduct');
 Route::get('/danh-sach-sub','ProductController@getSubCategory');

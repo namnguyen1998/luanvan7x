@@ -91,7 +91,7 @@
                                         <input type="hidden" name="_token" value="{{csrf_token()}}" >
                                         <input type="hidden" value="{{$product->id_product}}" name="id_product">
                                             <h6>Viết bình luận của bạn</h6>
-                                            <textarea name="content" class="form-control" placeholder="Viết bình luận"></textarea>
+                                            <textarea name="content" class="form-control" placeholder="Viết bình luận" required></textarea>
                                             <button type="submit" class="btn btn-success float-right">Đăng</button>
                                         </form>
                                     </div>
@@ -136,7 +136,6 @@
                             <ul class="product__item__pic__hover">
                                 <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                 <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
                             </ul>
                         </div>
                         <div class="product__item__text">

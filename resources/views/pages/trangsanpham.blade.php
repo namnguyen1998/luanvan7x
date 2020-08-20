@@ -23,7 +23,7 @@
                 <div class="col-lg-3 col-md-5">
                     <div class="sidebar">
                         <div class="sidebar__item">
-                            <h4>DANH MỤC CON</h4>
+                            <h4>LOẠI DANH MỤC</h4>
                             <ul>
                                 @foreach($subCategorybyCategory as $sub)
                                 <li>

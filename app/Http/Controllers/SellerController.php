@@ -32,17 +32,74 @@ class SellerController extends Controller
 	        return Redirect::to('/banhang')->send();
 	    }
 	}
-
+    public function setNameImage($data){
+        if(empty($data)){
+            return null;
+        }
+        else{
+            $getNameImage = current(explode('.', $data->getClientOriginalName()));
+            $destinationPath = 'public/frontend/img/shop';
+            $date = date('dmY');
+            $hash = md5($getNameImage);
+            $plus = $date . '_' . $hash . '.jpg';
+            $data->move($destinationPath, $plus);
+            return $plus;
+        }
+    }
     public function sellerChannel(){
-		if(!empty(Session::get('id_shop')))
+		if(!empty(Session::get('shop')->id_shop))
 			return Redirect::to('/dashboard');
 		else
 			if(!empty(Session::get('id_customer')) || empty(Session::get('id_customer')))
 				return view('users.seller.banhang_login');
 			else
-				return Redirect::to('/');
+				return Redirect::to('/banhang');
 	}
 	
+
+    public function getProfileShop(){
+        $this->AuthLogin();
+        if(!empty(Session::get('shop'))){
+            $phone_shop = substr(Session::get('shop')->phone_shop,7);
+            $email_shop = substr(Session::get('shop')->email_shop,0,3);
+        }
+        return view('users.seller.profile_shop',compact('phone_shop', 'email_shop'));
+    }
+
+    public function updateProfileShop(Request $request){
+        $this->AuthLogin();
+        $this->validate($request, 
+        [
+            'img_shop' => 'mimes:jpg,jpeg,png,gif|max:2048',
+        ], 
+        [
+            'img_shop.mimes' => 'Chỉ chấp nhận với đuôi .jpg .jpeg .png .gif',
+            'img_shop.max' => 'Hình ảnh giới hạn dung lượng không quá 2M',
+
+        ]);
+        $shop = Shop::find(Session::get('shop')->id_shop);
+        if($request->name_shop!= null){
+            $shop->name_shop = $request->name_shop;
+        }else{
+            $shop->name_shop = $shop->name_shop;
+        }
+        if($request->phone_shop!= null){
+            $shop->phone_shop = $request->phone_shop;
+        }else{
+             $shop->phone_shop = $shop->phone_shop;
+        }
+        if($request->img_shop){
+            $shop->img_shop = $this->setNameImage($request->img_shop);
+        }else{
+            $shop->img_shop = $shop->img_shop;
+        }
+        $shop->save();
+        //dd($customer);
+        return Redirect::to('/ban-hang/profile-shop')->with('success','Cập nhật mật khẩu thành công');
+    }
+
+
+
     public function sellerDashBoard(){
     	$this->AuthLogin();
     	return view('users.seller.banhang_thongke');
@@ -70,8 +127,9 @@ class SellerController extends Controller
                     ->where('status_shop', '=', 1)
                     ->first();               
         if(!empty($result)){
-            Session::put('name_shop',$result->name_shop);
-            Session::put('img_shop',$result->img_shop);
+            Session::put('shop',$result);
+            // Session::put('name_shop',$result->name_shop);
+            // Session::put('img_shop',$result->img_shop);
             Session::put('id_shop',$result->id_shop);
             return Redirect::to('/dashboard');
         }
@@ -81,10 +139,11 @@ class SellerController extends Controller
     public function logoutShop(){
     	$this->AuthLogin();
     	Session::forget('id_shop');
-    	return Redirect::to('/');
+        Session::forget('shop');
+    	return Redirect::to('/banhang');
     }
 
-     public function getForgotPasswordShop(){
+    public function getForgotPasswordShop(){
         return view('users.seller.forgot_password');
     }
      public function sendMailResetPassShop(Request $request)

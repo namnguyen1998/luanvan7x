@@ -3,10 +3,10 @@
     <div class="sidebar"> 
       <!-- Sidebar user panel -->
       <div class="user-panel">
-        <div class="image text-center"><img src="{{asset('public/frontend/img/shop/'.Session::get('img_shop'))}}" class="img-circle" alt="User Image"> </div>
+        <div class="image text-center"><img src="{{asset('public/frontend/img/shop/'.Session::get('shop')->img_shop)}}" class="img-circle" alt="User Image"> </div>
         <div class="info">
-          <p>{{Session::get('name_shop')}}</p>
-          <a href="#"><i class="fa fa-envelope"></i></a> <a href="{{URL::to('profile')}}"><i class="fa fa-gear"></i></a> <a href="{{URL::to('/logout-shop')}}"><i class="fa fa-power-off"></i></a> </div>
+          <p>{{Session::get('shop')->name_shop}}</p>
+          <a href="#"><i class="fa fa-envelope"></i></a> <a href="{{URL::to('/ban-hang/profile-shop')}}"><i class="fa fa-gear"></i></a> <a href="{{URL::to('/logout-shop')}}"><i class="fa fa-power-off"></i></a> </div>
       </div>
       <!-- sidebar menu -->
       <ul class="sidebar-menu" data-widget="tree">
@@ -48,7 +48,7 @@
             <li><a href="{{URL::to('/san-pham-cho-duyet')}}"><i class="fa fa-angle-right"></i>Sản phẩm chờ duyệt</a></li>
           </ul>
         </li>
-        <li class="treeview"> <a href="#"> <i class="ti-email"></i> <span>Inbox</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span> </a>
+        <!-- <li class="treeview"> <a href="#"> <i class="ti-email"></i> <span>Inbox</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span> </a>
           <ul class="treeview-menu">
             <li><a href="apps-mailbox.html"><i class="fa fa-angle-right"></i> Mailbox</a></li>
             <li><a href="apps-mailbox-detail.html"><i class="fa fa-angle-right"></i> Mailbox Detail</a></li>
@@ -74,7 +74,7 @@
             <li><a href="ui-list-media.html"><i class="fa fa-angle-right"></i> List Media</a></li>
             <li><a href="ui-carousel.html"><i class="fa fa-angle-right"></i> Carousel</a></li>
           </ul>
-        </li>
+        </li> -->
       </ul>
     </div>
     <!-- /.sidebar --> 

@@ -109,7 +109,7 @@
                             <div class="col-lg-12">
                                 <fieldset class="form-group">
                                 <label>Mô tả *</label>
-                                <textarea name="description" class="form-control" id="descTextarea" value="{!!$pro->description_product!!}"></textarea>
+                                <textarea name="description" class="form-control" id="descTextarea">{!!$pro->description_product!!}</textarea>
                                 </fieldset>
                             </div>
                         </div>
@@ -189,9 +189,9 @@
     <script src="{{asset('public/ckeditor/ckeditor.js')}}"></script>
     <script type="text/javascript">
         CKEDITOR.replace('descTextarea',{
-        filebrowserBrowseUrl : 'filemanager/dialog.php?type=2&editor=ckeditor&fldr=',
-        filebrowserUploadUrl : 'filemanager/dialog.php?type=2&editor=ckeditor&fldr=',
-        filebrowserImageBrowseUrl : 'filemanager/dialog.php?type=1&editor=ckeditor&fldr='  
+        filebrowserBrowseUrl : '/filemanager/dialog.php?type=2&editor=ckeditor&fldr=',
+        filebrowserUploadUrl : '/filemanager/dialog.php?type=2&editor=ckeditor&fldr=',
+        filebrowserImageBrowseUrl : '/filemanager/dialog.php?type=1&editor=ckeditor&fldr='  
         });
     </script>
 

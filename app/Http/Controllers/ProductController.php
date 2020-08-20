@@ -21,15 +21,12 @@ session_start();
     
 class ProductController extends Controller
 {
-    public function AuthLogin(){
-        if(Session::get('id_customer')!=null)
-            $customer_id = Session::get('id_customer');
-        else
-            $customer_id = Session::get('id_shop');
-        if($customer_id){
-            return Redirect::to('banhang');
+   public function AuthLogin(){
+        $id_shop = Session::get('id_shop');
+        if($id_shop){
+            return Redirect::to('/dashboard');
         }else{
-            return Redirect::to('/')->send();
+            return Redirect::to('/banhang')->send();
         }
     }
 
@@ -137,6 +134,7 @@ class ProductController extends Controller
     }
 
     public function saveProduct(Request $req){
+        $this->AuthLogin();
         $this->validate($req, 
         [   
             'madeby' => 'required',
@@ -149,7 +147,8 @@ class ProductController extends Controller
             'img2_product' => 'mimes:jpg,jpeg,png,gif|max:2048',
             'img3_product' => 'mimes:jpg,jpeg,png,gif|max:2048',
         ], [
-            'nameProduct.required' => 'Tên sản phẩm đã tồn tại. Vui lòng chọn tên khác',
+            'nameProduct.required' => 'Vui lòng nhập tên sản phẩm',
+            'nameProduct.unique' => 'Tên sản phẩm đã tồn tại. Vui lòng chọn tên khác',
             'price.required' => 'Vui lòng nhập giá sản phẩm',
             'description.required' => 'Vui lòng nhập mô tả',
             'nameProduct' => 'Vui lòng nhập tên sản phẩm',
@@ -180,7 +179,7 @@ class ProductController extends Controller
             // dd($dataProduct);
             DB::table('products')->insert($dataProduct);
 
-            return Redirect::to('/san-pham-cho-duyet');
+            return Redirect::to('/list-san-pham');
         
     }
     public function getProductPending(){
@@ -214,7 +213,7 @@ class ProductController extends Controller
         $this->validate($req, 
         [
             //Kiểm tra đúng file đuôi .jpg,.jpeg,.png.gif và dung lượng không quá 2M
-            'nameProduct' =>'required',
+            
             'img_product' => 'required',
             'img_product' => 'mimes:jpg,jpeg,png,gif|max:2048',
             'img1_product' => 'mimes:jpg,jpeg,png,gif|max:2048',
@@ -223,7 +222,7 @@ class ProductController extends Controller
         ], [
             
             //Tùy chỉnh hiển thị thông báo không thõa điều kiện
-            'nameProduct.required' => 'aaaaaa',
+            
             'img_product.required' => 'Ko có dữ liệu',
             'img_product.mimes' => 'Chỉ chấp nhận với đuôi .jpg .jpeg .png .gif',
             'img_product.max' => 'Hình ảnh giới hạn dung lượng không quá 2M',
@@ -239,20 +238,6 @@ class ProductController extends Controller
             $productEdit = Products::find($id_product);
             $productEdit->shop_id = Session::get('id_shop');
             $productEdit->status_product = $productEdit->status_product;
-            if(($req->img_product)!=null){
-                $productEdit->img_product = $this->setNameImage($req->img_product);
-            }
-            else $productEdit->img_product = '';
-            if(($req->img1_product)!=null){
-                $productEdit->img1_product = $this->setNameImage($req->img1_product);
-            }
-            else $productEdit->img1_product = '';
-            if(($req->img2_product)!=null){
-                $productEdit->img2_product = $this->setNameImage($req->img2_product);
-            }
-            else $productEdit->img2_product = '';
-
-            print_r($req->img_product);
             // if(($req->img1_product)!=null){
             //     $productEdit->img1_product = $this->setNameImage($req->img1_product);
             // }            
@@ -262,64 +247,63 @@ class ProductController extends Controller
             //     $productEdit->img2_product = $this->setNameImage($req->img2_product);
             // }            
             // else $productEdit->img2_product = '';
-
-            // // if(!empty($req->nameProduct)){
-            // //     $productEdit->name_product = $req->nameProduct;
-            // // }else{
-            // //      $productEdit->name_product = $productEdit->name_product;
-            // // }
-            // if(!empty($req->madeby)){
-            //     $productEdit->madeby = $req->madeby;
-            // }else{
-            //      $productEdit->madeby = $productEdit->madeby;
-            // }
-            // if(!empty($req->_id_sub_category)){
-            //     $productEdit->sub_category_id = $req->_id_sub_category;
-            // }else{
-            //      $productEdit->sub_category_id = $productEdit->sub_category_id;
-            // }
-            // if(!empty($req->_id_brand)){
-            //     $productEdit->brand_id = $req->_id_brand;
-            // }else{
-            //      $productEdit->brand_id = $productEdit->brand_id;
-            // }
-            // if(!empty($req->img_product)){
-            //     $productEdit->img_product = $this->setNameImage($req->img_product);
-            // }else{
-            //      $productEdit->img_product = $productEdit->img_product;
-            // }
-            // if(!empty($req->img1_product)){
-            //     $productEdit->img1_product = $this->setNameImage($req->img1_product);
-            // }else{
-            //     $productEdit->img1_product = $productEdit->img1_product;
-            // }
-            // if(!empty($req->img2_product)){
-            //     $productEdit->img2_product = $this->setNameImage($req->img2_product);
-            // }else{
-            //      $productEdit->img2_product = $productEdit->img2_product;
-            // }
-            // if(!empty($req->img3_product)){
-            //     $productEdit->img3_product = $this->setNameImage($req->img3_product);
-            // }else{
-            //      $productEdit->img3_product = $productEdit->img3_product;
-            // }
-            // if(!empty($req->description_product)){
-            //     $productEdit->description_product = $req->description_product;
-            // }else{
-            //      $productEdit->description_product = $productEdit->description_product;
-            // }
-            // if(!empty($req->price)){
-            //     $productEdit->price_product = $this->stringToNumber($req->price);
-            // }else{
-            //      $productEdit->price_product = $this->stringToNumber($productEdit->price_product);
-            // }
-            // if(!empty($req->note)){
-            //     $productEdit->note_product = $req->note;
-            // }else{
-            //      $productEdit->note_product = $productEdit->note_product;
-            // }
+            if(!empty($req->nameProduct)){
+                $productEdit->name_product = $req->nameProduct;
+            }else{
+                 $productEdit->name_product = $productEdit->name_product;
+            }
+            if(!empty($req->madeby)){
+                $productEdit->madeby = $req->madeby;
+            }else{
+                 $productEdit->madeby = $productEdit->madeby;
+            }
+            if(!empty($req->_id_sub_category)){
+                $productEdit->sub_category_id = $req->_id_sub_category;
+            }else{
+                 $productEdit->sub_category_id = $productEdit->sub_category_id;
+            }
+            if(!empty($req->_id_brand)){
+                $productEdit->brand_id = $req->_id_brand;
+            }else{
+                 $productEdit->brand_id = $productEdit->brand_id;
+            }
+            if(!empty($req->img_product)){
+                $productEdit->img_product = $this->setNameImage($req->img_product);
+            }else{
+                 $productEdit->img_product = $productEdit->img_product;
+            }
+            if(!empty($req->img1_product)){
+                $productEdit->img1_product = $this->setNameImage($req->img1_product);
+            }else{
+                $productEdit->img1_product = $productEdit->img1_product;
+            }
+            if(!empty($req->img2_product)){
+                $productEdit->img2_product = $this->setNameImage($req->img2_product);
+            }else{
+                 $productEdit->img2_product = $productEdit->img2_product;
+            }
+            if(!empty($req->img3_product)){
+                $productEdit->img3_product = $this->setNameImage($req->img3_product);
+            }else{
+                 $productEdit->img3_product = $productEdit->img3_product;
+            }
+            if(!empty($req->description_product)){
+                $productEdit->description_product = $req->description_product;
+            }else{
+                 $productEdit->description_product = $productEdit->description_product;
+            }
+            if(!empty($req->price)){
+                $productEdit->price_product = $this->stringToNumber($req->price);
+            }else{
+                 $productEdit->price_product = $this->stringToNumber($productEdit->price_product);
+            }
+            if(!empty($req->note)){
+                $productEdit->note_product = $req->note;
+            }else{
+                 $productEdit->note_product = $productEdit->note_product;
+            }
             $productEdit->save();
-            // return Redirect::to('/list-san-pham')->with('notification','Cập nhật thành công!!');
+            return Redirect::to('/list-san-pham')->with('notification','Cập nhật thành công!!');
         
     }
     public function deleteProduct(Request $request,$id_product){

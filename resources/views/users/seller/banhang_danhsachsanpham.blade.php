@@ -28,6 +28,7 @@
         <th>Trạng thái</th>
         <th>Danh mục</th>
        	<th>Hãng</th>
+        <th>#</th>
       </tr>
     </thead>
     @foreach($listProducts as $product)

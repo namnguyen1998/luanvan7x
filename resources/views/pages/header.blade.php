@@ -94,7 +94,7 @@
                                 Tìm trong tất cả
                                 <!-- <span class="arrow_carrot-down"></span> -->
                             </div>
-                            <input type="text" name="key" placeholder="Nhập tên sản phẩm cần tìm.">
+                            <input type="text" name="key" @if(Session::get('keySearch')!=null) value="{{Session::get('keySearch')}}" @endif placeholder="Nhập tên sản phẩm cần tìm.">
                             <button type="submit" class="site-btn">Tìm kiếm</button>
                         </form>
                     </div>
@@ -102,7 +102,7 @@
                 <div class="col-lg-3" id="total-quantity">
                     <div class="header__cart">
                         <ul>
-                            <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
+                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
                             <li><a href="{{URL::to('list-cart')}}">
                                 <i class="fa fa-shopping-bag">
                                 @if(Session::get('Cart')!=null)
