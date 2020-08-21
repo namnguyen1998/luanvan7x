@@ -79,7 +79,8 @@ Route::get('/reset-password','CustomerController@formResetPassword');//Mail
 // Route::get('/reset-password','CustomerController@formResetPassword');//
 Route::post('/resetPassword','CustomerController@resetPassword');
 Route::get('/profile/update-password','CustomerController@getUpdatePassword');
-Route::post('/updatePassword/{id_customer}','CustomerController@postUpdatePassword');
+Route::post('/updatePassword','CustomerController@postUpdatePassword');
+
 
 // Seller
 Route::get('/dang-ky-shop','CustomerController@getRegisterShop');
@@ -99,7 +100,8 @@ Route::get('/banhang','SellerController@sellerChannel');
 Route::post('/postSellerDashBoard','SellerController@postSellerDashBoard');
 Route::post('/updateProduct/{id_product}','ProductController@updateProduct');
 Route::get('/logout-shop','SellerController@logoutShop');
-
+Route::get('/seller/update-password','SellerController@getFormUpdatePassword');
+Route::post('/updatePasswordShop','SellerController@postUpdatePasswordShop');
 
 Route::get('/forgot-password-shop','SellerController@getForgotPasswordShop');
 Route::post('/sendMailResetPassShop','SellerController@sendMailResetPassShop');

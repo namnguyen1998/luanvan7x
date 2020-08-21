@@ -4,7 +4,7 @@
     <div class="filter__item">
         <div class="card">
             <div class="card-header">
-                <h2><strong>Hồ sơ shop</strong></h2>
+                <h2><strong>Thông tin shop</strong></h2>
             </div>
                 @if(Session::has('success')!=null)
                 <div class="alert alert-success" role="alert">{{Session::get('success')}}</div>

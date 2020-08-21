@@ -21,7 +21,7 @@
                         <option value="0">Chọn</option>
                         @foreach($listCategory as $category)
                             @if($category->id_category == $pro->category_id)
-                                <option value="{{$category->id_category}}" selected>{{$category->name_category}}</option>
+                                <option value="{{$category->id_category}}" selected>--{{$category->name_category}}--</option>
                             @else
                                 <option value="{{$category->id_category}}">{{$category->name_category}}</option>
                             @endif
@@ -54,7 +54,7 @@
                     <option value="-1">Chọn</option>
                         @foreach($listBrand as $brand)
                             @if($brand->id_brand==$pro->brand_id)
-                            <option value="{{$brand->id_brand}}" selected>{{$brand->name_brand}}</option>
+                            <option value="{{$brand->id_brand}}" selected>--{{$brand->name_brand}}--</option>
                             @else
                             <option value="{{$brand->id_brand}}">{{$brand->name_brand}}</option>
                             @endif
@@ -73,7 +73,7 @@
                     <div class="card-body">
                         <div class="form-body">
                             <div class="form-group row">
-                                <label class="control-label text-right col-md-3">Tên sản phẩm *</label>
+                                <label class="control-label text-right col-md-3">Tên sản phẩm <span style="color:red">*</span></label>
                                 <div class="col-md-9">
                                 <input name="nameProduct" id="name" value="{{$pro->name_product}}" class="form-control" type="text">
                                 </div>
@@ -85,14 +85,14 @@
                                 </div>
                             </div> -->
                             <div class="form-group row">
-                                <label class="control-label text-right col-md-3">Nơi sản xuất *</label>
+                                <label class="control-label text-right col-md-3">Nơi sản xuất <span style="color:red">*</span></label>
                                 <div class="col-md-9">
                                 <input name="madeby" value="{{$pro->madeby}}" class="form-control" type="text">
                                 </div>
                             </div>
                             
                             <div class="form-group row">
-                                <label class="control-label text-right col-md-3">Giá *</label>
+                                <label class="control-label text-right col-md-3">Giá <span style="color:red">*</span></label>
                                 <div class="col-md-9">
                                 <input name="price" id="_price" value="{{number_format($pro->price_product)}}" class="form-control" type="text">
                                 </div>
@@ -108,7 +108,7 @@
                             <!-- summernote --> 
                             <div class="col-lg-12">
                                 <fieldset class="form-group">
-                                <label>Mô tả *</label>
+                                <label>Mô tả <span style="color:red">*</span></label>
                                 <textarea name="description" class="form-control" id="descTextarea">{!!$pro->description_product!!}</textarea>
                                 </fieldset>
                             </div>
@@ -123,7 +123,7 @@
             <div class="col-lg-12 col-md-12">
                 <div class="card">
                     <div class="card-body">
-                    <h4 class="card-title">Hình 1</h4>
+                    <h4 class="card-title">Hình 1 <span style="color:red">*</span></h4>
                     <label for="input-file-now-custom-1">Chọn hình</label>
                     <input data-default-file="{{asset('public/frontend/img/product/'.$pro->img_product)}}" name="img_product" type="file" id="input-file-now-custom-1" class="dropify" />
                     </div>

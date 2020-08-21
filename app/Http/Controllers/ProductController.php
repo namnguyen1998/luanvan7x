@@ -185,7 +185,7 @@ class ProductController extends Controller
     public function getProductPending(){
         $this->AuthLogin();
         $listProductsPending = DB::table('products_category')->where('shop_id','=',Session::get('id_shop'))
-        ->where('is_deleted','=',0)->paginate(6);
+        ->where('is_deleted','=',0)->where('status_product','=',0)->orderBy('id_product','DESC')->paginate(6);
         return view('users.seller.banhang_sanphamchoduyet',compact('listProductsPending'));
     }
 

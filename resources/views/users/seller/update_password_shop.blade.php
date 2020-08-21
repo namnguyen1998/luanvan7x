@@ -1,19 +1,19 @@
-@extends('users.customer.profile')
+@extends('users.seller.banhang')
 @section('content')
- <div class="col-lg-9 col-md-7">
+ <div class="col-md-6 offset-md-3 mr-auto ml-auto">
     <div class="filter__item">
         <div class="card">
             <div class="card-header">
-                <strong>Hồ sơ của tôi</strong>
+                <strong>Mật khẩu shop</strong>
             </div>
-                @if(Session::get('message')!=null)
-                <div class="alert alert-success" role="alert">{{Session::get('message')}}</div>
+                @if(Session::get('success')!=null)
+                <div class="alert alert-success" role="alert">{{Session::get('success')}}</div>
                 @endif
                 <div class="card-body card-block" style="">
                     @foreach($errors->all() as $err)
                         <div class="alert alert-danger" role="alert">{{$err}}</div>
                     @endforeach
-                    <form action="{{URL::to('/updatePassword')}}" method="post" class="form-horizontal">
+                    <form action="{{URL::to('/updatePasswordShop')}}" method="post" class="form-horizontal">
                             @csrf
                         <div class="row form-group">
                             <div class="col col-md-3">

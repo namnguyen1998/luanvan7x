@@ -133,7 +133,7 @@
           <li class="dropdown user user-menu p-ph-res"> <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <img src="{{asset('public/frontend/img/shop/'.Session::get('shop')->img_shop)}}" class="user-image" alt="User Image"> <span class="hidden-xs">{{Session::get('shop')->name_shop}}</span> </a>
             <ul class="dropdown-menu">
               <li><a href="{{URL::to('/ban-hang/profile-shop')}}"><i class="icon-profile-male"></i> My Profile</a></li>
-              <li><a href="#"><i class="fa fa-lock"></i> Password</a></li>
+              <li><a href="{{URL::to('/seller/update-password')}}"><i class="fa fa-lock"></i> Password</a></li>
               <li><a href="{{URL::to('/logout-shop')}}"><i class="fa fa-power-off"></i> Logout</a></li>
             </ul>
           </li>

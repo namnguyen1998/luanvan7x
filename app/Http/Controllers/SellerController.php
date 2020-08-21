@@ -98,7 +98,27 @@ class SellerController extends Controller
         return Redirect::to('/ban-hang/profile-shop')->with('success','Cập nhật mật khẩu thành công');
     }
 
-
+    public function getFormUpdatePassword(){
+        $this->AuthLogin();
+        return view('users.seller.update_password_shop');
+    }
+    public function postUpdatePasswordShop(Request $request){
+        $this->AuthLogin();
+        $this->validate($request,[
+                'new_password' => 'required|min:6|max:20',
+                'password_new_confirmation' => 'required|same:new_password',
+            ],
+            [
+                'new_password.required'=>'Vui lòng nhập mật khẩu',
+                'password_new_confirmation.same'=>'Mật khẩu không giống nhau',
+                'new_password.min'=>'Mật khẩu có ít nhất 6 kí tự',
+                'new_password.max'=>'Mật khẩu có tối đa 20 kí tự'
+            ]);
+        $shop = Shop::find(Session::get('id_shop'));
+        $shop->password_shop = md5($request->password_new_confirmation);
+        $shop->save();
+        return Redirect::to('/seller/update-password')->with('success','Cập nhật mật khẩu thành công');
+    }
 
     public function sellerDashBoard(){
     	$this->AuthLogin();
@@ -169,7 +189,7 @@ class SellerController extends Controller
 
     public function formResetPasswordShop(){
         $key = $_GET['key'];
-        return view('users.seller.update_password',compact('key'));
+        return view('users.seller.reset_password',compact('key'));
     }
     public function resetPasswordShop(Request $request){
         $this->validate($request,

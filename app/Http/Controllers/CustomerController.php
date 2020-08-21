@@ -117,7 +117,7 @@ class CustomerController extends Controller
     public function getUpdatePassword(){
         return view('users.customer.update_password');
     }
-    public function postUpdatePassword(Request $request,$id_customer){
+    public function postUpdatePassword(Request $request){
         $this->AuthLogin();
         $this->validate($request,
             [
@@ -130,7 +130,7 @@ class CustomerController extends Controller
                 'new_password.min'=>'Mật khẩu có ít nhất 6 kí tự',
                 'new_password.max'=>'Mật khẩu có tối đa 20 kí tự'
             ]);
-        $customer = Customers::find($id_customer);
+        $customer = Customers::find($this->checkUser());
         $customer->password_customer = md5($request->password_new_confirmation);
         $customer->save();
         return Redirect('/profile/update-password')->with('message','Cập nhật thành công');
