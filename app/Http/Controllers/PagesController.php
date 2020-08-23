@@ -18,11 +18,79 @@ session_start();
 
 class PagesController extends Controller
 {
+    public function getTraCes(){
+        $getIPconfigClient = explode('Physical Address. . . . . . . . .',shell_exec ("ipconfig/all"));  
+        $getMacAddressClient = explode(':', $getIPconfigClient[1]);  
+        $getMacAddressClient = explode(' ', $getMacAddressClient[1]);  
+        $macAddressClient = $getMacAddressClient[1];
+        $getMacAddress = DB::table('traces')->where('mac_address', $macAddressClient)->first();
+        return $getMacAddress;
+    }
+
+    public function insertTracesClient(Request $req){
+        // echo $req->id;
+        $url = explode('/', $req->id);
+        $getID = array_pop($url);
+        $id = base64_decode(base64_decode($getID));
+            // return $id;
+        $getIPconfigClient = explode('Physical Address. . . . . . . . .',shell_exec ("ipconfig/all"));  
+        $getMacAddressClient = explode(':', $getIPconfigClient[1]);  
+        $getMacAddressClient = explode(' ', $getMacAddressClient[1]);  
+        $macAddressClient = $getMacAddressClient[1];
+        $getMacAddress = DB::table('traces')->where('mac_address', $macAddressClient)->first();
+        // print_r( $getMacAddress);
+        if (empty($getMacAddress)) {
+            $dataTraves['mac_address'] = $macAddressClient;
+            $dataTraves['data_traces'] = json_encode( array($id) );
+            DB::table('traces')->insert( $dataTraves );
+            return 1;
+        }
+        else {
+            $arrayDataTraces = json_decode( $getMacAddress->data_traces );
+            if ( count($arrayDataTraces) < 10 ) 
+                 array_push ($arrayDataTraces, $id);
+            else {
+                $arrayDataTracesTemps = array_shift($arrayDataTraces);
+                array_push ($arrayDataTraces, $id);
+            }
+
+            DB::table('traces')->where('mac_address', $macAddressClient)->update([ 'data_traces' => $arrayDataTraces ]);
+            return $arrayDataTraces;
+        }
+        return 0;
+    }
+
 	public function getIndex(){
+        $getIPconfigClient = explode('Physical Address. . . . . . . . .',shell_exec ("ipconfig/all"));  
+        $getMacAddressClient = explode(':', $getIPconfigClient[1]);  
+        $getMacAddressClient = explode(' ', $getMacAddressClient[1]);  
+        $macAddressClient = $getMacAddressClient[1];
+
+        $getMacAddress = DB::table('traces')->where('mac_address', $macAddressClient)->first();
+        // $getNameProduct = Products::where('id_product', json_decode($getMacAddress->data_traces))->pluck('sub_category_id');
+        // $a = json_decode($getMacAddress->data_traces);
+        // dd(array_pop($a));
+        // dd(($getNameProduct));
+
+       
+        if (empty($getMacAddress))
+            $listProducts = Products::where('is_deleted','=',0)->where('status_product','!=', -1)->orderby('id_product','desc')->paginate(12);
+
+        else {
+            foreach (json_decode($getMacAddress->data_traces) as $aaa){
+                $getNameProduct = Products::where('id_product', $aaa)->pluck('sub_category_id');
+            }
+            $listProducts = Products::where('is_deleted','=',0)->where('status_product','!=', -1)
+                            // ->orderby('id_product','desc')
+                            ->where('sub_category_id','like','%'.$getNameProduct[0].'%')
+                            ->paginate(12);
+        }
+        // dd($listProducts);
         $Category = Category::all();
         // $productCategory = DB::table('products_category')->where('category_id','=',1)
         // ->where('status_product','=',1)->where('is_deleted','=',0)->get();
-        $listProducts = Products::where('is_deleted','=',0)->where('status_product','!=', -1)->orderby('id_product','desc')->paginate(12);
+
+        
         //var_dump(Session::get('id_shop'));
         //var_dump($productCategory);
         $listTopProduct5 = Products::join('order_detail', 'order_detail.product_id', '=', 'products.id_product')

@@ -29,6 +29,8 @@ Route::get('/sort-by-product-categories','PagesController@sortByProductCategorie
 Route::get('/sort-by-product-sub','PagesController@sortByProductSub');
 Route::get('/sort-by-product-keyword','PagesController@sortByProductKeyWord');
 
+Route::get('/traces','PagesController@insertTracesClient');
+
 //Mail
 Route::get('/send-email','MailController@sendMail');
 Route::get('/send-email-shop','MailController@sendMailShop');
