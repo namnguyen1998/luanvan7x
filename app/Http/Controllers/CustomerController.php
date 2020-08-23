@@ -91,7 +91,7 @@ class CustomerController extends Controller
         }
     }
     public function getRegisterForm(){
-        return  view('register');
+        return view('register');
     }
     public function postRegister(Request $request){
         $this->validate($request,
@@ -496,7 +496,8 @@ class CustomerController extends Controller
         $data['product_id'] = $req->id_product;
         $data['content'] = $req->content;
         DB::table('comment')->insert($data);
-        return Redirect::to('/chi-tiet-san-pham/'.$req->id_product);
+        $id = base64_encode(base64_encode($req->id_product));
+        return Redirect::to('/chi-tiet-san-pham/'.base64_encode(base64_encode($req->id_product)));
     }   
 
 }

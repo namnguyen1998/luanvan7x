@@ -39,10 +39,11 @@ class MailController extends Controller
 									DB::raw('shop.email_shop as email_shop'),
 									DB::raw('shop_oder_product.orders_id as orders_id'),
 								)); 
+		$url = \URL::to('/banhang')
 		$details = [
-		'title' => 'Mail from OGANI',
+		'title' => 'OGANI',
 		'body' => "Bạn vừa có đơn đặt hàng vui lòng đăng nhập để kiểm tra!",
-		'url' => \URL::to("/banhang"),
+		'url' => $url
 		];
 		
 		foreach($emailShopvsCustomer as $email){
@@ -56,7 +57,7 @@ class MailController extends Controller
 
 	public function sendMailCustomer(){
 			$details = [
-			'title' => 'Mail from OGANI',
+			'title' => 'OGANI',
 			'body' =>"Cám ơn bạn đã mua hàng! Shop bán hàng sẽ kiểm tra đơn hàng và liên hệ với bạn sau!!",
 			
 		];

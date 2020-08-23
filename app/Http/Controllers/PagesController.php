@@ -20,13 +20,8 @@ class PagesController extends Controller
 {
 	public function getIndex(){
         $Category = Category::all();
-        // $productCategory = DB::table('products_category')->where('category_id','=',1)
-        // ->where('status_product','=',1)->where('is_deleted','=',0)->get();
 
         $listProducts = Products::where('is_deleted','=',0)->where('status_product','>', 0)->orderby('id_product','desc')->paginate(12);
-
-        //var_dump(Session::get('id_shop'));
-        //var_dump($productCategory);
         $listTopProduct5 = Products::join('order_detail', 'order_detail.product_id', '=', 'products.id_product')
                                     ->where('is_deleted','=',0)
                                     ->where('status_product','>', 0)
@@ -82,7 +77,7 @@ class PagesController extends Controller
 
         //dd($productByID);
         if(empty(count($productByID))){
-            return Redirect('/');
+            return view('pages.404');
         }
         else{
             foreach ($productByID as $key => $value){

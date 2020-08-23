@@ -30,8 +30,8 @@
                             <img class="profile-user-img img-responsive img-circle m-b-2" src="{{asset('public/frontend/img/default-avatar.png')}}" alt="User profile picture" style="height: 100px;
                                 padding-left: 56px;">
                             @endif
-                            <h5 class="profile-username text-center" style="padding-right: 38px;">
-                                {{Session::get('name_customer')}}
+                            <h5 class="profile-username text-center" style="padding-right: 38px; padding-top: 10px;">
+                                <strong style="color:blue">{{Session::get('name_customer')}}</strong>
                             </h5>
                         </li>
                         <li><a href="{{URL::to('/profile')}}" class = "fa fa-user">Hồ sơ của tôi</a></li>

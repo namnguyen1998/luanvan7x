@@ -59,9 +59,11 @@ class SellerController extends Controller
 
     public function getProfileShop(){
         $this->AuthLogin();
-        if(!empty(Session::get('shop'))){
-            $phone_shop = substr(Session::get('shop')->phone_shop,7);
-            $email_shop = substr(Session::get('shop')->email_shop,0,3);
+        $shop = Shop::find(Session::get('shop')->id_shop);
+        if(!empty($shop)){
+            Session::put('shop',$shop);
+            $phone_shop = substr($shop->phone_shop,7);
+            $email_shop = substr($shop->email_shop,0,3);
         }
         return view('users.seller.profile_shop',compact('phone_shop', 'email_shop'));
     }
@@ -95,7 +97,7 @@ class SellerController extends Controller
         }
         $shop->save();
         //dd($customer);
-        return Redirect::to('/ban-hang/profile-shop')->with('success','Cập nhật mật khẩu thành công');
+        return Redirect::to('/ban-hang/profile-shop')->with('success','Cập nhật thông tin  thành công');
     }
 
     public function getFormUpdatePassword(){

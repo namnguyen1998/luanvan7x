@@ -10,6 +10,8 @@ use App\Brands;
 use App\SubCategory;
 use App\Products;
 use App\Orders;
+use App\Shop;
+use Mail;   
 use DataTables;
 use DB;
 
@@ -301,8 +303,20 @@ class AdminController extends Controller
     public function editAgreeShop(Request $request){
         $this->AuthAdmin();
         $this->checkUrlRoleUser(Session::get('role_id'));
-        $dataShop['status_shop'] = 1;
-        DB::table('shop')->where('id_shop',$request->id_shop)->update($dataShop);      
+        
+        $shop = Shop::find($request->id_shop);
+        $shop->status_shop = 1;
+        $shop->save();
+
+        // $url = \URL::to('/banhang');
+        // $details = [
+        //     'title' => 'OGANI',
+        //     'body' =>"Shop của bạn được phê duyệt! Vui lòng đăng nhập để kiểm tra!!",
+        //     'url' => $url
+            
+        // ];
+
+        // \Mail::to($shop[0]->email_shop)->send(new \App\Mail\Mail($details));      
         return response()->json(['success'=>'Product saved successfully.']);
     }
 
