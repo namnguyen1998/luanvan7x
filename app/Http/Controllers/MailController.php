@@ -56,9 +56,11 @@ class MailController extends Controller
 	}
 
 	public function sendMailCustomer(){
+			$url = null;
 			$details = [
 			'title' => 'OGANI',
 			'body' =>"Cám ơn bạn đã mua hàng! Shop bán hàng sẽ kiểm tra đơn hàng và liên hệ với bạn sau!!",
+			'url' => $url
 			
 		];
 		\Mail::to(Session::get("email_customer"))->send(new \App\Mail\Mail($details));

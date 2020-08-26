@@ -23,16 +23,19 @@
                     <h4>Thông tin</h4>
                     <ul>
                         <li>
-                            @if(Session::get('img_customer')!=null)
-                            <img class="profile-user-img img-responsive img-circle m-b-2" src="{{asset('public/frontend/img/shop/'.Session::get('img_customer'))}}" alt="User profile picture" style="height: 100px;
-                                padding-left: 56px;">
-                            @else
+                            @if(Session::get('img_customer')==null && Session::get('customer')->name_customer == null)
                             <img class="profile-user-img img-responsive img-circle m-b-2" src="{{asset('public/frontend/img/default-avatar.png')}}" alt="User profile picture" style="height: 100px;
                                 padding-left: 56px;">
-                            @endif
                             <h5 class="profile-username text-center" style="padding-right: 38px; padding-top: 10px;">
-                                <strong style="color:blue">{{Session::get('name_customer')}}</strong>
+                                <strong style="color:blue">{{Session::get('customer')->email_customer}}</strong>
                             </h5>
+                            @else
+                            <img class="profile-user-img img-responsive img-circle m-b-2" src="{{asset('public/frontend/img/shop/'.Session::get('img_customer'))}}" alt="User profile picture" style="height: 100px;
+                                padding-left: 56px;">
+                            <h5 class="profile-username text-center" style="padding-right: 38px; padding-top: 10px;">
+                                <strong style="color:blue">{{Session::get('customer')->name_customer}}</strong>
+                            </h5>
+                            @endif
                         </li>
                         <li><a href="{{URL::to('/profile')}}" class = "fa fa-user">Hồ sơ của tôi</a></li>
                         <li><a href="{{URL::to('/profile/update-password')}}" class = "fa fa-lock">Cập nhật mật khẩu</a></li>

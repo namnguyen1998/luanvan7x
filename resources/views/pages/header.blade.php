@@ -57,7 +57,7 @@
                             <div class="header__top__right__language">
                                 <div>
                                 <i class="fa fa-user"></i>
-                                @if(Session::get('name_customer') != null)
+                                @if(Session::get('name_customer')!= null)
                                     {{Session::get('name_customer')}}
                                 @else
                                     {{Session::get('email_customer')}}
