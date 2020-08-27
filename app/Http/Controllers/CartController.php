@@ -150,7 +150,6 @@ class CartController extends Controller
             return view('pages.cart_ajax');
         }
     }
-
     public function saveAllCart(Request $request){
         var_dump($request->data);
         foreach ($request->data as $item){
@@ -223,6 +222,7 @@ class CartController extends Controller
                         $dataOrderDetail['orders_id'] = $order_id[0]->Auto_increment -1;
                         $dataOrderDetail['product_id'] = $product['productInfo']->id_product;
                         $dataOrderDetail['quantity'] = $product['quantity'];
+                        $dataOrderDetail['price_order_detail'] = $product['price'];
                         DB::table('order_detail')->insert($dataOrderDetail);
                     }
                 }
@@ -243,6 +243,7 @@ class CartController extends Controller
                             $dataOrderDetail['orders_id'] = $order_id[0]->Auto_increment;
                             $dataOrderDetail['product_id'] = $product['productInfo']->id_product;
                             $dataOrderDetail['quantity'] = $product['quantity'];
+                            $dataOrderDetail['price_order_detail'] = $product['price'];
                             DB::table('order_detail')->insert($dataOrderDetail);
                         }
                     }

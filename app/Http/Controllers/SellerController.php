@@ -32,17 +32,96 @@ class SellerController extends Controller
 	        return Redirect::to('/banhang')->send();
 	    }
 	}
-
+    public function setNameImage($data){
+        if(empty($data)){
+            return null;
+        }
+        else{
+            $getNameImage = current(explode('.', $data->getClientOriginalName()));
+            $destinationPath = 'public/frontend/img/shop';
+            $date = date('dmY');
+            $hash = md5($getNameImage);
+            $plus = $date . '_' . $hash . '.jpg';
+            $data->move($destinationPath, $plus);
+            return $plus;
+        }
+    }
     public function sellerChannel(){
-		if(!empty(Session::get('id_shop')))
+		if(!empty(Session::get('shop')->id_shop))
 			return Redirect::to('/dashboard');
 		else
 			if(!empty(Session::get('id_customer')) || empty(Session::get('id_customer')))
 				return view('users.seller.banhang_login');
 			else
-				return Redirect::to('/');
+				return Redirect::to('/banhang');
 	}
 	
+
+    public function getProfileShop(){
+        $this->AuthLogin();
+        $shop = Shop::find(Session::get('shop')->id_shop);
+        if(!empty($shop)){
+            Session::put('shop',$shop);
+            $phone_shop = substr($shop->phone_shop,7);
+            $email_shop = substr($shop->email_shop,0,3);
+        }
+        return view('users.seller.profile_shop',compact('phone_shop', 'email_shop'));
+    }
+
+    public function updateProfileShop(Request $request){
+        $this->AuthLogin();
+        $this->validate($request, 
+        [
+            'img_shop' => 'mimes:jpg,jpeg,png,gif|max:2048',
+        ], 
+        [
+            'img_shop.mimes' => 'Chỉ chấp nhận với đuôi .jpg .jpeg .png .gif',
+            'img_shop.max' => 'Hình ảnh giới hạn dung lượng không quá 2M',
+
+        ]);
+        $shop = Shop::find(Session::get('shop')->id_shop);
+        if($request->name_shop!= null){
+            $shop->name_shop = $request->name_shop;
+        }else{
+            $shop->name_shop = $shop->name_shop;
+        }
+        if($request->phone_shop!= null){
+            $shop->phone_shop = $request->phone_shop;
+        }else{
+             $shop->phone_shop = $shop->phone_shop;
+        }
+        if($request->img_shop){
+            $shop->img_shop = $this->setNameImage($request->img_shop);
+        }else{
+            $shop->img_shop = $shop->img_shop;
+        }
+        $shop->save();
+        //dd($customer);
+        return Redirect::to('/ban-hang/profile-shop')->with('success','Cập nhật thông tin  thành công');
+    }
+
+    public function getFormUpdatePassword(){
+        $this->AuthLogin();
+        return view('users.seller.update_password_shop');
+    }
+    public function postUpdatePasswordShop(Request $request){
+        $this->AuthLogin();
+        $this->validate($request,[
+                'new_password' => 'required|min:6|max:20',
+                'password_new_confirmation' => 'required|same:new_password',
+            ],
+            [
+                'new_password.required'=>'Vui lòng nhập mật khẩu',
+                'password_new_confirmation.same'=>'Mật khẩu không giống nhau',
+                'new_password.min'=>'Mật khẩu có ít nhất 6 kí tự',
+                'new_password.max'=>'Mật khẩu có tối đa 20 kí tự'
+            ]);
+        $shop = Shop::find(Session::get('id_shop'));
+        $shop->password_shop = md5($request->password_new_confirmation);
+        $shop->save();
+        return Redirect::to('/seller/update-password')->with('success','Cập nhật mật khẩu thành công');
+    }
+
     public function sellerDashBoard(){
     	$this->AuthLogin();
     	return view('users.seller.banhang_thongke');
@@ -50,6 +129,18 @@ class SellerController extends Controller
     }
    public function postSellerDashBoard(Request $request){
         $this->AuthLogin();
+        $this->validate($request,
+            [
+                'email_shop' => 'required',
+                'password_shop' => 'required|min:6|max:20',
+
+            ],
+            [
+                'email_shop.required'=>'Vui lòng nhập Email',
+                'password_shop.required'=>'Vui lòng nhập mật khẩu',
+                'password_shop.min'=>'Mật khẩu có ít nhất 6 kí tự',
+                'password_shop.max'=>'Mật khẩu có tối đa 20 kí tự'
+            ]);
         $email_shop = $request->email_shop;
         $password_shop = md5($request->password_shop);
         $result = DB::table('shop')
@@ -58,8 +149,9 @@ class SellerController extends Controller
                     ->where('status_shop', '=', 1)
                     ->first();               
         if(!empty($result)){
-            Session::put('name_shop',$result->name_shop);
-            Session::put('img_shop',$result->img_shop);
+            Session::put('shop',$result);
+            // Session::put('name_shop',$result->name_shop);
+            // Session::put('img_shop',$result->img_shop);
             Session::put('id_shop',$result->id_shop);
             return Redirect::to('/dashboard');
         }
@@ -69,10 +161,11 @@ class SellerController extends Controller
     public function logoutShop(){
     	$this->AuthLogin();
     	Session::forget('id_shop');
-    	return Redirect::to('/');
+        Session::forget('shop');
+    	return Redirect::to('/banhang');
     }
 
-     public function getForgotPasswordShop(){
+    public function getForgotPasswordShop(){
         return view('users.seller.forgot_password');
     }
      public function sendMailResetPassShop(Request $request)
@@ -98,7 +191,7 @@ class SellerController extends Controller
 
     public function formResetPasswordShop(){
         $key = $_GET['key'];
-        return view('users.seller.update_password',compact('key'));
+        return view('users.seller.reset_password',compact('key'));
     }
     public function resetPasswordShop(Request $request){
         $this->validate($request,
@@ -198,7 +291,7 @@ class SellerController extends Controller
     }
 
     public function loadOrderDetailShop($orders_id){
-        $loadOrderDetail = OrderDetail::select('products.name_product', 'products.price_product', 'shop.id_shop', 'shop.name_shop', 'order_detail.id_order_detail', 'order_detail.quantity')
+        $loadOrderDetail = OrderDetail::select('order_detail.name_product_order_detail', 'order_detail.price_order_detail', 'shop.id_shop', 'shop.name_shop', 'order_detail.id_order_detail', 'order_detail.quantity')
                                 ->join('orders', 'orders.id_orders', '=', 'order_detail.orders_id')
                                 ->join('products', 'products.id_product', '=', 'order_detail.product_id')
                                 ->leftjoin('shop', 'shop.id_shop', '=', 'products.shop_id')
@@ -224,7 +317,7 @@ class SellerController extends Controller
     }
 
     public function downloadPDF(Request $req){
-        $loadOrderDetail = OrderDetail::select('products.name_product', 'products.price_product', 'shop.id_shop', 'shop.name_shop', 'order_detail.id_order_detail', 'order_detail.quantity')
+        $loadOrderDetail = OrderDetail::select('order_detail.name_product_order_detail', 'order_detail.price_order_detail', 'shop.id_shop', 'shop.name_shop', 'order_detail.id_order_detail', 'order_detail.quantity')
                                 ->join('orders', 'orders.id_orders', '=', 'order_detail.orders_id')
                                 ->join('products', 'products.id_product', '=', 'order_detail.product_id')
                                 ->leftjoin('shop', 'shop.id_shop', '=', 'products.shop_id')

@@ -43,7 +43,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <i class="fa fa-shopping-cart"><a onClick="AddCart({{$product->id_product}})" href="javascript:" style="color:black"> THÊM VÀO GIỎ HÀNG</a></i>
+                            <div class="btn btn-success">
+                            <i class="fa fa-shopping-cart"><a onClick="AddCart({{$product->id_product}})" href="javascript:" style="color:white"> THÊM VÀO GIỎ HÀNG</a></i>
+                            </div>
                             <!-- <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a> -->
                         <ul>
                             <li><b>THÔNG TIN SHOP</b> <span>{{$product->name_shop}}</span>
@@ -89,7 +91,7 @@
                                         <input type="hidden" name="_token" value="{{csrf_token()}}" >
                                         <input type="hidden" value="{{$product->id_product}}" name="id_product">
                                             <h6>Viết bình luận của bạn</h6>
-                                            <textarea name="content" class="form-control" placeholder="Viết bình luận"></textarea>
+                                            <textarea name="content" class="form-control" placeholder="Viết bình luận" required></textarea>
                                             <button type="submit" class="btn btn-success float-right">Đăng</button>
                                         </form>
                                     </div>
@@ -134,7 +136,6 @@
                             <ul class="product__item__pic__hover">
                                 <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                 <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
                             </ul>
                         </div>
                         <div class="product__item__text">

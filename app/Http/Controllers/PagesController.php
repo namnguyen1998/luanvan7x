@@ -14,39 +14,36 @@ use App\Category;
 use App\Brands;
 use App\ShippingAddress;
 use App\Products;
+use App\SubCategory;
+
 session_start();
 
 class PagesController extends Controller
 {
+
     public function getTraCes(){
-        $getIPconfigClient = explode('Physical Address. . . . . . . . .',shell_exec ("ipconfig/all"));  
-        $getMacAddressClient = explode(':', $getIPconfigClient[1]);  
-        $getMacAddressClient = explode(' ', $getMacAddressClient[1]);  
-        $macAddressClient = $getMacAddressClient[1];
-        $getMacAddress = DB::table('traces')->where('mac_address', $macAddressClient)->first();
-        return $getMacAddress;
+        if (!empty($_SERVER['HTTP_CLIENT_IP'])) 
+            $IP = $_SERVER['HTTP_CLIENT_IP'];
+         elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) 
+            $IP = $_SERVER['HTTP_X_FORWARDED_FOR'];
+         else 
+            $IP = $_SERVER['REMOTE_ADDR'];
+        return $IP ;
     }
 
     public function insertTracesClient(Request $req){
-        // echo $req->id;
         $url = explode('/', $req->id);
         $getID = array_pop($url);
         $id = base64_decode(base64_decode($getID));
-            // return $id;
-        $getIPconfigClient = explode('Physical Address. . . . . . . . .',shell_exec ("ipconfig/all"));  
-        $getMacAddressClient = explode(':', $getIPconfigClient[1]);  
-        $getMacAddressClient = explode(' ', $getMacAddressClient[1]);  
-        $macAddressClient = $getMacAddressClient[1];
-        $getMacAddress = DB::table('traces')->where('mac_address', $macAddressClient)->first();
-        // print_r( $getMacAddress);
-        if (empty($getMacAddress)) {
-            $dataTraves['mac_address'] = $macAddressClient;
+        $getIPAddress = DB::table('traces')->where('mac_address', $this->getTraCes())->first();
+        if (empty($getIPAddress)) {
+            $dataTraves['mac_address'] = $this->getTraCes();
             $dataTraves['data_traces'] = json_encode( array($id) );
             DB::table('traces')->insert( $dataTraves );
             return 1;
         }
         else {
-            $arrayDataTraces = json_decode( $getMacAddress->data_traces );
+            $arrayDataTraces = json_decode( $getIPAddress->data_traces );
             if ( count($arrayDataTraces) < 10 ) 
                  array_push ($arrayDataTraces, $id);
             else {
@@ -54,48 +51,62 @@ class PagesController extends Controller
                 array_push ($arrayDataTraces, $id);
             }
 
-            DB::table('traces')->where('mac_address', $macAddressClient)->update([ 'data_traces' => $arrayDataTraces ]);
+            DB::table('traces')->where('mac_address', $this->getTraCes())->update([ 'data_traces' => $arrayDataTraces ]);
             return $arrayDataTraces;
         }
         return 0;
     }
 
 	public function getIndex(){
-        $getIPconfigClient = explode('Physical Address. . . . . . . . .',shell_exec ("ipconfig/all"));  
-        $getMacAddressClient = explode(':', $getIPconfigClient[1]);  
-        $getMacAddressClient = explode(' ', $getMacAddressClient[1]);  
-        $macAddressClient = $getMacAddressClient[1];
 
-        $getMacAddress = DB::table('traces')->where('mac_address', $macAddressClient)->first();
-        // $getNameProduct = Products::where('id_product', json_decode($getMacAddress->data_traces))->pluck('sub_category_id');
-        // $a = json_decode($getMacAddress->data_traces);
-        // dd(array_pop($a));
-        // dd(($getNameProduct));
+        // Traces Product Client
+        $getIPAddress = DB::table('traces')->where('mac_address', $this->getTraCes())->first();
+        if (!empty($getIPAddress)){
+            $getDataTraces = json_decode($getIPAddress->data_traces);
 
-       
-        if (empty($getMacAddress))
-            $listProducts = Products::where('is_deleted','=',0)->where('status_product','!=', -1)->orderby('id_product','desc')->paginate(12);
+            // List Scan Product Client
+            $getScanProductClient5 = Products::whereIn('id_product', $getDataTraces)->offset(0)->limit(5)->get();
+            $getScanProductClient10 = Products::whereIn('id_product', $getDataTraces)->offset(5)->limit(5)->get();
 
-        else {
-            foreach (json_decode($getMacAddress->data_traces) as $aaa){
-                $getNameProduct = Products::where('id_product', $aaa)->pluck('sub_category_id');
-            }
-            $listProducts = Products::where('is_deleted','=',0)->where('status_product','!=', -1)
-                            // ->orderby('id_product','desc')
-                            ->where('sub_category_id','like','%'.$getNameProduct[0].'%')
-                            ->paginate(12);
+            // List Ralated Product
+            $getSub_id = Products::where('id_product', array_pop($getDataTraces))->pluck('sub_category_id');
+            $listProductsRelated5 = Products::where('is_deleted','=',0)->where('status_product','!=', -1)
+                        ->orderby('id_product','desc')
+                        ->where('sub_category_id', $getSub_id[0])
+                        ->offset(0)->limit(5)->get();
+
+            $listProductsRelated10 = Products::where('is_deleted','=',0)->where('status_product','!=', -1)
+                        ->orderby('id_product','desc')
+                        ->where('sub_category_id', $getSub_id[0])
+                        ->offset(5)->limit(5)->get();
+
         }
-        // dd($listProducts);
-        $Category = Category::all();
-        // $productCategory = DB::table('products_category')->where('category_id','=',1)
-        // ->where('status_product','=',1)->where('is_deleted','=',0)->get();
+        else {
+            $getScanProductClient5 = null;
+            $getScanProductClient10 = null;
+            $getSub = SubCategory::get()->random(1);
+            // dd($getSub[0]->id_sub);
+            $listProductsRelated5 = Products::where('is_deleted','=',0)->where('status_product','!=', -1)
+                        ->orderby('id_product','desc')
+                        ->where('sub_category_id', $getSub[0]->id_sub)
+                        ->offset(0)->limit(5)->get();
 
-        
-        //var_dump(Session::get('id_shop'));
-        //var_dump($productCategory);
+            $listProductsRelated10 = Products::where('is_deleted','=',0)->where('status_product','!=', -1)
+                        ->orderby('id_product','desc')
+                        ->where('sub_category_id', $getSub[0]->id_sub)
+                        ->offset(5)->limit(5)->get();
+        }
+
+        // List Category
+        $Category = Category::all();
+
+        // List Product
+        $listProducts = Products::where('is_deleted','=',0)->where('status_product','>', 0)->orderby('id_product','desc')->paginate(12);
+
+        // List Top Product
         $listTopProduct5 = Products::join('order_detail', 'order_detail.product_id', '=', 'products.id_product')
                                     ->where('is_deleted','=',0)
-                                    ->where('status_product','!=', -1)
+                                    ->where('status_product','>', 0)
                                     ->leftjoin('orders', 'orders.id_orders', '=', 'order_detail.orders_id')
                                     ->groupBy('id_product')
                                     ->orderBy('topProduct', 'DESC')
@@ -104,44 +115,56 @@ class PagesController extends Controller
                                     ->offset(0)->limit(5)->get();
         $listTopProduct10 = Products::join('order_detail', 'order_detail.product_id', '=', 'products.id_product')
                                     ->where('is_deleted','=',0)                            
-                                    ->where('status_product','!=', -1)
+                                    ->where('status_product','>', 0)
                                     ->leftjoin('orders', 'orders.id_orders', '=', 'order_detail.orders_id')
                                     ->groupBy('id_product')
                                     ->orderBy('topProduct', 'DESC')
                                     ->select('name_product', 'price_product', 'img_product', 'id_product')
                                     ->addSelect(DB::raw('COUNT(id_orders) as topProduct'))
                                     ->offset(5)->limit(5)->get();
+        
+        // List New Product
         $listNewProduct5 = Products::orderBy('id_product', 'DESC')->where('is_deleted','=',0)                            
-                                    ->where('status_product','!=', -1)
+                                    ->where('status_product','>', 0)
                                     ->offset(0)->limit(5)->get();
-        // dd($listNewProduct5);
         $listNewProduct10 = Products::orderBy('id_product', 'DESC')->where('is_deleted','=',0)                            
-                                    ->where('status_product','!=', -1)
+                                    ->where('status_product','>', 0)
                                     ->offset(5)->limit(5)->get();
-    	return view('pages.home',compact('Category','listProducts', 'listTopProduct5', 'listTopProduct10' ,'listNewProduct5', 'listNewProduct10'));
+        Session::forget('keySearch');
+        return view('pages.home',compact('Category','listProducts', 'listTopProduct5', 'listTopProduct10' ,'listNewProduct5',
+         'listNewProduct10', 'listProductsRelated5', 'listProductsRelated10', 'getScanProductClient5', 'getScanProductClient10'));
     }
     
     public function getPagesProductCategory($id_category){
     	$productCategory = DB::table('products_category')->where('category_id','=', base64_decode(base64_decode($id_category)))
                             ->where('is_deleted','=',0)
-                            ->where('status_product','!=', -1)
+                            ->where('status_product','>', 0)
                             ->paginate(9);
         $subCategorybyCategory = DB::table('sub_category')->join('category','id_category','=','category_id')
                             ->where('category_id','=', base64_decode(base64_decode($id_category)))
                             ->get();
         $loadBrand = Brands::where('category_id', base64_decode(base64_decode($id_category)))->get();
+        Session::forget('keySearch');
         // dd($subCategorybyCategory);
     	return view('pages.trangsanpham',compact('productCategory','subCategorybyCategory', 'loadBrand'));
     }
 
     public function getPagesProductDetail($id_product){
+        Session::forget('keySearch');
         $productByID = DB::table('products')
                                 ->join('shop','id_shop','=','shop_id')
                                 ->where('is_deleted','=',0)
-                                ->where('status_product','!=', -1)
+
+                                ->where('status_product','>', 0)
                                 ->where('id_product','=', base64_decode(base64_decode($id_product)))->get();
 
-        foreach ($productByID as $key => $value){
+
+        //dd($productByID);
+        if(empty(count($productByID))){
+            return view('pages.404');
+        }
+        else{
+            foreach ($productByID as $key => $value){
             $sub_category = $value->sub_category_id;
         }
         
@@ -155,17 +178,11 @@ class PagesController extends Controller
                                 ->get();
 
         return view('pages.chitietsanpham',compact('productByID','productsRalated','listComments'));
+        }
     }
-    public function getPagesProductDetailSlug($slug_product){
-        $productByID = DB::table('products')
-                                ->join('shop','id_shop','=','shop_id')
-                                ->where('is_deleted','=',0)
-                                ->where('status_product','!=', -1)
-                                ->where('slug','=',$slug_product)->get();
-                                //var_dump($productByID);
-        return view('pages.chitietsanpham',compact('productByID'));
-    }
+
     public function getProductsSubCategory($id_category, $id_sub){
+        Session::forget('keySearch');
         $subCategorybyCategory = DB::table('sub_category')->join('category','id_category','=','category_id')
         ->where('category_id','=', base64_decode(base64_decode($id_category)))
         ->get();
@@ -175,17 +192,18 @@ class PagesController extends Controller
         
     }
     public function getSearch(Request $request){
-        if($request->key != null){
-            $keySearch = $request->key;
-        };
+        $keySearch = $request->key;
         $products = DB::table('products_category')
-                        ->where('name_product','like','%'.$keySearch.'%')
-                        ->where('is_deleted','=',0)
-                        ->where('status_product','!=', -1)
-                        ->orWhere('price_product',$keySearch)
-                        ->orWhere('name_shop',$keySearch)
-                        ->get();
-        return view('pages.search', compact('products','keySearch'));
+                    ->where('name_product','like','%'.$keySearch.'%')
+                    ->where('is_deleted','=',0)
+                    ->where('status_product','>', 0)
+                    ->orWhere('price_product',$keySearch)
+                    ->orWhere('name_shop',$keySearch)
+                    ->get();
+        if(!empty($products)){
+            Session::put('keySearch',$keySearch);
+        }
+        return view('pages.search', compact('products'));
     }
 
     public function sortByProductCategories(Request $req){
@@ -197,13 +215,13 @@ class PagesController extends Controller
         if (empty($req->sortBy)) {
             $sortByProduct = DB::table('products_category')->where('category_id','=', $id_category)
                                 ->where('is_deleted','=',0)
-                                ->where('status_product','!=', -1)
+                                ->where('status_product','>', 0)
                                 ->get();
         }
         else {
             $sortByProduct = DB::table('products_category')->where('category_id','=',$id_category)
                                 ->where('is_deleted','=',0)
-                                ->where('status_product','!=', -1)
+                                ->where('status_product','>', 0)
                                 ->orderBy(array_shift($explode), array_pop($explode))
                                 ->get();
         }
@@ -222,13 +240,13 @@ class PagesController extends Controller
         if (empty($req->sortBySub)) {
             $sortByProduct = DB::table('products_category')->where('sub_category_id','=', $id_sub)
                                 ->where('is_deleted','=',0)
-                                ->where('status_product','!=', -1)
+                                ->where('status_product','>', 0)
                                 ->get();
         }
         else {
             $sortByProduct = DB::table('products_category')->where('sub_category_id','=', $id_sub)
                                 ->where('is_deleted','=',0)
-                                ->where('status_product','!=', -1)
+                                ->where('status_product','>', 0)
                                 ->orderBy(array_shift($explode), array_pop($explode))
                                 ->get();
         }
@@ -250,7 +268,7 @@ class PagesController extends Controller
             $sortByProduct = DB::table('products_category')
                                 ->where('name_product','like','%'.$decodeUrlKeyword.'%')
                                 ->where('is_deleted','=',0)
-                                ->where('status_product','!=', -1)
+                                ->where('status_product','>', 0)
                                 ->orWhere('price_product',$decodeUrlKeyword)
                                 ->orWhere('name_shop',$decodeUrlKeyword)
                                 ->get();
@@ -259,7 +277,7 @@ class PagesController extends Controller
             $sortByProduct = DB::table('products_category')
                                 ->where('name_product','like','%'.$decodeUrlKeyword.'%')
                                 ->where('is_deleted','=',0)
-                                ->where('status_product','!=', -1)
+                                ->where('status_product','>', 0)
                                 ->orWhere('price_product',$decodeUrlKeyword)
                                 ->orWhere('name_shop',$decodeUrlKeyword)
                                 ->orderBy(array_shift($explode), array_pop($explode))

@@ -71,7 +71,7 @@
                             <div class="col-12 col-md-9">
                                 
                                 <div class="row">
-                                    <input id="_disabled" disabled type="text" id="text-input" value="{{Session::get('customer')->phone_customer}}" name="phone_customer" class="form-control" style="width: 280px;">
+                                    <input id="_disabled" disabled type="number" id="text-input" value="{{Session::get('customer')->phone_customer}}" name="phone_customer" class="form-control" style="width: 280px;">
                                     <div class="col-12 col-md-3">
                                         <label style="color: #A52652" id="click_disabled" for="text-input" class=" form-control-label fa fa-hand-o-right">Nhấn tại đây để điền SDT</label>
                                     </div>

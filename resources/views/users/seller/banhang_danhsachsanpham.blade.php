@@ -15,6 +15,9 @@
 </div>
 <div class="table-responsive">
   <table id="example2" class="table table-bordered table-hover" data-name="cool-table">
+    @if(Session::has('notification'))
+      <div class="alert alert-success" role="alert">{{Session::get('notification')}}</div>
+    @endif
     <thead>
       <tr>
       	<th>Ngày</th>
@@ -25,6 +28,7 @@
         <th>Trạng thái</th>
         <th>Danh mục</th>
        	<th>Hãng</th>
+        <th>#</th>
       </tr>
     </thead>
     @foreach($listProducts as $product)

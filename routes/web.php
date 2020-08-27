@@ -80,10 +80,15 @@ Route::post('/sendMailResetPass','CustomerController@sendMailResetPass');
 Route::get('/reset-password','CustomerController@formResetPassword');//Mail
 // Route::get('/reset-password','CustomerController@formResetPassword');//
 Route::post('/resetPassword','CustomerController@resetPassword');
+Route::get('/profile/update-password','CustomerController@getUpdatePassword');
+Route::post('/updatePassword','CustomerController@postUpdatePassword');
+
 
 // Seller
 Route::get('/dang-ky-shop','CustomerController@getRegisterShop');
 Route::post('/postRegisterShop','CustomerController@postRegisterShop');
+Route::get('/ban-hang/profile-shop','SellerController@getProfileShop');
+Route::post('/updateProfileShop','SellerController@updateProfileShop');
 Route::get('/dashboard','SellerController@sellerDashBoard');
 Route::get('/them-san-pham','ProductController@getAddProduct');
 Route::get('/danh-sach-sub','ProductController@getSubCategory');
@@ -97,7 +102,8 @@ Route::get('/banhang','SellerController@sellerChannel');
 Route::post('/postSellerDashBoard','SellerController@postSellerDashBoard');
 Route::post('/updateProduct/{id_product}','ProductController@updateProduct');
 Route::get('/logout-shop','SellerController@logoutShop');
-
+Route::get('/seller/update-password','SellerController@getFormUpdatePassword');
+Route::post('/updatePasswordShop','SellerController@postUpdatePasswordShop');
 
 Route::get('/forgot-password-shop','SellerController@getForgotPasswordShop');
 Route::post('/sendMailResetPassShop','SellerController@sendMailResetPassShop');
@@ -168,6 +174,9 @@ Route::get('/admin-profit', 'AdminController@profitDashboard');
 Route::get('/admin-revenue', 'AdminController@revenueDashboard');
 Route::get('/admin-doanh-thu-don-hang', 'AdminController@pageRevenue');
 Route::get('/admin-load-revenue/{val_revenue}', 'AdminController@Revenue');
+
+
+Route::get('/admin-comment','AdminController@getListComments');
 // Route::get('/admin-doanh-thu-shop', 'AdminController@pageRevenueShop');
 // Route::get('/admin-load-revenue-shop/{val_revenue}', 'AdminController@RevenueShop');
 

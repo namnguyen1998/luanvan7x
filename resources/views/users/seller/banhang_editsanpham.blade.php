@@ -21,7 +21,7 @@
                         <option value="0">Chọn</option>
                         @foreach($listCategory as $category)
                             @if($category->id_category == $pro->category_id)
-                                <option value="{{$category->id_category}}" selected>{{$category->name_category}}</option>
+                                <option value="{{$category->id_category}}" selected>--{{$category->name_category}}--</option>
                             @else
                                 <option value="{{$category->id_category}}">{{$category->name_category}}</option>
                             @endif
@@ -34,10 +34,14 @@
             <h4 class="text-black">Chọn Loại Danh Mục</h4>
             <div class="row">
                 <div class="col-lg-12">
-                    <select name="_id_sub_category" class="form-control">
-                        @foreach ($listSub as $sub)
-                            <option value="{{$sub->id_sub}}">{{$sub->name_sub}}</option>
-                            @endforeach
+
+                    <select name="_id_sub_category" id="_id_sub_category" class="form-control">
+                        @foreach($loadSubEdit as $sub)
+                        @if($pro->sub_category_id == $sub->id_sub)
+                            <option value="{{ $sub->id_sub}}" selected>--{{$sub->name_sub}}--</option>
+                        @endif
+                            <option value="{{ $sub->id_sub}}">{{$sub->name_sub}}</option>
+                        @endforeach
                     </select>
                 </div>
             </div>
@@ -50,7 +54,7 @@
                     <option value="-1">Chọn</option>
                         @foreach($listBrand as $brand)
                             @if($brand->id_brand==$pro->brand_id)
-                            <option value="{{$brand->id_brand}}" selected>{{$brand->name_brand}}</option>
+                            <option value="{{$brand->id_brand}}" selected>--{{$brand->name_brand}}--</option>
                             @else
                             <option value="{{$brand->id_brand}}">{{$brand->name_brand}}</option>
                             @endif
@@ -69,7 +73,7 @@
                     <div class="card-body">
                         <div class="form-body">
                             <div class="form-group row">
-                                <label class="control-label text-right col-md-3">Tên sản phẩm *</label>
+                                <label class="control-label text-right col-md-3">Tên sản phẩm <span style="color:red">*</span></label>
                                 <div class="col-md-9">
                                 <input name="nameProduct" id="name" value="{{$pro->name_product}}" class="form-control" type="text">
                                 </div>
@@ -81,14 +85,14 @@
                                 </div>
                             </div> -->
                             <div class="form-group row">
-                                <label class="control-label text-right col-md-3">Nơi sản xuất *</label>
+                                <label class="control-label text-right col-md-3">Nơi sản xuất <span style="color:red">*</span></label>
                                 <div class="col-md-9">
                                 <input name="madeby" value="{{$pro->madeby}}" class="form-control" type="text">
                                 </div>
                             </div>
                             
                             <div class="form-group row">
-                                <label class="control-label text-right col-md-3">Giá *</label>
+                                <label class="control-label text-right col-md-3">Giá <span style="color:red">*</span></label>
                                 <div class="col-md-9">
                                 <input name="price" id="_price" value="{{number_format($pro->price_product)}}" class="form-control" type="text">
                                 </div>
@@ -104,8 +108,8 @@
                             <!-- summernote --> 
                             <div class="col-lg-12">
                                 <fieldset class="form-group">
-                                <label>Mô tả *</label>
-                                <textarea name="description" class="form-control" id="descTextarea" value="{!!$pro->description_product!!}"></textarea>
+                                <label>Mô tả <span style="color:red">*</span></label>
+                                <textarea name="description" class="form-control" id="descTextarea">{!!$pro->description_product!!}</textarea>
                                 </fieldset>
                             </div>
                         </div>
@@ -119,13 +123,12 @@
             <div class="col-lg-12 col-md-12">
                 <div class="card">
                     <div class="card-body">
-                    <h4 class="card-title">Hình 1</h4>
+                    <h4 class="card-title">Hình 1 <span style="color:red">*</span></h4>
                     <label for="input-file-now-custom-1">Chọn hình</label>
-                    <input data-default-file="{{asset('public/frontend/img/product/'.$pro->img_product)}}" value="{{$pro->img_product}}" name="img_product" type="file" id="input-file-now-custom-1" class="dropify" />
+                    <input data-default-file="{{asset('public/frontend/img/product/'.$pro->img_product)}}" name="img_product" type="file" id="input-file-now-custom-1" class="dropify" />
                     </div>
                 </div>
             </div>
-            
             <hr class="m-t-1 m-b-1">
             <div class="col-lg-12 col-md-12">
                 <div class="card">
@@ -172,9 +175,8 @@
         </form>
         <!-- /.content --> 
     </div>
-
-    <!-- CKeditor  -->
     <script src="{{asset('public/backend/dist/js/jquery.min.js')}}"></script>  
+    <!-- CKeditor  -->
     <script src="{{asset('public/backend/dist/bootstrap/js/bootstrap.min.js')}}"></script> 
 
     <!-- template --> 
@@ -187,9 +189,9 @@
     <script src="{{asset('public/ckeditor/ckeditor.js')}}"></script>
     <script type="text/javascript">
         CKEDITOR.replace('descTextarea',{
-        filebrowserBrowseUrl : 'filemanager/dialog.php?type=2&editor=ckeditor&fldr=',
-        filebrowserUploadUrl : 'filemanager/dialog.php?type=2&editor=ckeditor&fldr=',
-        filebrowserImageBrowseUrl : 'filemanager/dialog.php?type=1&editor=ckeditor&fldr='  
+        filebrowserBrowseUrl : '/filemanager/dialog.php?type=2&editor=ckeditor&fldr=',
+        filebrowserUploadUrl : '/filemanager/dialog.php?type=2&editor=ckeditor&fldr=',
+        filebrowserImageBrowseUrl : '/filemanager/dialog.php?type=1&editor=ckeditor&fldr='  
         });
     </script>
 
@@ -242,26 +244,28 @@
     <!-- Get Data Sub Category -->
     <script src="{{asset('public/backend/dist/js/hashtable.js')}}"></script>
     <script src="{{asset('public/backend/dist/js/jquery.numberformatter.js')}}"></script> 
+    
+
     <script>
         $(document).ready(function(){
             $('#_id_category').change(function(){
                 val = document.getElementById('_id_category').value
+                // console.log(val);
                 $.ajax({
                     url: '{{URL::to('/danh-sach-sub')}}',
                     method: 'get',
                     data: 'val_id_category=' + val,
                 }).done(function(data_sub_category){
-                    // console.log(data_sub_category)
+                    console.log(data_sub_category)
                     data_sub_category = JSON.parse(data_sub_category)
-                    // console.log(data_sub_category)
                     $('#_id_sub_category').empty();
                     $.each(data_sub_category, function(key, value){
                         $('#_id_sub_category').append("<option value='" + value.id_sub + "'>" + value.name_sub + "</option>")
+                        // console.log(value)
                     })
                 })
             })
         })
-
         $("#_price").keyup(function(){
             $(this).parseNumber({format:"#,###", locale:"VND"});
             $(this).formatNumber({format:"#,###", locale:"VND"});

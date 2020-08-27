@@ -207,9 +207,9 @@
                                 <!-- Customize To -->
                                 <div  class="column right"> Đến
                                     <address>
-                                    <strong>Tên Người Nhận: {{ $loadAddressCustomer->name_recipient }}</strong><br>
-                                    {{ $loadAddressCustomer->address_customer }}<br>
-                                    SĐT: {{ $loadAddressCustomer->phone_recipient }}<br>
+                                        <strong>Tên Người Nhận:</strong> {{ $loadAddressCustomer->name_recipient }}<br>
+                                        <strong> Địa chỉ nhận hàng:</strong> {{ $loadOrders->address_order }}<br>
+                                        <strong>SĐT:</strong> {{ $loadAddressCustomer->phone_recipient }}<br>
                                     </address>
                                 </div>
                                 <!-- /. Customize To -->
@@ -245,11 +245,11 @@
                                     <tbody style="border-bottom: 1px solid #ddd">
                                         <tr style="text-align: center">
                                             <td><?php echo $number ++; ?></td>
-                                            <td>{{ $orderDetail->name_product }}</td>
+                                            <td>{{ $orderDetail->name_product_order_detail }}</td>
                                             <td>{{ $orderDetail->quantity }}</td>
-                                            <td>{{ number_format($orderDetail->price_product , 0, ',', '.') . " ₫" }}</td>
-                                            <td>{{ number_format($orderDetail->price_product * $orderDetail->quantity , 0, ',', '.') . " ₫" }}</td>
-                                            <?php $total += $orderDetail->price_product * $orderDetail->quantity; ?>
+                                            <td>{{ number_format($orderDetail->price_order_detail , 0, ',', '.') . " ₫" }}</td>
+                                            <td>{{ number_format($orderDetail->price_order_detail * $orderDetail->quantity , 0, ',', '.') . " ₫" }}</td>
+                                            <?php $total += $orderDetail->price_order_detail * $orderDetail->quantity; ?>
                                         </tr>
                                     </tbody>
                                     @endforeach

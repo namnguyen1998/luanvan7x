@@ -7,7 +7,7 @@
                         <h2>OGANI</h2>
                         <div class="breadcrumb__option">
                             <a href="{{URL::to('/')}}">Trang chủ</a>
-                            <span>Danh mục con</span>
+                            <span>Loại danh mục</span>
                         </div>
                     </div>
                 </div>
@@ -23,8 +23,7 @@
                 <div class="col-lg-3 col-md-5">
                     <div class="sidebar">
                         <div class="sidebar__item">
-                        
-                            <h4>DANH MỤC CON</h4>
+                            <h4>LOẠI DANH MỤC</h4>
                             <ul>
                                 @foreach($subCategorybyCategory as $sub)
                                 <li><a href="{{URL::to('/danh-muc-'.base64_encode(base64_encode($sub->category_id)).'/sub-'.base64_encode(base64_encode($sub->id_sub)))}}">{{$sub->name_sub}}</a></li>
@@ -221,7 +220,6 @@
                                     <ul class="product__item__pic__hover">
                                         <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                         <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
                                     </ul>
                                 </div>
                                 <div class="product__item__text">

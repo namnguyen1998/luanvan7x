@@ -44,7 +44,7 @@
                                     <th>Giá</th>
                                     <th>Số lượng</th>
                                     <th>Thành tiền</th>
-                                    <th>Cập nhật>
+                                    <th>Cập nhật</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -105,7 +105,7 @@
             @endif
         </div>
     </section>
-    
+@include('pages.footer')
     <script src="{{asset('public/frontend/js/jquery-3.3.1.min.js')}}"></script>
     <script type="text/javascript">
         function deleteItemsCart(id){
@@ -162,4 +162,3 @@
     </script>
 
     <!-- Shoping Cart Section End -->
-@include('pages.footer')

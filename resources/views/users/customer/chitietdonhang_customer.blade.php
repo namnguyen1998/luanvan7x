@@ -22,7 +22,7 @@
 					<tr style="text-align: center">
 						<td><?php echo $number ++; ?></td>
 						<td>{{ date('d-m-Y H:i:s', strtotime( $order->created_at )) }}</td>
-						<td>{{ $order->name_product }}</td>
+						<td>{{ $order->name_product_order_detail }}</td>
 						<td>{{ $order->quantity }}</td>
 						<td>{{ number_format($order->price_product, 0, ',', '.') . " ₫" }}</td>
 						<td>{{ number_format($order->price_product * $order->quantity , 0, ',', '.') . " ₫" }}</td>
@@ -49,7 +49,7 @@
 		</div>
 
 		<div style="text-align: center">
-			@if ($status_order >= 0)
+			@if ($status_order <= 0)
 			<button type="button" class="btn btn-secondary">
 				<a style="color: white" href=" {{URL::to('profile/huy-don-hang/'.$id_orders)}} ">
 					<span>

@@ -20,6 +20,7 @@ use Sentinel;
 use Reminder;
 use Mail;
 use Hash;
+use Image;
 use PharIo\Manifest\Email;
 
 session_start();
@@ -90,7 +91,7 @@ class CustomerController extends Controller
         }
     }
     public function getRegisterForm(){
-        return  view('register');
+        return view('register');
     }
     public function postRegister(Request $request){
         $this->validate($request,
@@ -104,13 +105,35 @@ class CustomerController extends Controller
                 'email.unique'=>'Email đã được sử dụng',
                 'password.required'=>'Vui lòng nhập mật khẩu',
                 're_password.same'=>'Mật khẩu không giống nhau',
-                'password.min'=>'Mật khẩu có ít nhất 6 kí tự'
+                'password.min'=>'Mật khẩu có ít nhất 6 kí tự',
+                'password.max'=>'Mật khẩu có tối đa 20 kí tự'
             ]);
         $customer = new Customers();
         $customer->email_customer = $request->email;
         $customer->password_customer = md5($request->password); 
         $customer->save();
         return redirect('/login')->with('success','Tạo tài khoản thành công');
+    }
+    public function getUpdatePassword(){
+        return view('users.customer.update_password');
+    }
+    public function postUpdatePassword(Request $request){
+        $this->AuthLogin();
+        $this->validate($request,
+            [
+                'new_password' => 'required|min:6|max:20',
+                'password_new_confirmation' => 'required|same:new_password',
+            ],
+            [
+                'new_password.required'=>'Vui lòng nhập mật khẩu',
+                'password_new_confirmation.same'=>'Mật khẩu không giống nhau',
+                'new_password.min'=>'Mật khẩu có ít nhất 6 kí tự',
+                'new_password.max'=>'Mật khẩu có tối đa 20 kí tự'
+            ]);
+        $customer = Customers::find($this->checkUser());
+        $customer->password_customer = md5($request->password_new_confirmation);
+        $customer->save();
+        return Redirect('/profile/update-password')->with('message','Cập nhật thành công');
     }
     public function getForgotPassword(){
         return view('forgot_password');
@@ -138,7 +161,7 @@ class CustomerController extends Controller
 
     public function formResetPassword(){
         $key = $_GET['key'];
-        return view('update_password',compact('key'));
+        return view('reset_password',compact('key'));
     }
     public function resetPassword(Request $request){
         $this->validate($request,
@@ -205,9 +228,10 @@ class CustomerController extends Controller
             $newCustomers->name_customer             = $Customers->name;
             $newCustomers->email_customer            = $Customers->email;
             $newCustomers->provider_id               = $Customers->id;
-            $newCustomers->img_customer              = $Customers->avatar;
+            $newCustomers->img_customer              = $Customers->id . '.jpg';
             $newCustomers->password_customer         = '';
             $newCustomers->save();
+            Image::make($Customers->avatar)->save(public_path('frontend/img/shop/' . $Customers->id . '.jpg'));
         }
         Session::put('customers', $Customers);
         Session::put('name_customer',$Customers->name);
@@ -347,11 +371,23 @@ class CustomerController extends Controller
 
     public function createAddressCustomer(Request $request){
         $this->AuthLogin();
-        if ( empty($request->new_address) || empty($request->new_address_name) || empty($request->new_address_phone)){
-            Session::put('message1','Vui lòng điền đầy đủ thông tin <strong> Tên, SĐT, Địa chỉ </strong> trước khi <strong> Xác nhận </strong>');
-            return Redirect::to('/profile/address');
-        }
-        else {
+        $this->validate($request,
+        [
+            'new_address' => 'required',
+            'new_address_name' => 'required',
+            'new_address_phone' => 'required|numeric',
+        ],[
+            'new_address.required' => 'Vui lòng nhập địa chỉ',
+            'new_address_name.required' => 'Vui lòng nhập tên',
+            'new_address_phone.required' => 'Vui lòng nhập số điện thoại',
+            'new_address_phone.numeric' => ' Nhập sai kiểu số điện thoại'
+
+        ]);
+        // if ( empty($request->new_address) || empty($request->new_address_name) || empty($request->new_address_phone)){
+        //     Session::put('message1','Vui lòng điền đầy đủ thông tin <strong> Tên, SĐT, Địa chỉ </strong> trước khi <strong> Xác nhận </strong>');
+        //     return Redirect::to('/profile/address');
+        // }
+        // else {
             $createAddressCustomer['status_default']  = 0;
             $createAddressCustomer['address_customer']  = $request->new_address;
             $createAddressCustomer['name_recipient']  = $request->new_address_name;
@@ -361,7 +397,7 @@ class CustomerController extends Controller
             DB::table('shipping_address')->insert($createAddressCustomer);
             Session::put('message','Thêm thành công. Xin vui lòng chọn lại <strong> Địa chỉ mặc định</strong>.');
             return Redirect::to('/profile/address');
-        }
+        //}
         
     }
 
@@ -448,12 +484,20 @@ class CustomerController extends Controller
         }       
     }
     public function postComment(Request $req){
+        // $this->validate($req, 
+        // [
+        //     'content' => 'required',
+        // ], 
+        // [
+        //     'content.required' =>'Vui lòng nhập comment',
+        // ]);
         $data = array();
         $data['customer_id'] = $this->checkUser();
         $data['product_id'] = $req->id_product;
         $data['content'] = $req->content;
         DB::table('comment')->insert($data);
-        return Redirect::to('/chi-tiet-san-pham/'.$req->id_product);
+        $id = base64_encode(base64_encode($req->id_product));
+        return Redirect::to('/chi-tiet-san-pham/'.base64_encode(base64_encode($req->id_product)));
     }   
 
 }

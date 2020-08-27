@@ -23,7 +23,7 @@
                 <div class="col-lg-3 col-md-5">
                     <div class="sidebar">
                         <div class="sidebar__item">
-                            <h4>DANH MỤC CON</h4>
+                            <h4>LOẠI DANH MỤC</h4>
                             <ul>
                                 @foreach($subCategorybyCategory as $sub)
                                 <li>
@@ -253,7 +253,6 @@
                                     <ul class="product__item__pic__hover">
                                         <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                         <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
