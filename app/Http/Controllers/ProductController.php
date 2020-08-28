@@ -287,8 +287,8 @@ class ProductController extends Controller
             }else{
                  $productEdit->img3_product = $productEdit->img3_product;
             }
-            if(!empty($req->description_product)){
-                $productEdit->description_product = $req->description_product;
+            if(!empty($req->description)){
+                $productEdit->description_product = $req->description;
             }else{
                  $productEdit->description_product = $productEdit->description_product;
             }

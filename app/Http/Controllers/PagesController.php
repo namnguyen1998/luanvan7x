@@ -47,7 +47,7 @@ class PagesController extends Controller
         $listNewProduct10 = Products::orderBy('id_product', 'DESC')->where('is_deleted','=',0)                            
                                     ->where('status_product','>', 0)
                                     ->offset(5)->limit(5)->get();
-        Session::forget('keySearch');
+        // Session::forget('keySearch');
     	return view('pages.home',compact('Category','listProducts', 'listTopProduct5', 'listTopProduct10' ,'listNewProduct5', 'listNewProduct10'));
     }
     
@@ -60,13 +60,12 @@ class PagesController extends Controller
                             ->where('category_id','=', base64_decode(base64_decode($id_category)))
                             ->get();
         $loadBrand = Brands::where('category_id', base64_decode(base64_decode($id_category)))->get();
-        Session::forget('keySearch');
         // dd($subCategorybyCategory);
     	return view('pages.trangsanpham',compact('productCategory','subCategorybyCategory', 'loadBrand'));
     }
 
     public function getPagesProductDetail($id_product){
-        Session::forget('keySearch');
+        // Session::forget('keySearch');
         $productByID = DB::table('products')
                                 ->join('shop','id_shop','=','shop_id')
                                 ->where('is_deleted','=',0)
@@ -83,8 +82,7 @@ class PagesController extends Controller
             foreach ($productByID as $key => $value){
             $sub_category = $value->sub_category_id;
         }
-        
-        $productsRalated = DB::table('products')->where('sub_category_id','=', base64_decode(base64_decode($sub_category)))
+        $productsRalated = DB::table('products')->where('sub_category_id','=',$sub_category)
                                 ->where('is_deleted','=',0)
                                 ->inRandomOrder()->limit(4)->get();
         $listComments = DB::table('comment')->join('customers','id_customer','=','customer_id')
@@ -92,7 +90,8 @@ class PagesController extends Controller
                                 ->orderBy('created_at', 'DESC')
                                 ->where('product_id','=', base64_decode(base64_decode($id_product)))
                                 ->get();
-
+        //dd($productsRalated);
+        //print_r($sub_category);                  
         return view('pages.chitietsanpham',compact('productByID','productsRalated','listComments'));
         }
     }
@@ -107,18 +106,19 @@ class PagesController extends Controller
         
     }
     public function getSearch(Request $request){
-        $keySearch = $request->key;
-        $products = DB::table('products_category')
+        $keySearch = $request->keySearch;
+        $productSearch = DB::table('products_category')
                     ->where('name_product','like','%'.$keySearch.'%')
                     ->where('is_deleted','=',0)
                     ->where('status_product','>', 0)
-                    ->orWhere('price_product',$keySearch)
-                    ->orWhere('name_shop',$keySearch)
+                    ->orWhere('price_product','like','%'.$keySearch.'%')
+                    ->orWhere('name_shop','like','%'.$keySearch.'%')
+                    ->orWhere('name_sub','like','%'.$keySearch.'%')
                     ->get();
-        if(!empty($products)){
-            Session::put('keySearch',$keySearch);
-        }
-        return view('pages.search', compact('products'));
+        // if(!empty($productSearch)){
+        //     Session::put('keySearch',$keySearch);
+        // }
+        return view('pages.search', compact('productSearch'));
     }
 
     public function sortByProductCategories(Request $req){

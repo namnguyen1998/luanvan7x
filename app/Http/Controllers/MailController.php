@@ -39,7 +39,7 @@ class MailController extends Controller
 									DB::raw('shop.email_shop as email_shop'),
 									DB::raw('shop_oder_product.orders_id as orders_id'),
 								)); 
-		$url = \URL::to('/banhang')
+		$url = \URL::to('/banhang');
 		$details = [
 		'title' => 'OGANI',
 		'body' => "Bạn vừa có đơn đặt hàng vui lòng đăng nhập để kiểm tra!",

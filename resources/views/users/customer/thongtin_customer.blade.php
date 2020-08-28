@@ -5,7 +5,7 @@
         <div class="card"> <?php
         $message = Session::get('message');
         if($message){
-            echo'<div class = "alert-success">'.$message.'</div>';
+            echo'<div class = "alert alert-success">'.$message.'</div>';
             Session::put('message',null);
         }
         ?>
