@@ -122,14 +122,12 @@
                     </div>
                     <div class="product__discount">
                         <div class="row">
-                            
-                            <!-- 	@foreach($productSearch as $pro)
-                                <div class="col-lg-12">
-                                	<img src="{{asset('public/frontend/img/shop/')}}" style="width:150px;height:150px;">
-                                	<span></span>
-                                </div>
-                                @endforeach
-                             -->
+                        	@foreach($shopSearch as $shop)
+                            <div class="row col-lg-12">
+                            	<img src="{{asset('public/frontend/img/shop/'.$shop->img_shop)}}" style="width:100px;height:100px">
+                            	<a style="padding-left: 30px; font-size: 30px; color:black;" href="{{URL::to('/shop-ban-hang/'.base64_encode(base64_encode($shop->id_shop)))}}">{{$shop->name_shop}}</a>
+                            </div>
+                            @endforeach
                         </div>
                     </div>
                     <div class="filter__item">
@@ -188,8 +186,7 @@
 
     <script src="{{asset('public/backend/dist/js/jquery.min.js')}}"></script>  
     <script>
-        $(document).ready(function(){
-            
+        $(document).ready(function(){   
             $('#sortBySub').on('change', function(){
                 sortBySub = document.getElementById('sortBySub').value
                 console.log(sortBySub)

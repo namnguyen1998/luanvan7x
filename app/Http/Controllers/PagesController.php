@@ -115,10 +115,14 @@ class PagesController extends Controller
                     ->orWhere('name_shop','like','%'.$keySearch.'%')
                     ->orWhere('name_sub','like','%'.$keySearch.'%')
                     ->get();
+        $shopSearch =  DB::table('shop')
+                    ->where('name_shop','like','%'.$keySearch.'%')
+                    ->groupBy('name_shop')
+                    ->get();
         // if(!empty($productSearch)){
         //     Session::put('keySearch',$keySearch);
         // }
-        return view('pages.search', compact('productSearch'));
+        return view('pages.search', compact('productSearch','shopSearch'));
     }
 
     public function sortByProductCategories(Request $req){
