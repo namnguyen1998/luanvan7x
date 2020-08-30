@@ -231,12 +231,16 @@ class CartController extends Controller
                     if (empty(Session::get('Cart')))
                         return redirect::to('/list-cart');
                     else {
+                        $address = DB::table('shipping_address')->where('id_address', $req->_address)->pluck('address_customer');
                         $order_id = DB::select("SHOW TABLE STATUS LIKE 'orders'");
-                        $dataOrder['address_order'] = $req->_address;
+                        $dataOrder['shipping_address'] = $req->_address;
+                        $dataOrder['address_order'] = $address[0];
                         $dataOrder['note'] = $req->_note;
                         $dataOrder['shipping_cost'] = $req->totalShip;
                         $dataOrder['price_orders'] = $req->totalTotal;
                         $dataOrder['customer_id'] = $this->checkUser();
+                        
+                        // dd($dataOrder);
                         DB::table('orders')->insert($dataOrder);
 
                         foreach (Session::get('Cart')->products as $product){
