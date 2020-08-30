@@ -50,9 +50,9 @@
             <!-- /.col -->
             <div class="col-sm-4 invoice-col"> Đến
                 <address>
-                    <strong>Tên Người Nhận: {{ $loadAddressCustomer->name_recipient }}</strong><br>
-                    {{ $loadAddressCustomer->address_customer }}<br>
-                    SĐT: {{ $loadAddressCustomer->phone_recipient }}<br>
+                    <strong>Tên Người Nhận:</strong> {{ $loadAddressCustomer->name_recipient }}<br>
+                    <strong> Địa chỉ nhận hàng:</strong> {{ $loadOrders->address_order }}<br>
+                    <strong>SĐT:</strong> {{ $loadAddressCustomer->phone_recipient }}<br>
                 </address>
             </div>
             <!-- /.col -->
@@ -81,7 +81,7 @@
                 <tbody>
                     <tr>
                         <td><?php echo $number ++; ?></td>
-                        <td>{{ $orderDetail->name_product }}</td>
+                        <td>{{ $orderDetail->name_product_order_detail }}</td>
                         <td>{{ $orderDetail->quantity }}</td>
                         <td>{{ number_format($orderDetail->price_order_detail , 0, ',', '.') . " ₫" }}</td>
                         <td>{{ number_format($orderDetail->price_order_detail * $orderDetail->quantity , 0, ',', '.') . " ₫" }}</td>

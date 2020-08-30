@@ -22,7 +22,7 @@
 					<tr style="text-align: center">
 						<td><?php echo $number ++; ?></td>
 						<td>{{ date('d-m-Y H:i:s', strtotime( $order->created_at )) }}</td>
-						<td>{{ $order->name_product }}</td>
+						<td>{{ $order->name_product_order_detail }}</td>
 						<td>{{ $order->quantity }}</td>
 						<td>{{ number_format($order->price_product, 0, ',', '.') . " ₫" }}</td>
 						<td>{{ number_format($order->price_product * $order->quantity , 0, ',', '.') . " ₫" }}</td>

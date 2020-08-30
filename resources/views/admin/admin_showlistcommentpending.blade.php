@@ -12,30 +12,19 @@
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }});
-        $('#listApproveShop').DataTable({
+        $('#listApproveComment').DataTable({
             processing: true,
             serverSide: true,
             ajax: {
-                url: "{{URL::to('/admin-danh-sach-shop-cho-phe-duyet')}}",
+                url: "{{URL::to('/admin-binh-luan-san-pham')}}",
                 type: 'GET',
             },
             columns: [
                 { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false,searchable: false},
                 { data: 'created_at', name: 'created_at' },
-                { data: 'name_shop', name: 'name_shop' },
-                { data: 'email_shop', name: 'email_shop' },
-                { data: 'phone_shop', name: 'phone_shop' },
-                { data: 'address_shop', name: 'address_shop' },
-                { data: 'status_shop', 
-                    "render": function (data, type, row) {
-                    if (row.status_shop === 0) 
-                        return '<span class="label label-warning">Đang chờ duyệt</span>';
-                    else {
-                        if (row.status_shop === 1)
-                            return '<span class="label label-success">Đã phê duyệt</span>';
-                        else
-                            return '<span class="label label-danger">Từ chối duyệt</span>';
-                }}}, 
+                { data: 'name_customer', name: 'name_customer' },
+                { data: 'name_product', name: 'name_product' },
+                { data: 'content', name: 'content' },
                 { data: 'action', name: 'action', orderable: false, searchable: false},
             ],
             columnDefs: [
@@ -44,20 +33,18 @@
         });
     });
     
-    $('body').on('click', '#edit-agree-shop', function(){
-        var id_shop = $(this).attr('data-id');
-        console.log(id_shop)
+    $('body').on('click', '#edit-agree-comment', function(){
+        var id_comment = $(this).attr('data-id');
+        // console.log(id_comment)
         $.ajax({
             type: "POST",
-            url: "{{URL::to('/admin-duyet-shop')}}" + '/' + id_shop,
+            url: "{{URL::to('/admin-xoa-binh-luan')}}" + '/' + id_comment,
             success: function (data) {
-                var table = $('#listApproveShop').DataTable();
+                var table = $('#listApproveComment').DataTable();
                 table.ajax.reload( function ( json ) {
-                    $('#statusShop').val( json.lastInput );
+                    $('#listApproveComment').val( json.lastInput );
                 });
-                console.log(data)
             },
         });
     });
 </script>
-

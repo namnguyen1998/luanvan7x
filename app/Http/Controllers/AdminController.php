@@ -80,11 +80,13 @@ class AdminController extends Controller
     // Products
     public function listProduct(){
         $this->AuthAdmin();
-        $this->checkUrlRoleUser(Session::get('role_id'));
-        $listProductsPending = DB::table('products_category')->where('status_product', '=', 1)->get();
-        return view('admin.admin_listproduct',compact('listProductsPending'));
+        if ($this->checkURL(Session::get('role_id')) == false)
+            return ($this->checkUrlRoleUser(Session::get('role_id')));
+        else {
+            $listProductsPending = DB::table('products_category')->where('status_product', '=', 1)->get();
+            return view('admin.admin_listproduct',compact('listProductsPending'));
+        }
     }
-
     public function listProductPending(Request $request){
         $this->AuthAdmin();
         $this->checkUrlRoleUser(Session::get('role_id'));
@@ -143,15 +145,21 @@ class AdminController extends Controller
     
     public function listCategory(){
         $this->AuthAdmin();
-        $this->checkUrlRoleUser(Session::get('role_id'));
-        $listCategory = Category::paginate(4);
-        return view('admin.admin_listcategory', compact('listCategory'));
+        if ($this->checkURL(Session::get('role_id')) == false)
+            return ($this->checkUrlRoleUser(Session::get('role_id')));
+        else {
+            $listCategory = Category::paginate(4);
+            return view('admin.admin_listcategory', compact('listCategory'));
+        }
     }
 
     public function addCategory(){
         $this->AuthAdmin();
-        $this->checkUrlRoleUser(Session::get('role_id'));
-        return view('admin.admin_addcategory');
+        if ($this->checkURL(Session::get('role_id')) == false)
+            return ($this->checkUrlRoleUser(Session::get('role_id')));
+        else {
+            return view('admin.admin_addcategory');
+        }
     }
 
     public function saveCategory(Request $req){
@@ -179,9 +187,12 @@ class AdminController extends Controller
 
     public function editCategory($id_category){
         $this->AuthAdmin();
-        $this->checkUrlRoleUser(Session::get('role_id'));
-        $id_category = DB::table('category')->where('id_category', base64_decode(base64_decode($id_category)))->get();
-        return view('admin.admin_editcategory', compact('id_category'));
+        if ($this->checkURL(Session::get('role_id')) == false)
+            return ($this->checkUrlRoleUser(Session::get('role_id')));
+        else {
+            $id_category = DB::table('category')->where('id_category', base64_decode(base64_decode($id_category)))->get();
+            return view('admin.admin_editcategory', compact('id_category'));
+        }
     }
 
     public function updateCategory(Request $req, $id_category){
@@ -216,24 +227,29 @@ class AdminController extends Controller
     // Sub Categories
     public function listSub(){
         $this->AuthAdmin();
-        $this->checkUrlRoleUser(Session::get('role_id'));
-        $listSub = DB::table('sub_category')
-                    ->select('sub_category.id_sub', 'sub_category.name_sub', 'category.name_category')
-                    ->join('category', 'category.id_category', '=', 'sub_category.category_id')
-                    ->paginate(6);
-        return view('admin.admin_listsub', compact('listSub'));
+        if ($this->checkURL(Session::get('role_id')) == false)
+            return ($this->checkUrlRoleUser(Session::get('role_id')));
+        else {
+            $listSub = DB::table('sub_category')
+                        ->select('sub_category.id_sub', 'sub_category.name_sub', 'category.name_category')
+                        ->join('category', 'category.id_category', '=', 'sub_category.category_id')
+                        ->paginate(6);
+            return view('admin.admin_listsub', compact('listSub'));
+        }
     }
 
     public function addSub(){
         $this->AuthAdmin();
-        $this->checkUrlRoleUser(Session::get('role_id'));
-        $listCategory = Category::all();
-        return view('admin.admin_addsub', compact('listCategory'));
+        if ($this->checkURL(Session::get('role_id')) == false)
+            return ($this->checkUrlRoleUser(Session::get('role_id')));
+        else {
+            $listCategory = Category::all();
+            return view('admin.admin_addsub', compact('listCategory'));
+        }
     }
 
     public function saveSub(Request $req){
         $this->AuthAdmin();
-        $this->checkUrlRoleUser(Session::get('role_id'));
         if (empty($req->nameSub) || empty($req->categorySub)){
             Session::put('message', 'Bạn chưa điền đầy đủ thông tin. Vui lòng kiểm tra lại.');
             return redirect::to('/admin-them-danh-muc-con');
@@ -249,19 +265,21 @@ class AdminController extends Controller
 
     public function editSub($id_sub){
         $this->AuthAdmin();
-        $this->checkUrlRoleUser(Session::get('role_id'));
-        $id_sub = DB::table('sub_category')
-                    ->join('category', 'category.id_category', '=', 'sub_category.category_id')
-                    ->where('id_sub', base64_decode(base64_decode($id_sub)))
-                    ->select('sub_category.id_sub', 'sub_category.category_id', 'sub_category.name_sub', 'category.name_category')
-                    ->get();
-        $listCategory = Category::all();
-        return view('admin.admin_editsub', compact('id_sub', 'listCategory'));
+        if ($this->checkURL(Session::get('role_id')) == false)
+            return ($this->checkUrlRoleUser(Session::get('role_id')));
+        else {
+            $id_sub = DB::table('sub_category')
+                        ->join('category', 'category.id_category', '=', 'sub_category.category_id')
+                        ->where('id_sub', base64_decode(base64_decode($id_sub)))
+                        ->select('sub_category.id_sub', 'sub_category.category_id', 'sub_category.name_sub', 'category.name_category')
+                        ->get();
+            $listCategory = Category::all();
+            return view('admin.admin_editsub', compact('id_sub', 'listCategory'));
+        }
     }
 
     public function updateSub(Request $req, $id_sub){
         $this->AuthAdmin();
-        $this->checkUrlRoleUser(Session::get('role_id'));
         if (empty($req->nameSub)){
             Session::put('message', 'Bạn chưa điền đầy đủ thông tin. Vui lòng kiểm tra lại.');
             return redirect::to('/admin-sua-danh-muc-con/'.$id_sub);
@@ -278,26 +296,32 @@ class AdminController extends Controller
     // Shop
     public function listShop(){
         $this->AuthAdmin();
-        $this->checkUrlRoleUser(Session::get('role_id'));
-        $listShop = DB::table('shop')->get();
-        return view('admin.admin_listshop', compact('listShop'));
+        if ($this->checkURL(Session::get('role_id')) == false)
+            return ($this->checkUrlRoleUser(Session::get('role_id')));
+        else {
+            $listShop = DB::table('shop')->get();
+            return view('admin.admin_listshop', compact('listShop'));
+        }
     }
 
     public function listShopPending(Request $request){
         $this->AuthAdmin();
-        $this->checkUrlRoleUser(Session::get('role_id'));
-        if ($request->ajax()) {
-            $data = DB::table('shop')->where('status_shop', '=', 0) ->get();
-            return Datatables::of($data)
-                ->addIndexColumn()
-                ->addColumn('action', function($row){
-                    $btn = '<a href="javascript:void(0)" data-id="'.$row->id_shop.'" data-toggle="tooltip" id="edit-agree-shop"><span class=" btn btn-outline-success icon-like" title="Đồng ý"></span></a>';
-                    return $btn;
-                })
-                ->rawColumns(['action'])
-                ->make(true);
+        if ($this->checkURL(Session::get('role_id')) == false)
+            return ($this->checkUrlRoleUser(Session::get('role_id')));
+        else {
+            if ($request->ajax()) {
+                $data = DB::table('shop')->where('status_shop', '=', 0) ->get();
+                return Datatables::of($data)
+                    ->addIndexColumn()
+                    ->addColumn('action', function($row){
+                        $btn = '<a href="javascript:void(0)" data-id="'.$row->id_shop.'" data-toggle="tooltip" id="edit-agree-shop"><span class=" btn btn-outline-success icon-like" title="Đồng ý"></span></a>';
+                        return $btn;
+                    })
+                    ->rawColumns(['action'])
+                    ->make(true);
+            }
+            return view('admin.admin_listshoppending');
         }
-        return view('admin.admin_listshoppending');
     }
 
     public function editAgreeShop(Request $request){
@@ -308,25 +332,27 @@ class AdminController extends Controller
         $shop->status_shop = 1;
         $shop->save();
 
-        // $url = \URL::to('/banhang');
-        // $details = [
-        //     'title' => 'OGANI',
-        //     'body' =>"Shop của bạn được phê duyệt! Vui lòng đăng nhập để kiểm tra!!",
-        //     'url' => $url
+        // Send Mail Confirm Shop
+        $url = \URL::to('/banhang');
+        $details = [
+            'title' => 'OGANI',
+            'body' =>"Shop của bạn được phê duyệt! Vui lòng đăng nhập để kiểm tra!!",
+            'url' => $url
             
-        // ];
-
-        // \Mail::to($shop[0]->email_shop)->send(new \App\Mail\Mail($details));      
-        return response()->json(['success'=>'Product saved successfully.']);
+        ];
+        \Mail::to($shop->email_shop)->send(new \App\Mail\Mail($details));   
     }
 
     public function loadProductShop($id_shop){
         // dd($id_shop);
         $this->AuthAdmin();
-        $this->checkUrlRoleUser(Session::get('role_id'));
-        $loadShop = DB::table('shop')->where('id_shop', base64_decode(base64_decode($id_shop)))->first();
-        $loadProductShop = Products::where('shop_id', base64_decode(base64_decode($id_shop)))->orderBy('created_at', 'DESC')->paginate(10);
-        return view('admin.admin_productShop', compact('loadShop', 'loadProductShop'));
+        if ($this->checkURL(Session::get('role_id')) == false)
+            return ($this->checkUrlRoleUser(Session::get('role_id')));
+        else {
+            $loadShop = DB::table('shop')->where('id_shop', base64_decode(base64_decode($id_shop)))->first();
+            $loadProductShop = Products::where('shop_id', base64_decode(base64_decode($id_shop)))->orderBy('created_at', 'DESC')->paginate(10);
+            return view('admin.admin_productShop', compact('loadShop', 'loadProductShop'));
+        }
     }
 
     // Users
@@ -347,6 +373,85 @@ class AdminController extends Controller
         else
             return Redirect::to('/admin-dashboard');
     }
+
+    public function checkURL($role_id){
+
+        // Customize URL
+        $listURLCategory = [
+            'admin-danh-sach-danh-muc', 'admin-save-danh-muc-con',
+            'admin-them-danh-muc', 'admin-save-danh-muc',
+            'admin-danh-sach-danh-muc-con', 'admin-them-danh-muc-con',
+            'admin-sua-danh-muc', 'admin-update-danh-muc-con',
+            'admin-sua-danh-muc-con',
+        ];
+        $listURLProduct = [
+            'admin-danh-sach-san-pham', 'admin-danh-sach-san-pham-cho-duyet',
+        ];
+        $listURLUser = [
+            'admin-danh-sach-nhan-vien', 'admin-them-nhan-vien',
+            'admin-save-nhan-vien', 'admin-sua-quyen-nhan-vien',
+            'admin-update-nhan-vien', 'admin-update-password-nhan-vien',
+            'admin-dat-lai-mat-khau', 
+        ];
+        $listURLShop = [
+            'admin-danh-sach-shop', 'admin-danh-sach-shop-cho-phe-duyet',
+            'admin-san-pham-shop', 
+        ];
+        $listComment = [
+            'admin-binh-luan-san-pham'
+        ];
+
+        // Get URl
+        $getURL = explode('/', url()->current());
+        $url = $getURL[count($getURL) -1];
+        if ( is_numeric(base64_decode(base64_decode($url)))){
+            $url = $getURL[count($getURL) -2];
+        }
+        // dd($url);
+        // $getURL2 = explode('/', url()->previous());
+        // $url2 = $getURL2[count($getURL2) -1];
+        // if ( is_numeric(base64_decode(base64_decode($url2)))){
+        //     $url2 = $getURL2[count($getURL2) -2];
+        // }
+        // dd($url, $getURL,$url2 ,array_search($url , $listURLCategory));
+
+        // Return
+        // Admin
+        if ($role_id == 1)
+            return true;
+
+        // Quản lý danh mục
+        else if ($role_id == 2)
+            if (is_numeric(array_search($url , $listURLCategory)))
+                return true;
+            else return false;
+        
+        // Quản lý sản phẩm
+        else if ($role_id == 3)
+            if (is_numeric(array_search($url , $listURLProduct)))
+                return true;
+            else return false;
+
+        // Quản lý nhân viên
+        else if ($role_id == 4)
+            if (is_numeric(array_search($url , $listURLUser)))
+                return true;
+            else return false;
+
+        // Quản lý Shop
+        else if ($role_id == 5)
+            if (is_numeric(array_search($url , $listURLShop)))
+                return true;
+            else return false;
+
+        // Quản lý bình luận
+        else if ($role_id == 6)
+            if (is_numeric(array_search($url , $listComment)))
+                return true;
+            else return false;
+
+        else return -1;
+    }
     
     public function checkRoleUser($dataRoleUser){
         foreach($dataRoleUser as $RoleUsers =>$role)
@@ -355,24 +460,29 @@ class AdminController extends Controller
 
     public function listUser(){
         $this->AuthAdmin();
-        $this->checkUrlRoleUser(Session::get('role_id'));
-        $listUser = DB::table('users')
-                        ->join('roles','roles.id_role', '=', 'users.role_id')
-                        ->select('users.id_users', 'users.name_user', 'users.email_user', 'users.phone_user', 'roles.id_role', 'roles.name_role')
-                        ->get();
-        return view('admin.admin_listuser', compact('listUser'));
+        if ($this->checkURL(Session::get('role_id')) == false)
+            return ($this->checkUrlRoleUser(Session::get('role_id')));
+        else {
+            $listUser = DB::table('users')
+                            ->join('roles','roles.id_role', '=', 'users.role_id')
+                            ->select('users.id_users', 'users.name_user', 'users.email_user', 'users.phone_user', 'roles.id_role', 'roles.name_role')
+                            ->get();
+            return view('admin.admin_listuser', compact('listUser'));
+        }
     }
 
     public function addUser(){
         $this->AuthAdmin();
-        $this->checkUrlRoleUser(Session::get('role_id'));
-        $listRole = DB::table('roles')->where('roles.id_role', '>', 1)->get();
-        return view('admin.admin_adduser', compact('listRole'));
+        if ($this->checkURL(Session::get('role_id')) == false)
+            return ($this->checkUrlRoleUser(Session::get('role_id')));
+        else {
+            $listRole = DB::table('roles')->where('roles.id_role', '>', 1)->get();
+            return view('admin.admin_adduser', compact('listRole'));
+        }
     }
 
     public function saveUser(Request $req){
         $this->AuthAdmin();
-        $this->checkUrlRoleUser(Session::get('role_id'));
         Session::put('res_name_user', $req->name_user);
         Session::put('res_username_user', $req->username_user);
         Session::put('res_email_user', $req->email_user);
@@ -415,21 +525,23 @@ class AdminController extends Controller
 
     public function editRoleUser(Request $req){
         $this->AuthAdmin();
-        $this->checkUrlRoleUser(Session::get('role_id'));
-        $loadUser = DB::table('users')->where('id_users', base64_decode(base64_decode($req->id_users)))
-                        ->join('roles', 'roles.id_role', '=', 'users.role_id')
-                        ->select('roles.name_role', 'users.id_users', 'users.name_user', 'users.username_user', 'users.email_user', 'users.phone_user', 'users.role_id')
-                        ->get();
-        $loadRole = DB::table('roles')->where('id_role', '>', 1)->get();
-        if ($this->checkRoleUser($loadUser) == 1)
-            return redirect::to('/admin-danh-sach-nhan-vien');
-        else 
-            return view('admin.admin_edituser', compact('loadUser', 'loadRole'));
+        if ($this->checkURL(Session::get('role_id')) == false)
+            return ($this->checkUrlRoleUser(Session::get('role_id')));
+        else {
+            $loadUser = DB::table('users')->where('id_users', base64_decode(base64_decode($req->id_users)))
+                            ->join('roles', 'roles.id_role', '=', 'users.role_id')
+                            ->select('roles.name_role', 'users.id_users', 'users.name_user', 'users.username_user', 'users.email_user', 'users.phone_user', 'users.role_id')
+                            ->get();
+            $loadRole = DB::table('roles')->where('id_role', '>', 1)->get();
+            if ($this->checkRoleUser($loadUser) == 1)
+                return redirect::to('/admin-danh-sach-nhan-vien');
+            else 
+                return view('admin.admin_edituser', compact('loadUser', 'loadRole'));
+        }
     }
 
     public function updateRoleUser(Request $req){
         $this->AuthAdmin();
-        $this->checkUrlRoleUser(Session::get('role_id'));
         $updateRoleUser['role_id'] = $req->role_user;
         DB::table('users')->where('id_users', base64_decode(base64_decode($req->id_users)))->update($updateRoleUser);
         Session::put('message', 'Cập nhật thành công.');
@@ -438,16 +550,19 @@ class AdminController extends Controller
 
     public function loadPasswordUser(Request $req){
         $this->AuthAdmin();
-        $this->checkUrlRoleUser(Session::get('role_id'));
-        $loadUser = DB::table('users')->where('id_users', base64_decode(base64_decode($req->id_users)))
-                        ->join('roles', 'roles.id_role', '=', 'users.role_id')
-                        ->select('roles.name_role', 'users.id_users', 'users.name_user', 'users.username_user', 'users.email_user', 'users.phone_user', 'users.role_id')
-                        ->get();
-        
-        if ($this->checkRoleUser($loadUser) == 1)
-            return redirect::to('/admin-danh-sach-nhan-vien');
-        else 
-            return view('admin.admin_resetpassworduser', compact('loadUser'));
+        if ($this->checkURL(Session::get('role_id')) == false)
+            return ($this->checkUrlRoleUser(Session::get('role_id')));
+        else {
+            $loadUser = DB::table('users')->where('id_users', base64_decode(base64_decode($req->id_users)))
+                            ->join('roles', 'roles.id_role', '=', 'users.role_id')
+                            ->select('roles.name_role', 'users.id_users', 'users.name_user', 'users.username_user', 'users.email_user', 'users.phone_user', 'users.role_id')
+                            ->get();
+            
+            if ($this->checkRoleUser($loadUser) == 1)
+                return redirect::to('/admin-danh-sach-nhan-vien');
+            else 
+                return view('admin.admin_resetpassworduser', compact('loadUser'));
+        }
     }
 
     public function updatePasswordUser(Request $req){
@@ -462,13 +577,11 @@ class AdminController extends Controller
 
     public function changePasswordUser(){
         $this->AuthAdmin();
-        $this->checkUrlRoleUser(Session::get('role_id'));
         return view('admin.admin_changepassworduser');
     }
 
     public function updateChangePasswordUser(Request $req){
         $this->AuthAdmin();
-        $this->checkUrlRoleUser(Session::get('role_id'));
         $change_password = Users::where('id_users', base64_decode(base64_decode($req->id_users)))->where('password_user', md5(sha1($req->password_user)))->first();
         if (empty($change_password)){
             Session::put('message', 'Mật khẩu cũ không đúng. Vui lòng nhập lại.');
@@ -610,15 +723,35 @@ class AdminController extends Controller
     // public function pageRevenueShop(){
     //     return view('admin.admin_revenueShop');
     // }
-    public function getListComments(){
-        $listComments = DB::table('comment')->join('products','id_product','=','product_id')
-        ->join('customers','id_customer','=','customer_id')
-        ->select('comment.created_at','comment.customer_id','comment.product_id','comment.content','products.name_product', 'products.img_product','customers.name_customer','comment.id_comment')->paginate(6);
-        //dd($listComments);
-        return view('admin.admin_listcomments',compact('listComments'));
+
+
+    // Comment
+    public function getListComments(Request $request){
+        $this->AuthAdmin();
+        if ($this->checkURL(Session::get('role_id')) == false)
+            return ($this->checkUrlRoleUser(Session::get('role_id')));
+        else {
+            if ($request->ajax()) {
+                $data = DB::table('comment')->join('products','id_product','=','product_id')
+                ->join('customers','id_customer','=','customer_id')
+                ->select('comment.created_at', 'comment.id_comment' ,'comment.content','products.name_product', 'products.img_product','customers.name_customer')
+                ->get();
+                // dd($data);
+                return Datatables::of($data)
+                    ->addIndexColumn()
+                    ->addColumn('action', function($row){
+                        $btn = '<a href="javascript:void(0)" data-id="'.$row->id_comment.'" data-toggle="tooltip" id="edit-agree-comment"><span class=" btn btn-outline-success icon-dislike" title="Xoá bình luận"></span></a>';
+                        return $btn;
+                    })
+                    ->rawColumns(['action'])
+                    ->make(true);
+            }
+            return view('admin.admin_listcomments');
+        }
     }
-    public function deleteComment($id_comment){
-        $comment = DB::table('comment')->where('id_comment',$id_comment)->delete();
-        return Redirect::to('/admin-comment')->with("success_comment","Xóa thành công");
+
+    public function deleteComments(Request $request){
+        DB::table('comment')->where('id_comment', $request->id_comment)->delete();
+
     }
 }

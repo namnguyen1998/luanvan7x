@@ -62,7 +62,7 @@
                     <div class="card-body">
                         <div class="form-body">
                             <div class="form-group row">
-                                <label class="control-label text-right col-md-3">Tên sản phẩm *</label>
+                                <label class="control-label text-right col-md-3">Tên sản phẩm <span style="font-size:10px;color:red">(Bắt buộc *)</span></label>
                                 <div class="col-md-9">
                                 <input name="nameProduct" id="name" placeholder="Tên sản phẩm" class="form-control" type="text">
                                 </div>
@@ -74,14 +74,14 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="control-label text-right col-md-3">Nơi sản xuất *</label>
+                                <label class="control-label text-right col-md-3">Nơi sản xuất <span style="font-size:10px;color:red">(Bắt buộc *)</span></label>
                                 <div class="col-md-9">
                                 <input name="madeby" placeholder="Nơi sản xuất" class="form-control" type="text">
                                 </div>
                             </div>
                             
                             <div class="form-group row">
-                                <label class="control-label text-right col-md-3">Giá *</label>
+                                <label class="control-label text-right col-md-3">Giá <span style="font-size:10px;color:red">(Bắt buộc *)</span></label>
                                 <div class="col-md-9">
                                 <input name="price" id="_price" placeholder="Giá sản phẩm" class="form-control" type="text">
                                 </div>
@@ -97,7 +97,7 @@
                             <!-- summernote --> 
                             <div class="col-lg-12">
                                 <fieldset class="form-group">
-                                <label>Mô tả *</label>
+                                <label>Mô tả <span style="font-size:10px;color:red">(Bắt buộc *)</span></label>
                                 <textarea name="description" class="form-control" id="descTextarea" placeholder="Textarea with description" ></textarea>
                                 </fieldset>
                             </div>
@@ -112,7 +112,7 @@
             <div class="col-lg-12 col-md-12">
                 <div class="card">
                     <div class="card-body">
-                    <h4 class="card-title">Hình 1</h4>
+                    <h4 class="card-title">Hình 1 <span style="font-size:10px;color:red">(Bắt buộc *)</span></h4>
                     <label for="input-file-now-custom-1">Chọn hình</label>
                     <input  type="file" id="input-file-now-custom-1" class="dropify" name="img_product" />
                     </div>

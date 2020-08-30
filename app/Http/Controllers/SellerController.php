@@ -302,7 +302,7 @@ class SellerController extends Controller
     }
 
     public function loadOrderDetailShop($orders_id){
-        $loadOrderDetail = OrderDetail::select('products.name_product', 'order_detail.price_order_detail', 'shop.id_shop', 'shop.name_shop', 'order_detail.id_order_detail', 'order_detail.quantity')
+        $loadOrderDetail = OrderDetail::select('order_detail.name_product_order_detail', 'order_detail.price_order_detail', 'shop.id_shop', 'shop.name_shop', 'order_detail.id_order_detail', 'order_detail.quantity')
                                 ->join('orders', 'orders.id_orders', '=', 'order_detail.orders_id')
                                 ->join('products', 'products.id_product', '=', 'order_detail.product_id')
                                 ->leftjoin('shop', 'shop.id_shop', '=', 'products.shop_id')
@@ -328,7 +328,7 @@ class SellerController extends Controller
     }
 
     public function downloadPDF(Request $req){
-        $loadOrderDetail = OrderDetail::select('products.name_product', 'order_detail.price_order_detail', 'shop.id_shop', 'shop.name_shop', 'order_detail.id_order_detail', 'order_detail.quantity')
+        $loadOrderDetail = OrderDetail::select('order_detail.name_product_order_detail', 'order_detail.price_order_detail', 'shop.id_shop', 'shop.name_shop', 'order_detail.id_order_detail', 'order_detail.quantity')
                                 ->join('orders', 'orders.id_orders', '=', 'order_detail.orders_id')
                                 ->join('products', 'products.id_product', '=', 'order_detail.product_id')
                                 ->leftjoin('shop', 'shop.id_shop', '=', 'products.shop_id')

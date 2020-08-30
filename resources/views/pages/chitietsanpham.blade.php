@@ -161,6 +161,18 @@
             alertify.success('Đã thêm sản phẩm vào giỏ hàng');
             
         }
+        $(document).ready( function(){
+            // alert("The URL of this page is: " + location.href);
+            id = document.URL;
+            // console.log(id)
+            $.ajax({
+                url:"{{URL::to('/traces')}}",
+                type:'GET',
+                data: {id: id}
+            }).done(function(response){
+                console.log(response)
+            });
+        })
     </script>
     <!-- Related Product Section End -->
     @include('pages.footer')

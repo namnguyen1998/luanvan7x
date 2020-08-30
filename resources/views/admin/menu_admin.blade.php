@@ -42,7 +42,7 @@
         </li>
        <li class="treeview"> <a href="#"> <i class="icon-grid"></i> <span>Quản lý comment</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span> </a>
           <ul class="treeview-menu">
-          <li><a href="{{URL::to('/admin-comment')}}"><i class="fa fa-angle-right"></i>Danh sach comment</a></li>
+          <li><a href="{{URL::to('/admin-binh-luan-san-pham')}}"><i class="fa fa-angle-right"></i>Danh sach comment</a></li>
           </ul>
         </li>
 
@@ -90,7 +90,7 @@
           <ul class="treeview-menu">
             <li><a href="{{URL::to('admin-danh-sach-shop')}}"><i class="fa fa-angle-right"></i> Danh sách Shop</a></li>
             <li><a href="{{URL::to('admin-danh-sach-shop-cho-phe-duyet')}}"><i class="fa fa-angle-right"></i> DS Shop chờ phê duyệt</a></li>
-            <li><a href="{{URL::to('admin-danh-sach-shop-tam-ngung-hoat-dong')}}"><i class="fa fa-angle-right"></i> DS Shop bị tạm ngưng hoạt động</a></li>
+            <!-- <li><a href="{{URL::to('admin-danh-sach-shop-tam-ngung-hoat-dong')}}"><i class="fa fa-angle-right"></i> DS Shop bị tạm ngưng hoạt động</a></li> -->
             <!-- <li><a href="table-jsgrid.html"><i class="fa fa-angle-right"></i> Js Grid Table</a></li> -->
           </ul>
         </li>
@@ -202,10 +202,19 @@
           <ul class="treeview-menu">
             <li><a href="{{URL::to('admin-danh-sach-shop')}}"><i class="fa fa-angle-right"></i> Danh sách Shop</a></li>
             <li><a href="{{URL::to('admin-danh-sach-shop-cho-phe-duyet')}}"><i class="fa fa-angle-right"></i> DS Shop chờ phê duyệt</a></li>
-            <li><a href="{{URL::to('admin-danh-sach-shop-tam-ngung-hoat-dong')}}"><i class="fa fa-angle-right"></i> DS Shop bị tạm ngưng hoạt động</a></li>
+            <!-- <li><a href="{{URL::to('admin-danh-sach-shop-tam-ngung-hoat-dong')}}"><i class="fa fa-angle-right"></i> DS Shop bị tạm ngưng hoạt động</a></li> -->
             <!-- <li><a href="table-jsgrid.html"><i class="fa fa-angle-right"></i> Js Grid Table</a></li> -->
           </ul>
         </li>
+
+        <!-- Quản lý bình luận -->
+        @elseif (Session::get('role_id') == 6)
+        <li class="treeview"> <a href="#"> <i class="icon-grid"></i> <span>Quản lý comment</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span> </a>
+          <ul class="treeview-menu">
+          <li><a href="{{URL::to('/admin-binh-luan-san-pham')}}"><i class="fa fa-angle-right"></i>Danh sach comment</a></li>
+          </ul>
+        </li>
+
 
         @else
         <li class="header"></li>
@@ -214,3 +223,6 @@
     </div>
     <!-- /.sidebar --> 
   </aside>
+
+
+  
