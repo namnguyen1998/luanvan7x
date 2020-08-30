@@ -332,16 +332,15 @@ class AdminController extends Controller
         $shop->status_shop = 1;
         $shop->save();
 
-        // $url = \URL::to('/banhang');
-        // $details = [
-        //     'title' => 'OGANI',
-        //     'body' =>"Shop của bạn được phê duyệt! Vui lòng đăng nhập để kiểm tra!!",
-        //     'url' => $url
+        // Send Mail Confirm Shop
+        $url = \URL::to('/banhang');
+        $details = [
+            'title' => 'OGANI',
+            'body' =>"Shop của bạn được phê duyệt! Vui lòng đăng nhập để kiểm tra!!",
+            'url' => $url
             
-        // ];
-
-        // \Mail::to($shop[0]->email_shop)->send(new \App\Mail\Mail($details));      
-        return response()->json(['success'=>'Product saved successfully.']);
+        ];
+        \Mail::to($shop->email_shop)->send(new \App\Mail\Mail($details));   
     }
 
     public function loadProductShop($id_shop){
