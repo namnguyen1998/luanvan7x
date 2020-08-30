@@ -90,7 +90,7 @@
           <ul class="treeview-menu">
             <li><a href="{{URL::to('admin-danh-sach-shop')}}"><i class="fa fa-angle-right"></i> Danh sách Shop</a></li>
             <li><a href="{{URL::to('admin-danh-sach-shop-cho-phe-duyet')}}"><i class="fa fa-angle-right"></i> DS Shop chờ phê duyệt</a></li>
-            <li><a href="{{URL::to('admin-danh-sach-shop-tam-ngung-hoat-dong')}}"><i class="fa fa-angle-right"></i> DS Shop bị tạm ngưng hoạt động</a></li>
+            <!-- <li><a href="{{URL::to('admin-danh-sach-shop-tam-ngung-hoat-dong')}}"><i class="fa fa-angle-right"></i> DS Shop bị tạm ngưng hoạt động</a></li> -->
             <!-- <li><a href="table-jsgrid.html"><i class="fa fa-angle-right"></i> Js Grid Table</a></li> -->
           </ul>
         </li>
@@ -202,7 +202,7 @@
           <ul class="treeview-menu">
             <li><a href="{{URL::to('admin-danh-sach-shop')}}"><i class="fa fa-angle-right"></i> Danh sách Shop</a></li>
             <li><a href="{{URL::to('admin-danh-sach-shop-cho-phe-duyet')}}"><i class="fa fa-angle-right"></i> DS Shop chờ phê duyệt</a></li>
-            <li><a href="{{URL::to('admin-danh-sach-shop-tam-ngung-hoat-dong')}}"><i class="fa fa-angle-right"></i> DS Shop bị tạm ngưng hoạt động</a></li>
+            <!-- <li><a href="{{URL::to('admin-danh-sach-shop-tam-ngung-hoat-dong')}}"><i class="fa fa-angle-right"></i> DS Shop bị tạm ngưng hoạt động</a></li> -->
             <!-- <li><a href="table-jsgrid.html"><i class="fa fa-angle-right"></i> Js Grid Table</a></li> -->
           </ul>
         </li>
