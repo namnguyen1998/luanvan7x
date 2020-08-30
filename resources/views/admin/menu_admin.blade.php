@@ -42,7 +42,7 @@
         </li>
        <li class="treeview"> <a href="#"> <i class="icon-grid"></i> <span>Quản lý comment</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span> </a>
           <ul class="treeview-menu">
-          <li><a href="{{URL::to('/admin-comment')}}"><i class="fa fa-angle-right"></i>Danh sach comment</a></li>
+          <li><a href="{{URL::to('/admin-binh-luan-san-pham')}}"><i class="fa fa-angle-right"></i>Danh sach comment</a></li>
           </ul>
         </li>
 
@@ -207,6 +207,15 @@
           </ul>
         </li>
 
+        <!-- Quản lý bình luận -->
+        @elseif (Session::get('role_id') == 6)
+        <li class="treeview"> <a href="#"> <i class="icon-grid"></i> <span>Quản lý comment</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span> </a>
+          <ul class="treeview-menu">
+          <li><a href="{{URL::to('/admin-binh-luan-san-pham')}}"><i class="fa fa-angle-right"></i>Danh sach comment</a></li>
+          </ul>
+        </li>
+
+
         @else
         <li class="header"></li>
         @endif
@@ -214,3 +223,6 @@
     </div>
     <!-- /.sidebar --> 
   </aside>
+
+
+  

@@ -72,9 +72,11 @@ class SellerController extends Controller
         $this->AuthLogin();
         $this->validate($request, 
         [
+            'name_shop' => 'unique:shop,name_shop',
             'img_shop' => 'mimes:jpg,jpeg,png,gif|max:2048',
         ], 
         [
+            'name_shop.unique' => 'Tên shop đã tồn tại! Vui lòng đặt tên khác!!',
             'img_shop.mimes' => 'Chỉ chấp nhận với đuôi .jpg .jpeg .png .gif',
             'img_shop.max' => 'Hình ảnh giới hạn dung lượng không quá 2M',
 

@@ -43,21 +43,33 @@
   <div class="login-logo">
     <a href="{{URL::to('/')}}"><img src="{{asset('public/frontend/img/logo.png')}}" alt=""></a>
   </div>
+@foreach($errors->all() as $err)
+    <div class="alert alert-danger" role="alert">{{$err}}</div>
+@endforeach
+@if(session('Thành công'))
+  <div class="alert alert-success">{{ session('Thành công')}}</div>
+@endif
     <p class="login-box-msg">Nhập thông tin của bạn</p>
     <form action="{{URL::to('/postRegister')}}" method="post" enctype="multipart/form-data">
          @csrf
       <!-- <div class="form-group has-feedback">
         <input type="email" class="form-control sty1" name=""placeholder="Name">
       </div> -->
+     <?php
+          if(empty($_GET['key'])){
+     ?>
       <div class="form-group has-feedback">
         <input type="email" class="form-control sty1" name="email" placeholder="Email đăng ký">
       </div>
+      <?php } else { ?>
+        <input type="hidden" class="form-control sty1" name ="accept" value="<?php echo $_GET['key']?>">
       <div class="form-group has-feedback">
         <input type="password" class="form-control sty1" name ="password" placeholder="Nhập mật khẩu">
       </div>
       <div class="form-group has-feedback">
         <input type="password" class="form-control sty1" name ="re_password" placeholder="Nhập lại mật khẩu">
       </div>
+      <?php }?>
       <div>
         <div class="col-xs-8">
           <div class="checkbox icheck">

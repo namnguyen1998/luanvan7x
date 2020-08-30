@@ -57,7 +57,7 @@
                             <div class="header__top__right__language">
                                 <div>
                                 <i class="fa fa-user"></i>
-                                @if(Session::get('name_customer') != null)
+                                @if(Session::get('name_customer')!= null)
                                     {{Session::get('name_customer')}}
                                 @else
                                     {{Session::get('email_customer')}}
@@ -94,7 +94,20 @@
                                 Tìm trong tất cả
                                 <!-- <span class="arrow_carrot-down"></span> -->
                             </div>
-                            <input type="text" name="key" @if(Session::get('keySearch')!=null) value="{{Session::get('keySearch')}}" @endif placeholder="Nhập tên sản phẩm cần tìm.">
+                            <?php
+                                if(!empty($_GET['keySearch'])){
+                            ?>
+                            <input type="text" name="keySearch" value="<?php 
+                                    $name = str_replace('+', ' ', $_GET['keySearch']);
+                                    echo $name;  ?>">
+                            
+                            <?php
+                                }else{
+                            ?>
+                                <input type="text" name="keySearch" placeholder="Nhập tên sản phẩm cần tìm.">
+                            <?php
+                                }
+                            ?>
                             <button type="submit" class="site-btn">Tìm kiếm</button>
                         </form>
                     </div>

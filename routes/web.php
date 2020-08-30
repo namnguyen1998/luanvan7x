@@ -176,7 +176,8 @@ Route::get('/admin-doanh-thu-don-hang', 'AdminController@pageRevenue');
 Route::get('/admin-load-revenue/{val_revenue}', 'AdminController@Revenue');
 
 
-Route::get('/admin-comment','AdminController@getListComments');
+Route::get('/admin-binh-luan-san-pham','AdminController@getListComments');
+Route::post('/admin-xoa-binh-luan/{id_comment}','AdminController@deleteComments');
 // Route::get('/admin-doanh-thu-shop', 'AdminController@pageRevenueShop');
 // Route::get('/admin-load-revenue-shop/{val_revenue}', 'AdminController@RevenueShop');
 
@@ -186,3 +187,7 @@ Route::get('/admin-comment','AdminController@getListComments');
 Route::get('/admin-doi-mat-khau', 'AdminController@changePasswordUser');
 Route::post('/admin-update-change-password/{id_users}', 'AdminController@updateChangePasswordUser');
 
+// check pages 404
+Route::any('/{page?}',function(){
+	return View::make('pages.404');
+})->where('page','.*');

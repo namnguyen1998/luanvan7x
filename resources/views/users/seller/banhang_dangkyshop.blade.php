@@ -7,11 +7,29 @@
                 <strong>ĐĂNG KÝ SHOP BÁN HÀNG</strong>
             </div>
             @foreach($errors->all() as $err)
-                <div class="alert alert-danger">{{ $err }}</div>
+                <div class="alert alert-danger" role="alert">{{$err}}</div>
             @endforeach
+            @if(session('Thành công'))
+                <div class="alert alert-success">{{ session('Thành công')}}</div>
+            @endif
                 <div class="card-body card-block" style="">
                     <form action="{{URL::to('/postRegisterShop')}}" method="post" enctype="multipart/form-data" class="form-horizontal">
                             @csrf
+                        <?php
+                            if(empty($_GET['keyID'])){
+                        ?>
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-input" class=" form-control-label">Email</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="email" id="text-input" name="email_shop" value="" class="form-control" style="width: 280px;" placeholder="Nhập Email để đăng ký shop">
+                            </div>
+                        </div>
+                        <?php
+                            }else{
+                        ?>
+                        <input type="hidden" name="accept_shop" value="<?php echo $_GET['keyID']?>" class="form-control">
                         <div class="row form-group">
                             <div class="col col-md-3">
                                 <label for="text-input" class=" form-control-label">Tên Shop</label>
@@ -33,15 +51,7 @@
                                 <label for="text-input" class=" form-control-label">Số điện thoại</label>
                             </div>
                             <div class="col-12 col-md-9">
-                                <input type="text" id="text-input" name="phone_shop" value="" class="form-control" style="width: 280px;">
-                            </div>
-                        </div>
-                        <div class="row form-group">
-                            <div class="col col-md-3">
-                                <label for="text-input" class=" form-control-label">Email</label>
-                            </div>
-                            <div class="col-12 col-md-9">
-                                <input type="email" id="text-input" name="email_shop" value="" class="form-control" style="width: 280px;">
+                                <input type="number" name="phone_shop" value="" class="form-control" style="width: 280px;">
                             </div>
                         </div>
                         <div class="row form-group">
@@ -77,6 +87,8 @@
                             </span>
                             @endif
                         </div>
+                        <?php
+                        }?>
                 <div class="card-footer" style="text-align: center;">
                     <button type="submit" class="btn btn-primary btn-sm">
                         Save

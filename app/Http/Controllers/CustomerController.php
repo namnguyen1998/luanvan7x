@@ -16,6 +16,7 @@ use App\Brands;
 use App\OrderDetail;
 use App\Orders;
 use App\ShippingAddress;
+use App\Shop;
 use Sentinel;
 use Reminder;
 use Mail;
@@ -77,6 +78,7 @@ class CustomerController extends Controller
         if($result){
             Session::put('name_customer',$result->name_customer);
             Session::put('email_customer',$result->email_customer);
+            Session::put('img_customer',$result->img_customer);
 
             if(!empty($result->name_customer))
                 Session::put('name_customer',$result->name_customer);
@@ -92,27 +94,45 @@ class CustomerController extends Controller
     }
     public function getRegisterForm(){
         return view('register');
+        
     }
     public function postRegister(Request $request){
+        if($request->email != null){
+        $this->validate($request,[
+            'email' => 'required|unique:customers,email_customer'
+        ],[
+            'email.required'=>'Vui lòng nhập Email',
+            'email.unique'=>'Email đã được đăng ký'
+        ]);
+            $str = \Str::random(32);
+            $url = \URL::to('/register?key='.$str.base64_encode($request->email));
+            $details = [
+                'title' => 'Tạo tài khoản OGANI',
+                'body' => "Chúng tôi vừa nhận được yêu cầu đăng ký tài khoản! Xin vui lòng click vào LINK bên dưới để tiếp tục",
+                'url' => $url
+            ];
+            \Mail::to($request->email)->send(new \App\Mail\Mail($details));
+            return redirect()->back()->with(['Thành công' => 'Email đã được gửi. Vui lòng kiểm tra mail để cập nhật thông tin.']);
+        }
+        else{
+        $request->email = null;
         $this->validate($request,
             [
-                'email' => 'required|email|unique:customers,email_customer',
                 'password' => 'required|min:6|max:20',
                 're_password' => 'required|same:password',
             ],
             [
-                'email.required'=>'Vui lòng nhập Email',
-                'email.unique'=>'Email đã được sử dụng',
                 'password.required'=>'Vui lòng nhập mật khẩu',
                 're_password.same'=>'Mật khẩu không giống nhau',
                 'password.min'=>'Mật khẩu có ít nhất 6 kí tự',
                 'password.max'=>'Mật khẩu có tối đa 20 kí tự'
             ]);
         $customer = new Customers();
-        $customer->email_customer = $request->email;
-        $customer->password_customer = md5($request->password); 
+        $customer->email_customer = base64_decode(substr($request->accept,32));
+        $customer->password_customer = md5($request->re_password); 
         $customer->save();
         return redirect('/login')->with('success','Tạo tài khoản thành công');
+        }
     }
     public function getUpdatePassword(){
         return view('users.customer.update_password');
@@ -408,35 +428,61 @@ class CustomerController extends Controller
 
     public function postRegisterShop(Request $request){
         $this->AuthLogin();
-        $data = $request->validate(
-            [
-                'name_shop' => 'required|unique:shop_customer,name_shop',
-                'address_shop' => 'required',
-                'phone_shop' => 'required|max:10',
-                'img_shop' => 'mimes:jpg,jpeg,png,gif|max:2048',
-                'email_shop' => 'required|unique:shop_customer,email_shop',
-                'password_shop' => 'required|min:6|max:20',
-                're-password' => 'required|same:password_shop',
-                'g-recaptcha-response' => new Captcha(),         //dòng kiểm tra Captcha
-            ],[
-                'name_shop.unique' => 'Tên shop đã tồn tại',
-                'email_shop.unique' => 'Email này đã được đăng ký',
-                'email.required'=>'Vui lòng nhập Email',
-                'password.required'=>'Vui lòng nhập mật khẩu',
-                're_password.same'=>'Mật khẩu không giống nhau',
-                'password.min'=>'Mật khẩu có ít nhất 6 kí tự'
-            ]);
-        $items = array();
-        $items['name_shop'] = $data['name_shop'];
-        $items['address_shop'] = $data['address_shop'];
-        $items['phone_shop'] = $data['phone_shop'];
-        $items['email_shop'] = $data['email_shop'];
-        $items['password_shop'] = md5($data['password_shop']);
-        $items['img_shop'] = $this->setNameImage($data['img_shop']);
-        $items['customer_id'] = $this->checkUser();
-        DB::table('shop')->insert($items);
-        Session::put('message','Đăng ký thành công chờ phê duyệt');
-        return Redirect::to('/profile');
+        if($request->email_shop != null){
+        $this->validate($request,[
+            'email_shop' => 'required|unique:shop,email_shop'
+        ],[
+            'email_shop.required'=>'Vui lòng nhập Email',
+            'email_shop.unique'=>'Email đã được đăng ký'
+        ]);
+            $str = \Str::random(32);
+            $url = \URL::to('/dang-ky-shop?keyID='.$str.base64_encode($request->email_shop));
+            $details = [
+                'title' => 'Tạo tài khoản OGANI',
+                'body' => "Chúng tôi vừa nhận được yêu cầu đăng ký mở shop! Xin vui lòng click vào LINK bên dưới để tiếp tục",
+                'url' => $url
+            ];
+            \Mail::to($request->email_shop)->send(new \App\Mail\Mail($details));
+            return redirect()->back()->with(['Thành công' => 'Email đã được gửi. Vui lòng kiểm tra mail để cập nhật thông tin.']);
+        }else{
+            $request->email_shop = null;
+            $data = $request->validate(
+                [
+                    'name_shop' => 'required|unique:shop,name_shop',
+                    'address_shop' => 'required',
+                    'phone_shop' => 'required|max:10',
+                    'img_shop' => 'mimes:jpg,jpeg,png,gif|max:2048',
+                    'password_shop' => 'required|min:6|max:20',
+                    're-password' => 'required|same:password_shop',
+                    'g-recaptcha-response' => new Captcha(),         //dòng kiểm tra Captcha
+                ],[
+                    'name_shop.unique' => 'Tên shop đã tồn tại',
+                    'password.required'=>'Vui lòng nhập mật khẩu',
+                    're_password.same'=>'Mật khẩu không giống nhau',
+                    'password.min'=>'Mật khẩu có ít nhất 6 kí tự'
+                ]);
+
+            $shop = new Shop();
+            $shop->name_shop = $request->name_shop;
+            $shop->address_shop = $request->address_shop;
+            $shop->phone_shop = $request->phone_shop;
+            $shop->email_shop = base64_decode(substr($request->accept_shop,32));
+            $shop->password_shop = md5($request->re_password);
+            $shop->img_shop = $this->setNameImage($request->img_shop);
+            $shop->customer_id = $this->checkUser();
+            $shop->save();
+            // $items = array();
+            // $items['name_shop'] = $data['name_shop'];
+            // $items['address_shop'] = $data['address_shop'];
+            // $items['phone_shop'] = $data['phone_shop'];
+            // $items['email_shop'] = $data['email_shop'];
+            // $items['password_shop'] = md5($data['password_shop']);
+            // $items['img_shop'] = $this->setNameImage($data['img_shop']);
+            // $items['customer_id'] = $this->checkUser();
+            // DB::table('shop')->insert($items);
+            Session::put('message','Đăng ký thành công chờ phê duyệt');
+            return Redirect::to('/profile');
+        }
     }
 
     public function getBillCustomer(){
