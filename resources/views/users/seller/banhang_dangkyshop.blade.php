@@ -12,6 +12,9 @@
             @if(session('Thành công'))
                 <div class="alert alert-success">{{ session('Thành công')}}</div>
             @endif
+            @if(session('Error_shop'))
+                <div class="alert alert-danger">{{ session('Error_shop')}}</div>
+            @endif
                 <div class="card-body card-block" style="">
                     <form action="{{URL::to('/postRegisterShop')}}" method="post" enctype="multipart/form-data" class="form-horizontal">
                             @csrf
@@ -91,7 +94,7 @@
                         }?>
                 <div class="card-footer" style="text-align: center;">
                     <button type="submit" class="btn btn-primary btn-sm">
-                        Save
+                        Đăng ký
                     </button>
                 </div>
             </form>

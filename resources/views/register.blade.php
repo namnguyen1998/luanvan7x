@@ -49,6 +49,9 @@
 @if(session('Thành công'))
   <div class="alert alert-success">{{ session('Thành công')}}</div>
 @endif
+@if(session('Error_customer'))
+    <div class="alert alert-danger">{{ session('Error_customer')}}</div>
+@endif
     <p class="login-box-msg">Nhập thông tin của bạn</p>
     <form action="{{URL::to('/postRegister')}}" method="post" enctype="multipart/form-data">
          @csrf

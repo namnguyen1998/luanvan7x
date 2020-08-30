@@ -6,6 +6,7 @@
             <div class="card-header">
                 <strong>Hồ sơ của tôi</strong>
             </div>
+            <p class="text-center">Mật khẩu có ít nhất 1 kí tự <strong>IN HOA</strong>, 1 kí tự thường, 1 giá trị số <strong>(123)</strong> & 1 kí tự đặc biệt<strong>(!@#!$%^&*)</strong></p>
                 @if(Session::get('message')!=null)
                 <div class="alert alert-success" role="alert">{{Session::get('message')}}</div>
                 @endif
@@ -15,6 +16,16 @@
                     @endforeach
                     <form action="{{URL::to('/updatePassword')}}" method="post" class="form-horizontal">
                             @csrf
+                        @if(Session::get('customer')->password_customer==null)
+                        <div class="row form-group">
+                            <div class="col col-md-3">
+                                <label for="text-input" class=" form-control-label">Mật khẩu cũ</label>
+                            </div>
+                            <div class="col-12 col-md-9">
+                                <input type="password" name="old_password" class="form-control" style="width: 280px;">
+                            </div>
+                        </div>
+                        @endif
                         <div class="row form-group">
                             <div class="col col-md-3">
                                 <label for="text-input" class=" form-control-label">Mật khẩu mới</label>

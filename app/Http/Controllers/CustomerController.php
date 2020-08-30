@@ -127,6 +127,12 @@ class CustomerController extends Controller
                 'password.min'=>'Mật khẩu có ít nhất 6 kí tự',
                 'password.max'=>'Mật khẩu có tối đa 20 kí tự'
             ]);
+        $customerIsset = Customers::all();
+            for($i = 0; $i <count($customerIsset); $i++){
+                if(strcmp($customerIsset[$i]->email_customer,base64_decode(substr($request->accept,32)))==0){
+                    return redirect()->back()->with("Error_customer","Tài khoản đã được đăng ký");
+                }
+            }
         $customer = new Customers();
         $customer->email_customer = base64_decode(substr($request->accept,32));
         $customer->password_customer = md5($request->re_password); 
@@ -141,11 +147,12 @@ class CustomerController extends Controller
         $this->AuthLogin();
         $this->validate($request,
             [
-                'new_password' => 'required|min:6|max:20',
+                'new_password' => 'required|min:6|max:20|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/',
                 'password_new_confirmation' => 'required|same:new_password',
             ],
             [
                 'new_password.required'=>'Vui lòng nhập mật khẩu',
+                'new_password.regex' =>'Mật khẩu có ít nhất 1 kí tự IN HOA, 1 kí tự thường, 1 giá trị số & 1 kí tự đặc biệt',
                 'password_new_confirmation.same'=>'Mật khẩu không giống nhau',
                 'new_password.min'=>'Mật khẩu có ít nhất 6 kí tự',
                 'new_password.max'=>'Mật khẩu có tối đa 20 kí tự'
@@ -186,11 +193,12 @@ class CustomerController extends Controller
     public function resetPassword(Request $request){
         $this->validate($request,
             [
-                'password_new' => 'required|min:6|max:20',
+                'password_new' => 'required|min:6|max:20|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/',
                 'password_new_confirmation' => 'required|same:password_new',
             ],
             [
                 'password_new.required'=>'Vui lòng nhập mật khẩu',
+                'password_new.regex' =>'Mật khẩu có ít nhất 1 kí tự IN HOA, 1 kí tự thường, 1 giá trị số & 1 kí tự đặc biệt',
                 'password_new_confirmation.same'=>'Mật khẩu không giống nhau',
                 'password.min'=>'Mật khẩu có ít nhất 6 kí tự'
             ]);
@@ -253,7 +261,7 @@ class CustomerController extends Controller
             $newCustomers->save();
             Image::make($Customers->avatar)->save(public_path('frontend/img/shop/' . $Customers->id . '.jpg'));
         }
-        Session::put('customers', $Customers);
+        Session::put('customer', $Customers);
         Session::put('name_customer',$Customers->name);
         Session::put('id_customer',$Customers->id);
         Session::put('provider_id',$Customers->id);
@@ -280,6 +288,7 @@ class CustomerController extends Controller
         if(!empty($customer)){
             Session::put('customer',$customer);
             Session::put('img_customer',$customer->img_customer);
+            Session::put('name_customer',$customer->name_customer);
             $phone_customer = substr(Session::get('customer')->phone_customer,7);
             $email_customer = substr(Session::get('customer')->email_customer,0,3);
         }
@@ -462,6 +471,12 @@ class CustomerController extends Controller
                     'password.min'=>'Mật khẩu có ít nhất 6 kí tự'
                 ]);
 
+            $shopIsset = Shop::all();
+            for($i = 0; $i <count($shopIsset); $i++){
+                if(strcmp($shopIsset[$i]->email_shop,base64_decode(substr($request->accept_shop,32)))==0){
+                    return redirect()->back()->with("Error_shop","Tài khoản đã được đăng ký");
+                }
+            }
             $shop = new Shop();
             $shop->name_shop = $request->name_shop;
             $shop->address_shop = $request->address_shop;

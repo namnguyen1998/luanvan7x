@@ -2,6 +2,10 @@
 @section('content')
 
 <div class="content-header sty-one">
+
+  @if(Session::get('success_comment')!=null)
+  <div class="alert alert-success">{{Session::get('success_comment')}}</div>
+  @endif
   <h1>Danh sách comment</h1>
   <ol class="breadcrumb">
     <li><a href="{{URL::to('/admin-dashboard')}}">Admin</a></li>
@@ -14,13 +18,6 @@
 	</div>
 </div>
 <div class="table-responsive">
-  <?php
-    if (!empty(Session::get('message'))){
-        echo'<div class = "alert-success">'.Session::get('message').'</div></br>';
-        Session::put('message', null);
-    }
-    $number = 1;
-  ?>
   <table class="table table-striped">
     <thead>
       <tr>
@@ -28,6 +25,7 @@
         <th scope="col">Tên sản phẩm</th>
         <th scope="col">Hình</th>
         <th scope="col">Tên người đăng</th>
+        <th scope="col">Nội dung</th>
         <th style="text-align: right" scope="col">Chỉnh sửa</th>
       </tr>
     </thead>
@@ -40,7 +38,8 @@
           <img src='{{asset("public/frontend/img/product/$comment->img_product")}}' height="70" width="70">
         </td>
         <td>{{$comment->name_customer}}</td>
-        <td style="text-align: right"><a href="#"><button class="btn"><span class="icon-wrench"></span></button></a></td>
+        <td>{{$comment->content}}</td>
+        <td style="text-align: right"><a href="{{URL::to('/admin-delete-comment/'.$comment->id_comment)}}" class="btn btn-danger fa fa-trash-o"></a></td>
       </tr>
       @endforeach
     </tbody>

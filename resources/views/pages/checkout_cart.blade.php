@@ -30,7 +30,7 @@
                 <h4>Thông tin khách hàng</h4>
                 <?php
                         if (!empty(Session::get('message'))){
-                            echo'<div class = "alert-danger">'.Session::get('message').'</div></br>';
+                            echo'<h4 class = "alert alert-danger">'.Session::get('message').'</h4></br>';
                             Session::put('message', null);
                         }
                     ?>

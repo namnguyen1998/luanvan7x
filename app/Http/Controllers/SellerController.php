@@ -109,19 +109,27 @@ class SellerController extends Controller
     public function postUpdatePasswordShop(Request $request){
         $this->AuthLogin();
         $this->validate($request,[
-                'new_password' => 'required|min:6|max:20',
+                'old_password'=>  'required|min:6|max:20',
+                'new_password' => 'required|min:6|max:20|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/',
                 'password_new_confirmation' => 'required|same:new_password',
             ],
             [
                 'new_password.required'=>'Vui lòng nhập mật khẩu',
+                'new_password.regex' => 'Mật khẩu có ít nhất 1 kí tự IN HOA, 1 kí tự thường, 1 giá trị số & 1 kí tự đặc biệt',
                 'password_new_confirmation.same'=>'Mật khẩu không giống nhau',
                 'new_password.min'=>'Mật khẩu có ít nhất 6 kí tự',
-                'new_password.max'=>'Mật khẩu có tối đa 20 kí tự'
+                'new_password.max'=>'Mật khẩu có tối đa 20 kí tự',
+                'old_password.min'=>'Mật khẩu có ít nhất 6 kí tự',
+                'old_password.max'=>'Mật khẩu có tối đa 20 kí tự'
             ]);
         $shop = Shop::find(Session::get('id_shop'));
-        $shop->password_shop = md5($request->password_new_confirmation);
-        $shop->save();
-        return Redirect::to('/seller/update-password')->with('success','Cập nhật mật khẩu thành công');
+        if(strcmp($shop->password_shop,md5($request->old_password)) != 0){
+            return Redirect()->back()->with("Error_password","Mật khẩu sai!! Vui lòng nhập lại!");
+        }else{
+            $shop->password_shop = md5($request->password_new_confirmation);
+            $shop->save();
+            return Redirect::to('/seller/update-password')->with('success','Cập nhật mật khẩu thành công');
+        }
     }
 
     public function sellerDashBoard(){
@@ -198,11 +206,12 @@ class SellerController extends Controller
     public function resetPasswordShop(Request $request){
         $this->validate($request,
             [
-                'password_new' => 'required|min:6|max:20',
+                'password_new' => 'required|min:6|max:20|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/',
                 'password_new_confirmation' => 'required|same:password_new',
             ],
             [
                 'password_new.required'=>'Vui lòng nhập mật khẩu',
+                'password_new.regex' =>'Mật khẩu có ít nhất 1 kí tự IN HOA, 1 kí tự thường, 1 giá trị số & 1 kí tự đặc biệt',
                 'password_new_confirmation.same'=>'Mật khẩu không giống nhau',
                 'password.min'=>'Mật khẩu có ít nhất 6 kí tự'
             ]);

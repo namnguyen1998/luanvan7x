@@ -613,7 +613,12 @@ class AdminController extends Controller
     public function getListComments(){
         $listComments = DB::table('comment')->join('products','id_product','=','product_id')
         ->join('customers','id_customer','=','customer_id')
-        ->select('comment.created_at','comment.customer_id','comment.product_id','comment.content','products.name_product', 'products.img_product','customers.name_customer')->paginate(6);
+        ->select('comment.created_at','comment.customer_id','comment.product_id','comment.content','products.name_product', 'products.img_product','customers.name_customer','comment.id_comment')->paginate(6);
+        //dd($listComments);
         return view('admin.admin_listcomments',compact('listComments'));
+    }
+    public function deleteComment($id_comment){
+        $comment = DB::table('comment')->where('id_comment',$id_comment)->delete();
+        return Redirect::to('/admin-comment')->with("success_comment","Xóa thành công");
     }
 }

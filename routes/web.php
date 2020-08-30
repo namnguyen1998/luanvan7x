@@ -175,6 +175,7 @@ Route::get('/admin-load-revenue/{val_revenue}', 'AdminController@Revenue');
 
 
 Route::get('/admin-comment','AdminController@getListComments');
+Route::get('/admin-delete-comment/{id_comment}','AdminController@deleteComment');
 // Route::get('/admin-doanh-thu-shop', 'AdminController@pageRevenueShop');
 // Route::get('/admin-load-revenue-shop/{val_revenue}', 'AdminController@RevenueShop');
 

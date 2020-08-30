@@ -5,7 +5,7 @@
         <div class="card"> <?php
         $message = Session::get('message');
         if($message){
-            echo'<div class = "alert alert-success">'.$message.'</div>';
+            echo'<h4 class = "alert alert-success">'.$message.'</h4>';
             Session::put('message',null);
         }
         ?>
@@ -13,7 +13,7 @@
                 <strong>Hồ sơ của tôi</strong>
             </div>
                 @if(Session::get('message')!=null)
-                <div class="alert alert-success" role="alert">{{Session::get('message')}}</div>
+                <h3 class="alert alert-success" role="alert">{{Session::get('message')}}</h3>
                 @endif
                 <div class="card-body card-block" style="">
                     @foreach($errors->all() as $err)
