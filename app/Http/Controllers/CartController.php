@@ -210,7 +210,8 @@ class CartController extends Controller
                     DB::table('shipping_address')->insert($dataShipping);
 
                     $addressShipping_id = DB::select("SHOW TABLE STATUS LIKE 'shipping_address'");
-                    $dataOrder['address_order'] = $addressShipping_id[0]->Auto_increment -1;
+                    $dataOrder['shipping_address'] = $addressShipping_id[0]->Auto_increment -1;
+                    $dataOrder['address_order'] = (string)$req->_street . ', ' . $req->_district . ', ' . $req->_city;
                     $dataOrder['note'] = $req->_note;
                     $dataOrder['shipping_cost'] = $req->totalShip;
                     $dataOrder['price_orders'] = $req->totalTotal;
@@ -223,6 +224,7 @@ class CartController extends Controller
                         $dataOrderDetail['product_id'] = $product['productInfo']->id_product;
                         $dataOrderDetail['quantity'] = $product['quantity'];
                         $dataOrderDetail['price_order_detail'] = $product['price'];
+                        $dataOrderDetail['name_product_order_detail'] = $product['productInfo']->name_product;
                         DB::table('order_detail')->insert($dataOrderDetail);
                     }
                 }
@@ -240,7 +242,7 @@ class CartController extends Controller
                         $dataOrder['price_orders'] = $req->totalTotal;
                         $dataOrder['customer_id'] = $this->checkUser();
                         
-                        // dd($dataOrder);
+                        // dd(Session::get('Cart'));
                         DB::table('orders')->insert($dataOrder);
 
                         foreach (Session::get('Cart')->products as $product){
@@ -248,6 +250,8 @@ class CartController extends Controller
                             $dataOrderDetail['product_id'] = $product['productInfo']->id_product;
                             $dataOrderDetail['quantity'] = $product['quantity'];
                             $dataOrderDetail['price_order_detail'] = $product['price'];
+                            $dataOrderDetail['name_product_order_detail'] = $product['productInfo']->name_product;
+                            // dd($dataOrderDetail);
                             DB::table('order_detail')->insert($dataOrderDetail);
                         }
                     }
