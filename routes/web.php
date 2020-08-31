@@ -152,6 +152,8 @@ Route::post('/admin-save-danh-muc-con', 'AdminController@saveSub');
 Route::get('/admin-sua-danh-muc-con/{id_sub}', 'AdminController@editSub');
 Route::post('/admin-update-danh-muc-con/{id_sub}', 'AdminController@updateSub');
 Route::get('/admin-danh-sach-duyet-san-pham','AdminController@listProductPending');
+Route::get('/admin-huy-san-pham','AdminController@cancelProduct');
+
 Route::post('/admin-duyet-san-pham/{id_product}', 'AdminController@editAgree');
 Route::post('/admin-tu-choi-duyet-san-pham/{id_product}', 'AdminController@editRefuse');
 Route::get('/admin-danh-sach-shop', 'AdminController@listShop');

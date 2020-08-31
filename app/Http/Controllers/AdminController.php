@@ -83,7 +83,7 @@ class AdminController extends Controller
         if ($this->checkURL(Session::get('role_id')) == false)
             return ($this->checkUrlRoleUser(Session::get('role_id')));
         else {
-            $listProductsPending = DB::table('products_category')->where('status_product', '=', 1)->get();
+            $listProductsPending = DB::table('products_category')->where('status_product', '=', 1)->paginate(12);
             return view('admin.admin_listproduct',compact('listProductsPending'));
         }
     }
@@ -109,6 +109,29 @@ class AdminController extends Controller
         }
         
         return view('admin.admin_listproductpending');
+    }
+
+    public function cancelProduct(Request $request){
+        $this->AuthAdmin();
+        $this->checkUrlRoleUser(Session::get('role_id'));
+        if ($request->ajax()) {
+            $data = DB::table('products')
+                        ->join('brands', 'brands.id_brand', '=', 'products.brand_id')
+                        ->join('shop', 'products.shop_id', '=', 'shop.id_shop')
+                        ->where('products.status_product', '=', 1)
+                        ->select('products.id_product', 'products.name_product', 'products.price_product', 'products.madeby', 'products.created_at', 'products.status_product', 'shop.name_shop', 'brands.name_brand')
+                        ->get();
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function($row){
+                    $btn = ' <a href="javascript:void(0)" data-id="'.$row->id_product.'" data-toggle="tooltip" id="edit-refuse"><span  class="btn btn-outline-danger icon-dislike" title="Từ chối"></span></a>';
+                    return $btn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+        
+        return view('admin.admin_listcancelproduct');
     }
 
     public function editAgree(Request $request){

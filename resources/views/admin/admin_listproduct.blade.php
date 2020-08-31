@@ -51,7 +51,9 @@
       </tr>
     </tbody>
      @endforeach
+     
   </table>
+  <span>{!!$listProductsPending->render() !!}</span>
   </div>
   
 @endsection

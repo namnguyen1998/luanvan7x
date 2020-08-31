@@ -38,6 +38,7 @@
           <ul class="treeview-menu">
           <li><a href="{{URL::to('admin-danh-sach-san-pham')}}"><i class="fa fa-angle-right"></i> Tất cả sản phẩm</a></li>
             <li><a href="{{URL::to('admin-danh-sach-san-pham-cho-duyet')}}"><i class="fa fa-angle-right"></i> Sản phẩm chờ duyệt</a></li>
+            <li><a href="{{URL::to('admin-huy-san-pham')}}"><i class="fa fa-angle-right"></i> Huỷ sản phẩm</a></li>
           </ul>
         </li>
        <li class="treeview"> <a href="#"> <i class="icon-grid"></i> <span>Quản lý comment</span> <span class="pull-right-container"> <i class="fa fa-angle-left pull-right"></i> </span> </a>
